@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNAKULA NZELA-OS — La livraison, sur WhatsApp</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --nuit:#080D0A;--nuit2:#0C1310;--panel:rgba(19,28,22,.66);--line:rgba(246,239,224,.11);
+  --manioc:#F6EFE0;--smoke:#9FB8A9;--wax:#F2820A;--wax-deep:#C96703;--gold:#E8B44C;--money:#2FBF71;
+  --wa:#25D366;--wa-dark:#075E54;--paper:#EBDFC9;--ink:#1c241f;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--nuit);color:var(--manioc);line-height:1.6;overflow-x:hidden}
+::selection{background:rgba(242,130,10,.35)}
+.grain{position:fixed;inset:-50%;pointer-events:none;z-index:50;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+h1,h2,h3{font-family:'Unbounded',sans-serif;text-wrap:balance}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--wax);margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:32px;padding:15px 30px;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform .12s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-wa{background:linear-gradient(135deg,var(--wa),#12934d);color:#04140A;box-shadow:0 10px 36px -8px rgba(37,211,102,.5)}
+.btn-wa:hover{box-shadow:0 14px 44px -6px rgba(37,211,102,.7)}
+.btn-ghost{border:1px solid var(--line);color:var(--manioc);background:rgba(11,18,14,.4);backdrop-filter:blur(6px)}
+.btn-ghost:hover{border-color:var(--wax);color:var(--gold)}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:40;background:rgba(8,13,10,.78);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:26px;height:62px}
+.logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.95rem;letter-spacing:.03em}
+.logo em{font-style:normal;background:linear-gradient(90deg,var(--wax),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav .links{margin-left:auto;display:flex;gap:24px;font-size:.8rem;color:var(--smoke)}
+nav .links a{color:inherit;text-decoration:none}
+nav .links a:hover{color:var(--gold)}
+nav .cta{font-family:var(--mono);font-size:.68rem;border:1px solid rgba(37,211,102,.5);color:var(--wa);border-radius:20px;padding:7px 15px;text-decoration:none}
+@media(max-width:760px){nav .links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 90px;
+  background:
+  radial-gradient(110vmax 52vmax at 50% 118%, rgba(242,130,10,.30), rgba(242,130,10,.07) 45%, transparent 70%),
+  radial-gradient(80vmax 45vmax at 88% -10%, rgba(47,191,113,.09), transparent 60%),
+  linear-gradient(180deg,#060A08,#0B120E 60%,#12100A)}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(130% 95% at 50% 40%,transparent 55%,rgba(0,0,0,.5));pointer-events:none}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+@media(max-width:940px){.hero .wrap{grid-template-columns:1fr}.hero{padding-top:100px}}
+.hero h1{font-weight:900;font-size:clamp(2.5rem,5.6vw,4.3rem);line-height:1.06;letter-spacing:.005em}
+.hero h1 .gold{background:linear-gradient(95deg,var(--wax) 5%,var(--gold) 40%,#FFE9B8 52%,var(--gold) 64%,var(--wax) 95%);background-size:210% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 3.6s linear infinite;filter:drop-shadow(0 4px 30px rgba(242,130,10,.3))}
+@keyframes sheen{to{background-position:210% 0}}
+.hero p.lede{margin:24px 0 34px;max-width:520px;font-size:1.1rem;color:#D8E2D5}
+.hero p.lede b{color:var(--gold)}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.hero .sub{margin-top:18px;font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--smoke);text-transform:uppercase}
+/* stat strip */
+.stats{margin-top:52px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:620px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;backdrop-filter:blur(10px)}
+.stat b{display:block;font-family:var(--mono);font-size:1.25rem;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)}
+
+/* phone mockup */
+.phone{justify-self:center;width:300px;background:linear-gradient(165deg,#242c24,#0a0d0b 70%);border:1px solid #2d382e;border-radius:40px;padding:10px;position:relative;
+  box-shadow:0 50px 90px -30px rgba(0,0,0,.9), 0 0 80px -20px rgba(242,130,10,.28), inset 0 1px 0 rgba(255,255,255,.08);
+  transform:rotate(3deg)}
+.phone::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:16px;background:#0a0d0b;border-radius:0 0 12px 12px;z-index:5}
+.screen{background:var(--paper);border-radius:30px;overflow:hidden}
+.wa-head{background:var(--wa-dark);color:#fff;padding:22px 13px 9px;display:flex;gap:9px;align-items:center;font-size:.8rem}
+.wa-head .av{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.wa-head small{display:block;font-size:.6rem;opacity:.75}
+.chat{padding:12px 10px 16px;display:flex;flex-direction:column;gap:8px;background:
+  linear-gradient(rgba(235,223,201,.94),rgba(235,223,201,.94)),
+  radial-gradient(circle at 25% 30%,#d8c9a8 1.2px,transparent 1.6px);background-size:auto,80px 80px}
+.msg{max-width:88%;padding:8px 11px;border-radius:12px;font-size:.74rem;line-height:1.45;color:var(--ink);box-shadow:0 1px 2px rgba(60,40,10,.2)}
+.in{background:#fff;align-self:flex-start;border-top-left-radius:3px}
+.out{background:#DCF8C6;align-self:flex-end;border-top-right-radius:3px}
+.msg .tt{font-weight:700;margin-bottom:2px}
+.msg .badge{display:inline-block;font-family:var(--mono);font-size:.54rem;padding:2px 7px;border-radius:9px;background:#fbe6cc;color:#a35403;border:1px solid var(--wax);margin-top:5px}
+.msg .price{font-family:var(--mono);font-size:.66rem;color:#5c1a12}
+
+/* ---------- sections ---------- */
+section{padding:96px 0;position:relative}
+section h2{font-size:clamp(1.5rem,3.4vw,2.3rem);font-weight:900;line-height:1.15;margin-bottom:14px}
+section .lead{color:#C9D6C9;max-width:640px;font-size:1.02rem}
+.dark2{background:linear-gradient(180deg,#12100A,#0B120E 30%,#0B120E)}
+
+/* inventions */
+.cards{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 26px;backdrop-filter:blur(10px);position:relative;overflow:hidden;transition:transform .18s,border-color .2s}
+.card:hover{transform:translateY(-4px);border-color:rgba(242,130,10,.45)}
+.card::before{content:'';position:absolute;top:0;left:26px;right:26px;height:2px;background:linear-gradient(90deg,var(--wax),transparent)}
+.card .ico{font-size:1.9rem;margin-bottom:14px;filter:drop-shadow(0 4px 12px rgba(242,130,10,.35))}
+.card h3{font-size:.98rem;font-weight:700;letter-spacing:.02em;margin-bottom:10px;color:var(--gold)}
+.card p{font-size:.88rem;color:#C9D6C9}
+.card p b{color:var(--manioc)}
+.card .tag{margin-top:16px;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--money)}
+
+/* journey */
+.steps{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:step}
+@media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{position:relative;background:rgba(8,14,10,.65);border:1px solid var(--line);border-radius:18px;padding:22px 20px}
+.step::before{counter-increment:step;content:counter(step,decimal-leading-zero);position:absolute;top:16px;right:18px;font-family:var(--mono);font-size:.64rem;color:rgba(242,130,10,.6)}
+.step .ico{font-size:1.5rem;margin-bottom:10px}
+.step b{display:block;font-size:.9rem;margin-bottom:6px}
+.step p{font-size:.78rem;color:var(--smoke)}
+.step .cost{margin-top:12px;font-family:var(--mono);font-size:.58rem;color:var(--money)}
+
+/* promesse / règle 5km + fees */
+.promise{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:860px){.promise{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:30px;backdrop-filter:blur(10px)}
+.panel h3{color:var(--gold);font-size:1rem;margin-bottom:14px}
+.panel p{font-size:.9rem;color:#C9D6C9}
+.fees{margin-top:16px;font-family:var(--mono);font-size:.78rem;color:#DFE8DC}
+.fees div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(246,239,224,.1);font-variant-numeric:tabular-nums}
+.fees div:last-child{border-bottom:none;color:var(--gold);font-weight:600}
+.fees span:first-child{color:var(--smoke)}
+
+/* final CTA */
+.final{background:
+  radial-gradient(100vmax 50vmax at 50% 130%, rgba(242,130,10,.35), transparent 65%),
+  linear-gradient(180deg,#0B120E,#0E0C07);text-align:center}
+.final h2{font-size:clamp(1.9rem,4.4vw,3.1rem)}
+.final .lead{margin:0 auto 36px}
+.final .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.lingala{margin-top:46px;font-family:var(--mono);font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:#6F8577}
+
+footer{border-top:1px solid var(--line);padding:34px 0;font-family:var(--mono);font-size:.62rem;color:#5E7466;letter-spacing:.08em}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--smoke);text-decoration:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav><div class="wrap">
+  <div class="logo">TUNAKULA <em>NZELA-OS</em></div>
+  <div class="links">
+    <a href="#inventions">Les inventions</a><a href="#parcours">Le parcours</a><a href="#promesse">La promesse</a>
+  </div>
+  <a class="cta" href="https://wa.me/243000000000?text=Nakolia" >💬 Commander</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <div class="eyebrow">Groupe JNN · Tunakula-Congo · Kinshasa</div>
+    <h1>Ton resto préféré,<br>livré <span class="gold">chaud</span>.<br>Sans app. Sur WhatsApp.</h1>
+    <p class="lede">Pas de téléchargement. Pas de carte bancaire. Pas d'adresse GPS.
+    <b>Écris «Nakolia»</b> — ou envoie un vocal — et Mama Tunakula s'occupe du reste :
+    resto, wewa, paiement M-Pesa ou cash, jusqu'au portail vert.</p>
+    <div class="ctas">
+      <a class="btn btn-wa" href="https://wa.me/243000000000?text=Nakolia">💬 Commander sur WhatsApp</a>
+      <a class="btn btn-ghost" href="#parcours">Voir comment ça marche</a>
+    </div>
+    <div class="sub">Synchronisé avec cd.tunakula.com · commandes visibles comme sur le site</div>
+    <div class="stats">
+      <div class="stat"><b>≤ 90 s</b><span>du message à la commande</span></div>
+      <div class="stat"><b>≤ 5 km</b><span>pour que ça arrive chaud</span></div>
+      <div class="stat"><b>4 rails</b><span>M-Pesa · Orange · Airtel · Africell</span></div>
+      <div class="stat"><b>~2 Ko</b><span>de data par suivi</span></div>
+    </div>
+  </div>
+  <div class="phone"><div class="screen">
+    <div class="wa-head"><div class="av">🍲</div><div><b>Mama Tunakula ✔️</b><small>en ligne</small></div></div>
+    <div class="chat">
+      <div class="msg out">2 poulets mayo et un jus 🎤</div>
+      <div class="msg in"><div class="tt">J'ai compris maman 😄</div>2× 🍗 Poulet mayo + fufu <span class="price">30 000 FC</span><br>1× 🥤 Jus gingembre <span class="price">2 000 FC</span><br>Chez <b>Mama Kito</b> — 1,2 km ✅<span class="badge">IA · Agent Commande</span></div>
+      <div class="msg in">🏍️ Papy est en route · 12 min<br><small>rond-point → Sainte-Anne → portail vert</small></div>
+      <div class="msg out">Bien reçu ✅ 🍲</div>
+    </div>
+  </div></div>
+</div></header>
+
+<section id="inventions" class="dark2"><div class="wrap">
+  <div class="eyebrow">Construit pour Kinshasa — pas importé</div>
+  <h2>Trois inventions que les clones d'Uber Eats<br>ne peuvent pas copier.</h2>
+  <p class="lead">Chaque «problème» de Kin est devenu une brique du système.</p>
+  <div class="cards">
+    <div class="card"><div class="ico">📲</div><h3>SMS Ledger Bridge</h3>
+      <p>Pas d'API mobile money en RDC ? Pas besoin. Chaque paiement génère un <b>SMS de confirmation</b> —
+      la Lipa Box le lit, le rapproche de ta commande <b>TK-347</b> et la passe PAYÉE en moins de 30 secondes.
+      Un code utilisé une fois est mort pour toujours.</p>
+      <div class="tag">0 contrat opérateur · anti-rejeu intégré</div></div>
+    <div class="card"><div class="ico">🗺️</div><h3>Landmark Graph</h3>
+      <p>«Bandal, après l'église Sainte-Anne, portail vert.» Ici on navigue aux repères, pas au GPS.
+      Un vocal suffit : ton <b>Adresse Vocale</b> est enregistrée pour toujours,
+      et chaque livraison enrichit la carte vivante de Kin.</p>
+      <div class="tag">adresse en 1 vocal · réutilisable à vie</div></div>
+    <div class="card"><div class="ico">🧠</div><h3>IA gouvernée au token près</h3>
+      <p>90% du flux est boutons et automates — <b>zéro token</b>. L'IA n'intervient que là où elle gagne sa vie :
+      comprendre ta commande, ton adresse, un litige. Budget dur par agent,
+      registre de chaque centime.</p>
+      <div class="tag">≤ $0.05 IA / commande · ×30 couverture</div></div>
+  </div>
+</div></section>
+
+<section id="parcours"><div class="wrap">
+  <div class="eyebrow">Le parcours — 4 acteurs, zéro app</div>
+  <h2>De «Nakolia» au sac en main.</h2>
+  <div class="steps">
+    <div class="step"><div class="ico">💬</div><b>Tu commandes</b><p>Texte, vocal ou boutons. Le récap montre chaque frais avant paiement.</p><div class="cost">fenêtre service · gratuit</div></div>
+    <div class="step"><div class="ico">🍗</div><b>Le resto accepte</b><p>Un Android avec WhatsApp suffit. Silence 60 s ? Appel vocal automatique, plan B instantané.</p><div class="cost">statut sync cd.tunakula.com</div></div>
+    <div class="step"><div class="ico">🏍️</div><b>Le wewa fonce</b><p>Code de retrait anti-vol, itinéraire par repères, 70% des frais de course pour lui.</p><div class="cost">5 jalons · ~2 Ko data</div></div>
+    <div class="step"><div class="ico">🧾</div><b>Sac en main</b><p>«Bien reçu» ferme la boucle : reçu complet, note ⭐, crédit instantané si souci.</p><div class="cost">remboursement en 40 s</div></div>
+  </div>
+</div></section>
+
+<section id="promesse" class="dark2"><div class="wrap">
+  <div class="eyebrow">La promesse</div>
+  <h2>Chaud, transparent, remboursé en 40 secondes.</h2>
+  <div class="promise">
+    <div class="panel"><h3>🔥 La règle des 5 km</h3>
+      <p>Au-delà de 5 km dans les embouteillages de Kin, ton plat arrive froid. Alors on refuse — poliment —
+      et on te propose le même style de cuisine tout près. La règle protège la qualité <b>et</b> convertit ta faim.
+      Pluie ? Le rayon se resserre à 3 km, ton wewa reste en sécurité.</p></div>
+    <div class="panel"><h3>🧾 Zéro frais caché</h3>
+      <p>Chaque total est décomposé avant que tu paies :</p>
+      <div class="fees">
+        <div><span>Sous-total (exemple)</span><span>17 000 FC</span></div>
+        <div><span>Service 10%</span><span>1 700 FC</span></div>
+        <div><span>Traitement 2%</span><span>340 FC</span></div>
+        <div><span>Livraison Zone 1</span><span>3 500 FC</span></div>
+        <div><span>Total client</span><span>22 540 FC</span></div>
+      </div></div>
+  </div>
+</div></section>
+
+<section class="final"><div class="wrap">
+  <div class="eyebrow">Bandal d'abord. Kin ensuite.</div>
+  <h2>La nzela est ouverte.</h2>
+  <p class="lead">Client, resto partenaire ou wewa — tout commence par un message.</p>
+  <div class="ctas">
+    <a class="btn btn-wa" href="https://wa.me/243000000000?text=Nakolia">💬 Commander maintenant</a>
+    <a class="btn btn-ghost" href="https://cd.tunakula.com">Devenir resto partenaire</a>
+  </div>
+  <div class="lingala">Tokoli malamu · Nzela ezali polele</div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© Groupe JNN · Tunakula-Congo · Kinshasa, RDC</span>
+  <span><a href="https://cd.tunakula.com">cd.tunakula.com</a> · plateforme principale & administration</span>
+</div></footer>
+</body>
+</html>
