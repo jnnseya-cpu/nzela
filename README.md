@@ -32,27 +32,36 @@ against **~$1.10 per-order margin**.
 
 Where code and prototype diverge, flag for product decision — do not assume.
 
-## Monorepo layout
+## Monorepo layout (frontend / backend / shared)
 
 ```
-apps/
-  gateway/         WhatsApp webhook + NZELA Router + AI firewall,
-                   status→milestone config mapping (FR-S3), fee récap (§8),
-                   Cuisine Sync exception ladder (FR-K1..K3), webhook HMAC
-  agents/          LLM agent contracts (Commande, Adresse, Litige, Upsell) —
-                   LangGraph implementations land in Phase 2
-  lipa-ingest/     SMS Ledger Bridge: operator regex parsers + TK-ref
-                   payment↔order matcher (FR-P1/P4)
+frontend/
+  landing/         Cinematic landing page + splash screen (self-contained
+                   HTML, embedded fonts)
   ops-console/     Next.js ops console + StackFood-mirrored entry surface
                    (placeholder — Phase 1)
-packages/
+backend/
+  gateway/         WhatsApp webhook + NZELA Router + AI firewall,
+                   status→milestone config mapping (FR-S3), fee récap (§8),
+                   customer receipt + ops-leak guard (FR-W4), Cuisine Sync
+                   exception ladder (FR-K1..K3), webhook HMAC
+  agents/          LLM agent contracts (Commande, Adresse, Litige, Upsell) —
+                   LangGraph implementations land in Phase 2
+  lipa-ingest/     SMS Ledger Bridge: operator regex parsers (M-Pesa,
+                   Orange, Airtel, Africell), TK-ref payment↔order matcher,
+                   replay protection (FR-P1/P4)
+shared/
   ledger/          Ledger events, 8-agent registry with hard budgets (§5),
                    budget middleware (FR-A1), per-order cost meters (FR-M4)
   stackfood-client/ Typed StackFood v1 REST client: retry/timeout contract,
-                   idempotency keys (FR-O4), TK refs, Flows 1/3/4/5 calls
-  landmark-graph/  Landmark addressing (FR-L1..L4), 5 km radius gates with
-                   rain mode (FR-R1..R5), delivery zone tariffs (§8)
+                   idempotency keys (FR-O4), TK refs, auth provisioning,
+                   idempotent Order Adapter, production category registry
+  landmark-graph/  Landmark addressing (FR-L1..L4), geolocation distance,
+                   5 km radius gates with rain mode (FR-R1..R5), zone
+                   tariffs (§8)
 ```
+
+Go-live: see [`docs/GO_LIVE_CHECKLIST.md`](docs/GO_LIVE_CHECKLIST.md).
 
 ## Getting started
 

@@ -43,3 +43,16 @@ nearest-restaurant selection, the discovery list ordering (FR-D2), and the
 5 km radius gates. FR-R1's landmark-ring hops remain the basis for the
 delivery-zone fee classification (§8) and wewa-facing directions (FR-L3).
 Implemented in `@nzela/landmark-graph` (`distance.ts`).
+
+## E-5 · Payment methods and repo layout (2026-07-18)
+
+**Decision (owner: Justin Nseya):** Accepted payment methods are cash,
+carte bancaire (via the cd.tunakula.com web checkout / StackFood card
+gateway), and mobile money on all four operators — M-Pesa, Orange Money,
+Airtel Money, Africell Money. In chat, mobile money is one button (the
+Lipa Box identifies the operator from the confirmation SMS); carte routes
+to the web checkout on the shared account.
+
+The monorepo is organised as `frontend/` · `backend/` · `shared/`
+(supersedes the §11 `apps/`+`packages/` naming; package names `@nzela/*`
+unchanged).

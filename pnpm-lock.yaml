@@ -21,44 +21,44 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.20.1)
 
-  apps/agents:
+  backend/agents:
     dependencies:
       '@nzela/landmark-graph':
         specifier: workspace:*
-        version: link:../../packages/landmark-graph
+        version: link:../../shared/landmark-graph
       '@nzela/ledger':
         specifier: workspace:*
-        version: link:../../packages/ledger
+        version: link:../../shared/ledger
       '@nzela/stackfood-client':
         specifier: workspace:*
-        version: link:../../packages/stackfood-client
+        version: link:../../shared/stackfood-client
 
-  apps/gateway:
+  backend/gateway:
     dependencies:
       '@nzela/landmark-graph':
         specifier: workspace:*
-        version: link:../../packages/landmark-graph
+        version: link:../../shared/landmark-graph
       '@nzela/ledger':
         specifier: workspace:*
-        version: link:../../packages/ledger
+        version: link:../../shared/ledger
       '@nzela/stackfood-client':
         specifier: workspace:*
-        version: link:../../packages/stackfood-client
+        version: link:../../shared/stackfood-client
 
-  apps/lipa-ingest:
+  backend/lipa-ingest:
     dependencies:
       '@nzela/ledger':
         specifier: workspace:*
-        version: link:../../packages/ledger
+        version: link:../../shared/ledger
       '@nzela/stackfood-client':
         specifier: workspace:*
-        version: link:../../packages/stackfood-client
+        version: link:../../shared/stackfood-client
 
-  packages/landmark-graph: {}
+  shared/landmark-graph: {}
 
-  packages/ledger: {}
+  shared/ledger: {}
 
-  packages/stackfood-client: {}
+  shared/stackfood-client: {}
 
 packages:
 

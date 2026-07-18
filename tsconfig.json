@@ -14,10 +14,10 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@nzela/ledger": ["packages/ledger/src/index.ts"],
-      "@nzela/stackfood-client": ["packages/stackfood-client/src/index.ts"],
-      "@nzela/landmark-graph": ["packages/landmark-graph/src/index.ts"]
+      "@nzela/ledger": ["shared/ledger/src/index.ts"],
+      "@nzela/stackfood-client": ["shared/stackfood-client/src/index.ts"],
+      "@nzela/landmark-graph": ["shared/landmark-graph/src/index.ts"]
     }
   },
-  "include": ["packages/*/src/**/*.ts", "apps/*/src/**/*.ts"]
+  "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]
 }
