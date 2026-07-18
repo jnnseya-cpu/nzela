@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNAKULA NZELA-OS — Prototype Interactif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nuit:#0B120E;--nuit2:#131E17;--glass:rgba(22,32,25,.72);
+  --manioc:#F6EFE0;--wax:#F2820A;--wax-dark:#c96703;--gold:#E8B44C;
+  --money:#2FBF71;--rouge:#E2001B;
+  --wa-head:#075E54;--wa-bubble:#DCF8C6;--paper:#EBDFC9;--ink:#1c241f;
+  --line:rgba(246,239,224,.12);--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--nuit);color:var(--manioc);font-family:'Space Grotesk',sans-serif}
+body{background:
+  radial-gradient(1100px 500px at 85% -10%,rgba(242,130,10,.13),transparent 60%),
+  radial-gradient(900px 600px at -10% 110%,rgba(47,191,113,.08),transparent 60%),
+  var(--nuit);min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:none;transition:transform .08s,box-shadow .15s}
+button:active{transform:scale(.96)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:rgba(242,130,10,.35);border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- splash ---------- */
+#splash{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(900px 500px at 50% 30%,rgba(242,130,10,.16),transparent 65%),#080D0A;
+  transition:opacity .6s,visibility .6s}
+#splash.gone{opacity:0;visibility:hidden}
+.sp-in{max-width:560px;padding:32px 24px;animation:rise .9s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.sp-mark{font-family:'Unbounded';font-weight:900;font-size:clamp(1.6rem,6vw,2.6rem);letter-spacing:.04em}
+.sp-os{font-family:'Unbounded';font-weight:900;font-size:clamp(2rem,8vw,3.4rem);letter-spacing:.02em;
+  background:linear-gradient(90deg,var(--wax),var(--gold),var(--wax));background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 3.2s linear infinite}
+@keyframes sheen{to{background-position:200% 0}}
+.sp-tag{margin:14px auto 22px;font-size:.92rem;color:#c9d6c9;max-width:430px;line-height:1.55}
+.sp-stats{display:flex;gap:10px;justify-content:center;margin-bottom:26px;flex-wrap:wrap}
+.sp-stats div{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:12px 16px;min-width:118px;backdrop-filter:blur(8px)}
+.sp-stats b{display:block;font-family:var(--mono);font-size:1.15rem;color:var(--gold)}
+.sp-stats span{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:#9fb8a9}
+.sp-btn{background:linear-gradient(135deg,var(--wax),#d9650a);color:#fff;font-weight:700;font-size:.95rem;
+  border-radius:30px;padding:14px 30px;box-shadow:0 8px 30px -6px rgba(242,130,10,.55);animation:glow 1.6s infinite}
+.sp-btn:hover{box-shadow:0 10px 38px -4px rgba(242,130,10,.75)}
+.sp-foot{margin-top:22px;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:#6f8577;text-transform:uppercase}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap;
+  background:rgba(11,18,14,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:40}
+.logo{font-family:'Unbounded';font-weight:900;font-size:1.02rem}
+.logo em{font-style:normal;background:linear-gradient(90deg,var(--wax),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.live{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.64rem;color:#9fb8a9;text-transform:uppercase;letter-spacing:.12em}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--money);box-shadow:0 0 8px var(--money);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.hbtn{background:rgba(246,239,224,.05);border:1px solid var(--line);color:#c9d6c9;border-radius:20px;padding:5px 13px;font-size:.72rem}
+.hbtn:hover{border-color:var(--wax);color:var(--wax)}
+.acdo{margin-left:auto;text-align:right}
+.acdo small{display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:#9fb8a9;text-transform:uppercase}
+.acdo b{font-family:var(--mono);font-size:1.3rem;font-weight:600;color:var(--wax);text-shadow:0 0 18px rgba(242,130,10,.4)}
+.acdo span{font-family:var(--mono);font-size:.7rem;color:var(--money)}
+
+.guide{padding:10px 18px;background:linear-gradient(90deg,rgba(242,130,10,.14),transparent 70%);border-bottom:1px solid var(--line);font-size:.85rem;color:#f3d9b8;min-height:40px}
+.guide b{color:var(--gold)}
+
+/* ---------- layout ---------- */
+.stage{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 335px;gap:18px;padding:18px;max-width:1520px;margin:0 auto}
+.tabs{display:none;gap:6px;padding:10px 14px 0}
+.tabs button{flex:1;background:var(--glass);color:#9fb8a9;border:1px solid var(--line);border-radius:12px;padding:9px 4px;font-size:.74rem;font-weight:700;position:relative;backdrop-filter:blur(6px)}
+.tabs button.on{background:linear-gradient(135deg,var(--wax),#d9650a);color:#1b1206;border-color:var(--wax);box-shadow:0 4px 18px -4px rgba(242,130,10,.5)}
+.tabs button .ping{position:absolute;top:-4px;right:-2px;width:10px;height:10px;border-radius:50%;background:var(--rouge);display:none;box-shadow:0 0 8px var(--rouge)}
+.tabs button.hasping .ping{display:block;animation:pulse 1s infinite}
+@media(max-width:1120px){
+  .stage{grid-template-columns:1fr;max-width:560px}
+  .tabs{display:flex}
+  .panel{display:none}
+  .panel.show{display:flex}
+  .ops.panel.show{display:block}
+}
+
+/* ---------- phones ---------- */
+.phone{background:linear-gradient(165deg,#232b23,#0a0d0b 70%);border:1px solid #2d382e;border-radius:38px;padding:10px;
+  display:flex;flex-direction:column;min-height:680px;max-height:82vh;position:relative;
+  box-shadow:0 30px 70px -24px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.07),0 0 0 1px rgba(0,0,0,.5)}
+.phone::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:112px;height:17px;background:#0a0d0b;border-radius:0 0 13px 13px;z-index:6}
+.screen{background:var(--paper);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;flex:1;position:relative}
+.sbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.85);padding:5px 16px 3px;letter-spacing:.03em}
+#pc .sbar{background:#05433c}#pr .sbar{background:#40120c}#pw .sbar{background:#27190a}
+.phead{color:#fff;padding:8px 13px;display:flex;align-items:center;gap:10px}
+#pc .phead{background:var(--wa-head)}
+.phead.resto{background:#5c1a12}.phead.moto{background:#3a2a10}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.phead b{font-size:.86rem;display:block}
+.phead small{font-size:.64rem;opacity:.75;display:block}
+.phicons{margin-left:auto;display:flex;gap:13px;font-size:.85rem;opacity:.85}
+.chat{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:8px;background:
+  linear-gradient(rgba(235,223,201,.93),rgba(235,223,201,.93)),
+  radial-gradient(circle at 20% 30%,#d8c9a8 1.2px,transparent 1.6px),
+  radial-gradient(circle at 70% 60%,#d8c9a8 1.2px,transparent 1.6px),
+  radial-gradient(circle at 45% 85%,#d8c9a8 1.2px,transparent 1.6px);
+  background-size:auto,90px 90px,110px 110px,70px 70px}
+.msg{max-width:90%;padding:8px 11px;border-radius:12px;font-size:.82rem;line-height:1.42;color:var(--ink);box-shadow:0 1px 2px rgba(60,40,10,.18);animation:pop .28s cubic-bezier(.2,.9,.3,1.2);position:relative}
+@keyframes pop{from{transform:translateY(8px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.in{background:#fff;align-self:flex-start;border-top-left-radius:3px}
+.out{background:var(--wa-bubble);align-self:flex-end;border-top-right-radius:3px}
+.sys{align-self:center;background:#e2d5b8;color:#6b5c3a;font-size:.64rem;font-family:var(--mono);padding:4px 12px;border-radius:14px;box-shadow:none;text-align:center}
+.mt{font-size:.55rem;color:#93917f;float:right;margin:9px 0 0 8px;font-family:var(--mono)}
+.ticks{font-size:.62rem;color:#8aa;float:right;margin:8px 0 0 4px}
+.ticks.blue{color:#34B7F1}
+.msg .tt{font-weight:700;margin-bottom:3px}
+.msg .price{font-family:var(--mono);font-size:.73rem;color:#5c1a12}
+.typing{display:flex;gap:4px;padding:10px 14px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#9aa79b;animation:tp 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.opt{background:#fff;border:1.5px solid var(--wa-head);color:var(--wa-head);border-radius:10px;padding:9px 11px;font-size:.8rem;font-weight:700;text-align:left;box-shadow:0 2px 6px -2px rgba(7,94,84,.25)}
+.opt:hover{background:var(--wa-head);color:#fff}
+.opt:disabled{opacity:.35;border-color:#999;color:#777;background:#f0ead8;cursor:default;box-shadow:none}
+.opt.hot{border-color:var(--wax);color:var(--wax-dark);box-shadow:0 2px 8px -2px rgba(242,130,10,.4)}
+.opt.hot:hover{background:var(--wax);color:#fff}
+.next{animation:glow 1.2s infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(242,130,10,.7)}50%{box-shadow:0 0 0 8px rgba(242,130,10,0)}}
+.voice{display:flex;align-items:center;gap:8px;font-style:italic}
+.badge{display:inline-block;font-family:var(--mono);font-size:.6rem;padding:2px 8px;border-radius:10px;margin-top:5px}
+.badge.paid{background:var(--money);color:#fff;box-shadow:0 2px 8px -2px rgba(47,191,113,.6)}
+.badge.ai{background:#fbe6cc;color:#a35403;border:1px solid var(--wax)}
+.badge.det{background:#e3efe7;color:#2c6647;border:1px solid #9cc7ad}
+.stars{display:flex;gap:6px;margin-top:6px}
+.stars button{background:none;font-size:1.35rem;filter:grayscale(1)}
+.stars button.lit{filter:none;transform:scale(1.18);text-shadow:0 0 14px rgba(232,180,76,.8)}
+
+/* cart + composer */
+.cartbar{display:none;align-items:center;gap:8px;background:#fff;border-top:1px solid #ddd0b5;padding:8px 10px;font-size:.78rem;color:var(--ink)}
+.cartbar.on{display:flex;animation:pop .3s}
+.cartbar b{font-family:var(--mono)}
+.cartbar button{margin-left:auto;background:linear-gradient(135deg,var(--wax),#d9650a);color:#fff;border-radius:18px;padding:7px 16px;font-weight:700;font-size:.78rem;box-shadow:0 4px 14px -4px rgba(242,130,10,.6)}
+.composer{display:flex;gap:7px;padding:8px;background:#e4d8bf;border-top:1px solid #d5c7a8;align-items:center}
+.composer input{flex:1;border:none;border-radius:22px;padding:11px 15px;font-size:.84rem;font-family:inherit;background:#fff;color:var(--ink);outline:none;min-width:0;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.cbtn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;background:var(--wa-head);color:#fff;flex-shrink:0;box-shadow:0 3px 10px -3px rgba(7,94,84,.6)}
+.cbtn.mic{background:#7a4d12}
+.cbtn.mic.hotmic{animation:glow 1.2s infinite;background:var(--wax)}
+.cbtn.mic.rec{background:var(--rouge);animation:pulse .6s infinite}
+
+/* cook + route */
+.bar{height:9px;border-radius:6px;background:#e0d3b4;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--wax),var(--rouge));transition:width .3s linear;box-shadow:0 0 8px rgba(242,130,10,.6)}
+.route{margin-top:7px}
+.rtrack{position:relative;height:26px}
+.rline{position:absolute;top:12px;left:0;right:0;height:3px;background:#d3c4a2;border-radius:2px}
+.rfill{position:absolute;top:12px;left:0;height:3px;background:var(--money);border-radius:2px;width:0%;box-shadow:0 0 6px rgba(47,191,113,.7)}
+.moto{position:absolute;top:0;left:0;font-size:1.05rem;transform:translateX(-50%);transition:left .3s linear;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.rpts{display:flex;justify-content:space-between;font-size:.56rem;font-family:var(--mono);color:#7a6c4a;margin-top:2px}
+.eta{font-family:var(--mono);font-size:.7rem;color:#2c6647;margin-top:3px}
+
+/* photo menu cards */
+.mcards{display:flex;gap:9px;overflow-x:auto;margin-top:8px;padding-bottom:5px;-webkit-overflow-scrolling:touch}
+.mcard{min-width:120px;max-width:120px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 3px 10px -3px rgba(60,40,10,.35);flex-shrink:0;transition:transform .15s}
+.mcard:hover{transform:translateY(-2px)}
+.mimg{height:76px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative}
+.mimg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.45),transparent 55%)}
+.mbody{padding:7px 8px 8px}
+.mname{font-size:.68rem;font-weight:700;color:var(--ink);line-height:1.15;min-height:24px}
+.mprice{font-family:var(--mono);font-size:.66rem;color:#5c1a12;margin:3px 0 5px}
+.madd{width:100%;background:linear-gradient(135deg,var(--wax),#d9650a);color:#fff;border-radius:9px;padding:6px 0;font-size:.72rem;font-weight:700}
+.madd:active{background:var(--wax-dark)}
+
+/* ---------- ops rail ---------- */
+.ops{display:block}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:15px;backdrop-filter:blur(10px);box-shadow:0 14px 40px -18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.05)}
+.card h3{font-family:'Unbounded';font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9fb8a9;margin-bottom:10px}
+.meter{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.meter .big{font-family:var(--mono);font-size:1.9rem;font-weight:600;color:var(--wax);text-shadow:0 0 22px rgba(242,130,10,.45)}
+.meter .vs{font-family:var(--mono);font-size:.7rem;color:#9fb8a9}
+.meter .cov{font-family:var(--mono);font-size:.92rem;color:var(--money);font-weight:600;text-shadow:0 0 14px rgba(47,191,113,.5)}
+.split{display:flex;gap:8px;margin-top:10px}
+.split div{flex:1;background:rgba(8,14,10,.7);border-radius:11px;padding:8px;border:1px solid rgba(246,239,224,.05)}
+.split small{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;color:#9fb8a9;text-transform:uppercase;display:block}
+.split b{font-family:var(--mono);font-size:.95rem;font-weight:600}
+.det2 b{color:#cfe6d8}.aic b{color:var(--wax)}
+.warow{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.72rem;color:#c9d6c9;padding:5px 0;border-bottom:1px dashed rgba(246,239,224,.08)}
+.warow b{font-family:var(--mono);font-size:.68rem;color:var(--gold);text-align:right;white-space:nowrap}
+.warow b.free{color:var(--money)}
+.wanote{font-family:var(--mono);font-size:.58rem;color:#7f9a8c;line-height:1.5;margin-top:8px}
+.ledger{max-height:215px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.le{display:flex;gap:8px;align-items:baseline;font-family:var(--mono);font-size:.66rem;padding:6px 9px;border-radius:9px;background:rgba(8,14,10,.7);animation:pop .25s;border:1px solid rgba(246,239,224,.04)}
+.le .who{color:#9fb8a9;min-width:62px}
+.le .what{flex:1;color:#e7dfcd}
+.le .cost{color:#7f9a8c}
+.le.ai{border-left:3px solid var(--wax)}
+.le.ai .cost{color:var(--wax);font-weight:600}
+.le.block{border-left:3px solid var(--rouge)}
+.sms{display:flex;flex-direction:column;gap:6px;max-height:145px;overflow-y:auto}
+.smsline{font-family:var(--mono);font-size:.65rem;background:rgba(8,14,10,.7);border-left:3px solid var(--money);padding:7px 9px;border-radius:9px;color:#cfe6d8;animation:pop .3s}
+.smsline.cash{border-left-color:var(--wax);color:#f3d9b8}
+.smsline.wait{border-left-color:#5a6b60;color:#8ba093;font-style:italic}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+/* ---------- StackFood-style home (customer phone) ---------- */
+#homeView{display:none;flex-direction:column;flex:1;min-height:0;background:#F4F5F7;color:#222}
+.homemode #homeView{display:flex}
+.homemode .phead,.homemode .chat,.homemode .cartbar,.homemode .composer{display:none!important}
+.hv-top{background:linear-gradient(180deg,#F98615,#F2820A);padding:10px 12px 16px}
+.hv-brand{display:flex;justify-content:space-between;align-items:center;color:#fff;font-weight:700;font-size:.9rem;margin-bottom:10px}
+.hv-brand span{font-weight:500;font-size:.72rem;opacity:.92}
+.hv-search{background:#fff;border-radius:24px;padding:11px 15px;display:flex;align-items:center;gap:9px;color:#8a8a8a;font-size:.85rem;box-shadow:0 4px 14px -6px rgba(0,0,0,.35);cursor:pointer}
+.hv-search .hv-mic{margin-left:auto;color:#F2820A}
+.hv-body{flex:1;overflow-y:auto;padding:12px 12px 6px}
+.hv-caro{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;border-radius:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.hv-caro::-webkit-scrollbar{display:none}
+.hv-ban{min-width:100%;scroll-snap-align:start;border-radius:16px;padding:16px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;color:#fff;min-height:112px}
+.hv-ban h4{font-size:.95rem;max-width:150px;line-height:1.25;margin-bottom:10px}
+.hv-ban .hv-em{font-size:3rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+.hv-ban.b1{background:linear-gradient(120deg,#7CB518,#9BC53D)}
+.hv-ban.b2{background:linear-gradient(120deg,#F2820A,#E2001B)}
+.hv-ban.b3{background:linear-gradient(120deg,#075E54,#2FBF71)}
+.hv-cta{background:#fff;color:#E2620A;font-weight:700;font-size:.74rem;border-radius:18px;padding:7px 14px;box-shadow:0 3px 10px -3px rgba(0,0,0,.3)}
+.hv-off{position:absolute;right:78px;bottom:12px;background:#F5E642;color:#B33;font-weight:900;font-size:.72rem;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.1;transform:rotate(-8deg)}
+.hv-dots{display:flex;gap:5px;justify-content:center;margin:9px 0 4px}
+.hv-dots i{width:6px;height:6px;border-radius:4px;background:#e2b98a;transition:.3s}
+.hv-dots i.on{width:20px;background:#F2820A}
+.hv-h{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1.02rem;margin:12px 2px 10px;color:#1c1c1c}
+.hv-h span{width:30px;height:30px;border-radius:50%;border:2px solid #F9C08A;color:#F2820A;display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer}
+.hv-cats{display:flex;gap:9px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}.hv-cats::-webkit-scrollbar{display:none}.hv-cat{flex:0 0 76px}.hv-cat .hv-tile{width:76px}
+.hv-cat{text-align:center;cursor:pointer}
+.hv-cat .hv-tile{border-radius:16px;height:74px;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 12px -5px rgba(0,0,0,.28);transition:transform .15s}
+.hv-cat:hover .hv-tile{transform:translateY(-2px)}
+.hv-cat b{display:block;font-size:.68rem;margin-top:6px;color:#333;font-weight:700}
+.hv-near{margin:14px 0 10px;background:linear-gradient(120deg,#FDEBD7,#FAD9B8);border-radius:16px;padding:13px 12px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.hv-near .hv-um{font-size:1.9rem}
+.hv-near b{font-size:.82rem;color:#222;display:block}
+.hv-near small{font-size:.66rem;color:#7a6a55}
+.hv-near .hv-cta{margin-left:auto;background:#F2820A;color:#fff;white-space:nowrap}
+.hv-nav{display:flex;justify-content:space-around;align-items:flex-end;background:#fff;border-top:1px solid #eee;padding:7px 4px 9px;position:relative}
+.hv-nav span{font-size:.6rem;color:#9a9a9a;text-align:center;line-height:1.5;cursor:pointer}
+.hv-nav span.on{color:#F2820A;font-weight:700}
+.hv-fab{position:relative;top:-16px;background:linear-gradient(135deg,#25D366,#075E54);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem!important;color:#fff!important;box-shadow:0 8px 20px -6px rgba(7,94,84,.6);animation:glow 1.6s infinite}
+
+.hv-count{margin-left:6px;background:#F2820A;color:#fff;font-size:.58rem;font-weight:700;border-radius:10px;padding:2px 8px;font-family:var(--mono)}
+.hv-rrow{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.hv-rrow::-webkit-scrollbar{display:none}
+.hv-rc{min-width:168px;max-width:168px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 12px -5px rgba(0,0,0,.25);flex-shrink:0;cursor:pointer;position:relative}
+.hv-rc .rcimg{height:72px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;position:relative}
+.hv-rc .rcimg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.4),transparent 55%)}
+.hv-rc .rcb{padding:8px 9px 9px}
+.hv-rc b{font-size:.74rem;color:#222;display:block}
+.hv-rc small{font-size:.62rem;color:#8a8a8a}
+.hv-rc .rcstar{color:#F2820A;font-weight:700;font-size:.64rem}
+.hv-heart{position:absolute;top:6px;right:7px;background:rgba(255,255,255,.92);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="sp-in">
+    <div class="sp-mark">TUNAKULA</div>
+    <div class="sp-os">NZELA-OS</div>
+    <div class="sp-tag">Le système d'exploitation de la livraison à Kinshasa.<br>WhatsApp-natif · Cash-first · IA gouvernée au token près · Synchronisé avec drc.tunakula.com</div>
+    <div class="sp-stats">
+      <div><b>≤ $0.05</b><span>coût IA / commande</span></div>
+      <div><b>×30+</b><span>couverture marge</span></div>
+      <div><b>0 API</b><span>mobile money requis</span></div>
+      <div><b>$0</b><span>conversation client (fenêtre service)</span></div>
+    </div>
+    <button class="sp-btn" onclick="enterSim()">▶ Entrer dans la simulation</button>
+    <div class="sp-foot">Groupe JNN · Tunakula-Congo · drc.tunakula.com</div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="logo">TUNAKULA <em>NZELA-OS</em></div>
+  <div class="live"><span class="dot"></span> Bandal, Kinshasa</div>
+  <button class="hbtn" id="autoBtn" onclick="autoPlay()" style="border-color:var(--wax);color:var(--wax)">▶ Flux complet</button>
+  <button class="hbtn" id="sndBtn" onclick="toggleSound()">🔊 Son</button>
+  <button class="hbtn" onclick="location.reload()">↺ Rejouer</button>
+  <div class="acdo"><small>Coût IA + messagerie</small><b id="acdoBig">$0.0000</b> <span id="acdoCov"></span></div>
+</header>
+
+<div class="guide"><b>À toi de jouer&nbsp;:</b> <span id="guideTxt">Écris ta commande — ex. <b>«2 poulets mayo et un jus»</b> — touche le micro 🎤, passe par les boutons… ou touche <b>▶ Flux complet</b> en haut pour tout regarder se jouer tout seul.</span></div>
+
+<nav class="tabs" id="tabs">
+  <button data-p="pc" class="on" onclick="showTab('pc')">👩🏾 Client<span class="ping"></span></button>
+  <button data-p="pr" onclick="showTab('pr')">🍗 Resto<span class="ping"></span></button>
+  <button data-p="pw" onclick="showTab('pw')">🏍️ Wewa<span class="ping"></span></button>
+  <button data-p="po" onclick="showTab('po')">📟 Ops<span class="ping"></span></button>
+</nav>
+
+<main class="stage">
+  <section class="phone panel show" id="pc">
+    <div class="screen">
+      <div class="sbar"><span id="clkC">19:12</span><span>▂▄▆█ 4G · 🔋 78%</span></div>
+      <div id="homeView">
+        <div class="hv-top">
+          <div class="hv-brand">🍲 Tunakula-Congo <span>📍 Bandal, Kinshasa ▾</span></div>
+          <div class="hv-search" onclick="enterChat()">🔍 Are you hungry !! <span class="hv-mic">🎤</span></div>
+        </div>
+        <div class="hv-body">
+          <div class="hv-caro" id="caro">
+            <div class="hv-ban b1"><div><h4>Poulet mayo en feu ce soir</h4><button class="hv-cta" onclick="enterChat()">Commander</button></div><div class="hv-off">12% OFF</div><span class="hv-em">🍗</span></div>
+            <div class="hv-ban b2"><div><h4>Livraison Zone 1 — 3 500 FC</h4><button class="hv-cta" onclick="enterChat()">Voir les restos</button></div><span class="hv-em">🏍️</span></div>
+            <div class="hv-ban b3"><div><h4>Cash, M-Pesa ou Crédit Tunakula</h4><button class="hv-cta" onclick="enterChat()">C'est parti</button></div><span class="hv-em">💚</span></div>
+          </div>
+          <div class="hv-dots" id="hvDots"><i class="on"></i><i></i><i></i><span class="hv-count" id="hvCount">1/3</span></div>
+          <div class="hv-h">What's on Your Mind ? <span onclick="enterChat()">→</span></div>
+          <div class="hv-cats" id="hvCats"></div>
+          <div class="hv-near" onclick="enterChat()"><span class="hv-um">⛱️</span><div><b>Find Nearby</b><small>Restaurant Near from You</small></div><button class="hv-cta">📍 See Location</button></div>
+          <div class="hv-h">Popular Restaurants Nearby <span onclick="enterChat(true)">→</span></div>
+          <div class="hv-rrow" id="hvRestos"></div>
+        </div>
+        <div class="hv-nav">
+          <span class="on">🏠<br>Home</span><span>🤍<br>Wishlist</span><span class="hv-fab" onclick="enterChat()">💬</span><span>🧾<br>Orders</span><span>☰<br>Menu</span>
+        </div>
+      </div>
+      <div class="phead"><div class="av">🍲</div><div><b>Mama Tunakula ✔️</b><small id="cStatus">en ligne</small></div><div class="phicons"><span>📹</span><span>📞</span><span>⋮</span></div></div>
+      <div class="chat" id="chatC"></div>
+      <div class="cartbar" id="cartbar">🛒 <span id="cartTxt"></span> · <b id="cartTot"></b><button id="orderBtn" onclick="checkout()">Commander</button></div>
+      <div class="composer">
+        <input id="inp" placeholder="Écris à Mama Tunakula…" autocomplete="off">
+        <button class="cbtn mic" id="micBtn" onclick="micTap()">🎤</button>
+        <button class="cbtn" onclick="sendTap()">➤</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="phone panel" id="pr">
+    <div class="screen">
+      <div class="sbar"><span id="clkR">19:12</span><span>▂▄▆_ 3G · 🔋 41%</span></div>
+      <div class="phead resto"><div class="av">🍗</div><div><b id="restoName">Mama Kito — Bandal</b><small>Tunakula Partenaire ✔️</small></div><div class="phicons"><span>📞</span><span>⋮</span></div></div>
+      <div class="chat" id="chatR"><div class="msg sys">En attente de commandes…</div></div>
+    </div>
+  </section>
+
+  <section class="phone panel" id="pw">
+    <div class="screen">
+      <div class="sbar"><span id="clkW">19:12</span><span>▂▄__ E · 🔋 63%</span></div>
+      <div class="phead moto"><div class="av">🏍️</div><div><b>Papy — Wewa #12</b><small>Zone Bandal · float OK ✔️</small></div><div class="phicons"><span>📞</span><span>⋮</span></div></div>
+      <div class="chat" id="chatW"><div class="msg sys">En attente de courses…</div></div>
+    </div>
+  </section>
+
+  <aside class="ops panel" id="po">
+    <div class="card">
+      <h3>Le Compteur — coût vs revenu</h3>
+      <div class="meter">
+        <span class="big" id="mBig">$0.0000</span>
+        <span class="vs">vs frais client <b style="color:var(--money)" id="mRev">$0.00</b></span>
+        <span class="cov" id="mCov"></span>
+      </div>
+      <div class="split">
+        <div class="det2"><small>0 token</small><b id="cDet">0</b></div>
+        <div class="aic"><small>Appels IA</small><b id="cAi">0</b></div>
+        <div class="det2"><small>LLM bloqués</small><b id="cBlk" style="color:#e2001b">0</b></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>WhatsApp Cloud API — facturation au message</h3>
+      <div class="warow"><span>💬 Client → Mama Tunakula (fenêtre service 24h)</span><b class="free" id="waC">0 msg · GRATUIT</b></div>
+      <div class="warow"><span>📄 Templates utilitaires resto/wewa (hors fenêtre)</span><b id="waP">0 × $0.008 = $0.0000</b></div>
+      <div class="warow"><span>🔓 Messages en fenêtres rouvertes (boutons resto/wewa)</span><b class="free" id="waW">0 msg · GRATUIT</b></div>
+      <div class="wanote">Tarification Meta depuis juil. 2025: par message livré. Toute la conversation client est GRATUITE car le client initie toujours. Chaque bouton tapé par le resto/wewa rouvre sa fenêtre 24h → messages suivants gratuits. Région «Rest of Africa» (RDC): utilitaire ≈ $0.008/msg.</div>
+    </div>
+    <div class="card">
+      <h3>Registre NZELA (temps réel)</h3>
+      <div class="ledger" id="ledger"><div class="smsline wait">Orange = dépense IA · Rouge = appel LLM refusé par le Routeur</div></div>
+    </div>
+    <div class="card">
+      <h3>Lipa Box — SIM marchande & float cash</h3>
+      <div class="sms" id="smsFeed"><div class="smsline wait">Inbox M-Pesa / Orange / Airtel — silencieux…</div></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+/* ================= audio ================= */
+let AC=null, soundOn=true;
+function toggleSound(){soundOn=!soundOn;document.getElementById('sndBtn').textContent=soundOn?'🔊 Son':'🔇 Muet'}
+function beep(f=620,d=.06,f2=null){
+  if(!soundOn)return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended')AC.resume();
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.frequency.value=f;o.type='sine';g.gain.value=.08;
+    o.connect(g);g.connect(AC.destination);o.start();
+    if(f2)o.frequency.setValueAtTime(f2,AC.currentTime+d/2);
+    g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);
+    o.stop(AC.currentTime+d+.02);
+  }catch(e){}
+}
+function enterSim(){document.getElementById('splash').classList.add('gone');beep(660,.12,880)}
+const T0=Date.now();
+function nowT(){const m=12+Math.floor((Date.now()-T0)/15000);return '19:'+String(Math.min(m,59)).padStart(2,'0')}
+setInterval(()=>{const t=nowT();['clkC','clkR','clkW'].forEach(i=>{const e=document.getElementById(i);if(e)e.textContent=t})},3000);
+const sMsg=()=>beep(620,.07), sSms=()=>beep(880,.14,1174), sCash=()=>{beep(988,.09);setTimeout(()=>beep(1318,.14),90)}, sMoto=()=>beep(180,.18,140);
+
+/* ================= state ================= */
+const $=id=>document.getElementById(id);
+let costAI=0,costMsg=0,nDet=0,nAI=0,nBlk=0;
+let cart=[], phase='order', payMode=null, addrSaved=false, upsellDone=false, ended=false;
+let restTimer=null, restTimer2=null, restoAccepted=false, currentResto='Mama Kito';
+let autoMode=false;
+const WA_UTIL=0.008;let waC=0,waP=0,waW=0;const winOpen={chatR:false,chatW:false};
+function waCard(){$('waC').textContent=waC+' msg · GRATUIT';
+  $('waP').textContent=waP+' × $0.008 = $'+(waP*WA_UTIL).toFixed(4);
+  $('waW').textContent=waW+' msg · GRATUIT';}
+const FC_USD=2800;
+const MENU=[
+  {k:['poulet','mayo'],name:'Poulet mayo + fufu',price:15000,e:'🍗',cat:'Cuisine Locale',g:'linear-gradient(135deg,#7a3410,#e0a144)'},
+  {k:['thomson','poisson'],name:'Thomson braisé',price:12000,e:'🐟',cat:'Viande et Poisson',g:'linear-gradient(135deg,#0d3b52,#4fa3c7)'},
+  {k:['madesu','haricot'],name:'Madesu + riz',price:8000,e:'🥘',cat:'Cuisine Locale',g:'linear-gradient(135deg,#2c5a2e,#8fbc5a)'},
+  {k:['brochette','chevre','chèvre'],name:'Brochettes chèvre',price:6000,e:'🍢',cat:'Viande et Poisson',g:'linear-gradient(135deg,#5c120e,#c74b32)'},
+  {k:['taco'],name:'Taco mixte',price:10000,e:'🌮',cat:'Taco',g:'linear-gradient(135deg,#8a6d0b,#f2c94c)'},
+  {k:['mikate','beignet'],name:'Mikate (beignets)',price:3000,e:'🍩',cat:'Dessert',g:'linear-gradient(135deg,#7a2242,#e88aa8)'},
+  {k:['jus','gingembre','tangawisi'],name:'Jus gingembre',price:2000,e:'🥤',cat:'Boisson',g:'linear-gradient(135deg,#1b4f72,#5dade2)'},
+];
+/* 17 catégories réelles — export admin cd.tunakula.com (Categories.csv) */
+const CATS=[
+ {id:158,n:'Menu Enfant',e:'🧸',p:'haut',g:'linear-gradient(135deg,#f2994a,#8a4b0b)'},
+ {id:139,n:'Épiceries',e:'🛒',p:'haut',g:'linear-gradient(135deg,#56ab2f,#0b4d1c)'},
+ {id:107,n:'Promo',e:'🏷️',p:'haut',g:'linear-gradient(135deg,#E2001B,#7a0010)'},
+ {id:5,n:'Restaurant',e:'🍽️',p:'haut',g:'linear-gradient(135deg,#F2820A,#8a4506)'},
+ {id:4,n:'Fast Food',e:'🍔',p:'haut',g:'linear-gradient(135deg,#c74b32,#5c120e)'},
+ {id:3,n:'Pizzérias',e:'🍕',p:'haut',g:'linear-gradient(135deg,#e0a144,#7a3410)'},
+ {id:151,n:'Accompagnements',e:'🍚',p:'moyen',g:'linear-gradient(135deg,#d4b483,#6b5427)'},
+ {id:144,n:'Boulangeries',e:'🥖',p:'moyen',g:'linear-gradient(135deg,#e8c07d,#8a5a1e)'},
+ {id:110,n:'Dessert',e:'🍰',p:'moyen',g:'linear-gradient(135deg,#e88aa8,#7a2242)'},
+ {id:108,n:'Végétarienne',e:'🥗',p:'moyen',g:'linear-gradient(135deg,#8fbc5a,#2c5a2e)'},
+ {id:90,n:'Taco',e:'🌮',p:'moyen',g:'linear-gradient(135deg,#f2c94c,#8a6d0b)'},
+ {id:7,n:'Cuisine Locale',e:'🍲',p:'moyen',g:'linear-gradient(135deg,#25D366,#075E54)'},
+ {id:6,n:'Supermarché',e:'🏪',p:'moyen',g:'linear-gradient(135deg,#4fa3c7,#0d3b52)'},
+ {id:138,n:'Essentiel',e:'🧺',p:'normale',g:'linear-gradient(135deg,#b8a9c9,#4a3b5c)'},
+ {id:95,n:'Viande et Poisson',e:'🥩',p:'normale',g:'linear-gradient(135deg,#c0392b,#5c120e)'},
+ {id:94,n:'Fruits et Légumes',e:'🍌',p:'normale',g:'linear-gradient(135deg,#f5d76e,#3f7a2c)'},
+ {id:93,n:'Boisson',e:'🥤',p:'normale',g:'linear-gradient(135deg,#5dade2,#1b4f72)'},
+];
+const RESTOS=[
+  {n:'Mama Kito',q:'Bandal',d:'1,2',e:'🍗',ok:true,r:4.8,t:'15-25 min',g:'linear-gradient(135deg,#e0a144,#7a3410)'},
+  {n:'Chez Nono',q:'Bandal',d:'2,8',e:'🐟',ok:true,r:4.6,t:'25-35 min',g:'linear-gradient(135deg,#4fa3c7,#0d3b52)'},
+  {n:'La Kinoise',q:'Ngiri-Ngiri',d:'4,6',e:'🥘',ok:true,r:4.5,t:'30-40 min',g:'linear-gradient(135deg,#8fbc5a,#2c5a2e)'},
+  {n:'Le Gombe Grill',q:'Gombe',d:'7,9',e:'🔥',ok:false,r:4.7,t:'—',g:'linear-gradient(135deg,#c74b32,#5c120e)'},
+];
+const cartTotal=()=>cart.reduce((s,c)=>s+c.price*c.q,0);
+const fees=()=>{const t=cartTotal();const del=3500;const wewa=Math.round(del*.70);const delCom=del-wewa;const svc=Math.round(t*.10);const proc=Math.round(t*.02);return{svc,proc,del,wewa,delCom,tot:t+svc+proc+del}};
+const fmt$=x=>'$'+x.toFixed(4);
+const FC=x=>x.toLocaleString('fr-FR')+' FC';
+
+/* ================= meter ================= */
+function animNum(el,to,pfx){
+  const from=parseFloat(el.dataset.v||0);const t0=performance.now();
+  function f(t){const p=Math.min((t-t0)/350,1);const v=from+(to-from)*p;el.textContent=pfx(v);if(p<1)requestAnimationFrame(f);else el.dataset.v=to}
+  requestAnimationFrame(f);
+}
+function refresh(){
+  const tot=costAI+costMsg;
+  animNum($('acdoBig'),tot,fmt$);animNum($('mBig'),tot,fmt$);
+  $('cDet').textContent=nDet;$('cAi').textContent=nAI;$('cBlk').textContent=nBlk;
+  const fe=fees();const revFC=fe.svc+fe.proc+fe.delCom;const rev=revFC?revFC/FC_USD:0;
+  if(rev){$('mRev').textContent='$'+rev.toFixed(2);
+    if(tot>0){const c='×'+Math.round(rev/tot);$('mCov').textContent=c+' couverture';$('acdoCov').textContent=c;}}
+}
+function ledger(who,what,cost,type){ // type: 'ai' | 'det' | 'block'
+  const l=$('ledger');const w=l.querySelector('.wait');if(w&&l.children.length>1){}
+  const d=document.createElement('div');
+  d.className='le'+(type==='ai'?' ai':type==='block'?' block':'');
+  d.innerHTML=`<span class="who">${who}</span><span class="what">${what}</span><span class="cost">${type==='ai'?fmt$(cost):type==='block'?'REFUSÉ':'0 token'}</span>`;
+  l.prepend(d);
+  if(type==='ai'){costAI+=cost;nAI++}else if(type==='block'){nBlk++}else{nDet++}
+  refresh();
+}
+function sms(txt,cash){const f=$('smsFeed');const w=f.querySelector('.wait');if(w)w.remove();
+  const d=document.createElement('div');d.className='smsline'+(cash?' cash':'');d.textContent=txt;f.prepend(d);}
+function guide(t){$('guideTxt').innerHTML=t}
+
+/* ================= chat helpers ================= */
+function showTab(p){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('show',x.id===p));
+  document.querySelectorAll('.tabs button').forEach(b=>{b.classList.toggle('on',b.dataset.p===p);if(b.dataset.p===p)b.classList.remove('hasping')});
+}
+function ping(p){if(window.innerWidth<=1120){const b=document.querySelector(`.tabs button[data-p="${p}"]`);if(b&&!b.classList.contains('on'))b.classList.add('hasping')}}
+function focusPanel(p){if(window.innerWidth<=1120)showTab(p)}
+function bubble(chat,cls,html){
+  const d=document.createElement('div');d.className='msg '+cls;
+  d.innerHTML=html+(cls==='sys'?'':'<span class="mt">'+nowT()+'</span>');
+  if(cls==='out')d.innerHTML+='<span class="ticks">✓</span>';
+  $(chat).appendChild(d);$(chat).scrollTop=$(chat).scrollHeight;
+  if(cls==='out'){
+    if(chat==='chatR'||chat==='chatW')winOpen[chat]=true;
+    setTimeout(()=>{const t=d.querySelector('.ticks');if(t){t.textContent='✓✓';t.classList.add('blue')}},800);
+  }
+  if(cls==='in'){
+    sMsg();
+    if(chat==='chatC'){waC++}
+    else if(winOpen[chat]){waW++}
+    else{waP++;costMsg+=WA_UTIL}
+    waCard();refresh();
+  }
+  ping(chat==='chatC'?'pc':chat==='chatR'?'pr':'pw');
+  return d;
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function typing(chat,ms=900){
+  $('cStatus').textContent=chat==='chatC'?'écrit…':'en ligne';
+  const d=document.createElement('div');d.className='msg in typing';d.innerHTML='<i></i><i></i><i></i>';
+  $(chat).appendChild(d);$(chat).scrollTop=$(chat).scrollHeight;
+  await wait(ms);d.remove();$('cStatus').textContent='en ligne';
+}
+function options(chat,list){
+  const wrap=document.createElement('div');wrap.className='opts';
+  list.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.hot?' hot':'')+(o.next?' next':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>{if(o.keep!==true){wrap.querySelectorAll('button').forEach(x=>{x.disabled=true;x.classList.remove('next')})}o.fn(b)};
+    wrap.appendChild(b);
+  });
+  const d=document.createElement('div');d.className='msg in';d.appendChild(wrap);
+  $(chat).appendChild(d);$(chat).scrollTop=$(chat).scrollHeight;
+  if(autoMode){setTimeout(()=>{const pick=wrap.querySelector('.next')||wrap.querySelector('.hot')||wrap.querySelector('button');if(pick&&!pick.disabled)pick.click()},1700)}
+  return d;
+}
+
+/* ================= composer ================= */
+$('inp').addEventListener('keydown',e=>{if(e.key==='Enter')sendTap()});
+function autoPlay(){
+  if(autoMode||ended)return;autoMode=true;
+  $('autoBtn').textContent='⏵ Lecture…';$('autoBtn').disabled=true;
+  guide('<b>Mode cinéma 🍿</b>: NZELA-OS joue tout le flux tout seul — commande, upsell, adresse vocale, paiement SMS, cuisine, wewa, livraison, remise en main. Regarde Le Compteur tourner.');
+  enterChat();
+  if(phase==='order'&&cart.length===0)setTimeout(()=>autoType('2 poulets mayo pour ce soir'),900);
+}
+function autoType(text){
+  const inp=$('inp');inp.value='';let i=0;
+  const iv=setInterval(()=>{inp.value=text.slice(0,++i);if(i>=text.length){clearInterval(iv);setTimeout(sendTap,500)}},55);
+}
+function sendTap(){
+  const t=$('inp').value.trim();if(!t)return;$('inp').value='';
+  bubble('chatC','out',t);
+  handleText(t);
+}
+async function handleText(t){
+  const low=t.toLowerCase();
+  if(phase==='order'){
+    const found=[];
+    MENU.forEach(m=>{
+      if(m.k.some(k=>low.includes(k))){
+        let q=1;
+        const numMatch=low.match(new RegExp('(\\d+|deux|trois|quatre)\\s+(?:\\w+\\s+)?('+m.k.join('|')+')'));
+        if(numMatch){const map={deux:2,trois:3,quatre:4};q=map[numMatch[1]]||parseInt(numMatch[1])||1}
+        found.push({...m,q});
+      }
+    });
+    if(found.length){
+      await typing('chatC',1100);
+      ledger('Commande','Texte libre → commande structurée (LLM petit)',0.005,'ai');
+      found.forEach(f=>addToCart(f,f.q,true));
+      let lines=found.map(f=>`${f.q}× ${f.e} ${f.name} <span class="price">${FC(f.price*f.q)}</span>`).join('<br>');
+      bubble('chatC','in',`<div class="tt">J'ai compris maman 😄</div>${lines}<br>Préparé chez <b>${currentResto}</b> — 1,2 km ✅ (le plus proche qui a tout)<br><b>Panier: ${FC(cartTotal())}</b><span class="badge ai">IA · Agent Commande</span><br><small>Ajoute autre chose, ou touche <b>Commander</b> en bas.</small>`);
+      guide('L\'Agent Commande a structuré ton texte (<b>$0.005</b>). Ajoute encore, ou touche <b>Commander</b> 🛒.');
+      $('orderBtn').classList.add('next');
+      if(autoMode){setTimeout(()=>{if(cart.length&&phase==='order')checkout()},1900)}
+    }else{
+      // Router deflects — no LLM spent
+      await typing('chatC',500);
+      ledger('Routeur','Hors-sujet → réponse type, LLM refusé',0,'block');
+      bubble('chatC','in','Maman, ici on parle nourriture 😄 Dis-moi un plat — ex. <b>«poulet mayo»</b> — ou touche les boutons. <span class="badge det">Routeur · 0 token</span>');
+      guide('Le <b>Routeur</b> a refusé l\'appel LLM (colonne «LLM bloqués»). Un curieux ne coûte presque rien.');
+    }
+  }else if(phase==='address'){
+    await typing('chatC',1000);
+    ledger('Adresse','Texte adresse → repères structurés',0.006,'ai');
+    saveAddress(t);
+  }else{
+    await typing('chatC',450);
+    ledger('Routeur','Message hors flux → réponse type',0,'block');
+    bubble('chatC','in','Ta commande est en route maman, je te tiens au courant étape par étape 🙏 <span class="badge det">Routeur · 0 token</span>');
+  }
+}
+
+/* mic behaviour depends on phase */
+let recording=false;
+async function micTap(){
+  if(recording)return;const mic=$('micBtn');
+  recording=true;mic.classList.add('rec');mic.classList.remove('hotmic');beep(440,.1);
+  const rec=bubble('chatC','out','<div class="voice"><span>🔴</span> Enregistrement <b id="rt">0:00</b></div>');
+  let s=0;const iv=setInterval(()=>{s++;const el=rec.querySelector('#rt');if(el)el.textContent='0:0'+s},1000);
+  await wait(phase==='address'?3400:2600);
+  clearInterval(iv);mic.classList.remove('rec');recording=false;
+  if(phase==='order'){
+    rec.innerHTML='<div class="voice"><span>🎤</span>«Deux poulets mayo na jus ya tangawisi moko»<b> 0:03</b></div><span class="ticks blue">✓✓</span>';
+    await typing('chatC',1200);
+    ledger('Adresse/STT','Transcription vocal (3 s)',0.003,'ai');
+    handleText('2 poulet et 1 jus');
+  }else if(phase==='address'){
+    rec.innerHTML='<div class="voice"><span>🎤</span>«Bandal, après l\'église Sainte-Anne, deuxième avenue, portail vert»<b> 0:04</b></div><span class="ticks blue">✓✓</span>';
+    await typing('chatC',1300);
+    ledger('Adresse','Vocal → transcription + graphe de repères',0.006,'ai');
+    saveAddress('Bandal, après Sainte-Anne, portail vert');
+  }else{
+    rec.remove();
+  }
+}
+
+/* ================= cart ================= */
+function addToCart(item,q=1,silent){
+  const ex=cart.find(c=>c.name===item.name);
+  if(ex)ex.q+=q;else cart.push({...item,q});
+  const n=cart.reduce((s,c)=>s+c.q,0);
+  $('cartTxt').textContent=n+' article'+(n>1?'s':'');
+  $('cartTot').textContent=FC(cartTotal());
+  $('cartbar').classList.add('on');
+  if(!silent){ledger('Routeur','Article ajouté — bouton',0,'det');beep(740,.05)}
+}
+
+/* ================= scenario ================= */
+async function start(){
+  bubble('chatC','sys','🔒 Chiffré de bout en bout · fenêtre service 24h ouverte');
+  ledger('WhatsApp','Client initie → conversation GRATUITE (fenêtre service)',0,'det');
+  await typing('chatC',700);
+  bubble('chatC','in','<div class="tt">Mbote! 🍲 Mama Tunakula na yo.</div>Dis-moi ce que tu veux — écris, envoie un vocal 🎤, ou touche les boutons.');
+  options('chatC',[
+    {label:'📍 Voir les restos près de toi',next:true,keep:false,fn:showRestos},
+  ]);
+}
+function showRestos(){
+  ledger('Rayon','Filtre 5 km — distance par anneaux de repères, 0 token',0,'det');
+  ledger('Sync','Restos + distances tirés de drc.tunakula.com (zones StackFood)',0,'det');
+  bubble('chatC','in','<div class="tt">📍 Restos autour de toi</div><small>Règle Tunakula: <b>≤ 5 km</b> — pour que ton plat arrive chaud malgré les embouteillages de Kin.</small>');
+  options('chatC',RESTOS.map(r=>({
+    label:`${r.e} ${r.n} ★${r.r} — ${r.q} · ${r.d} km ${r.ok?'✅':'🚫 hors rayon'}`,
+    next:r.n==='Mama Kito',
+    keep:!r.ok,
+    fn:r.ok?()=>pickResto(r):()=>blockResto(r)
+  })));
+  guide('Le filtre <b>5 km</b> est déjà appliqué (0 token). Essaie quand même <b>Le Gombe Grill 🚫</b> pour voir la règle en action — ou choisis un resto ✅.');
+}
+function blockResto(r){
+  bubble('chatC','out',r.e+' '+r.n);
+  ledger('Rayon','Resto à '+r.d+' km → refus poli + substitution (règle 5 km)',0,'det');
+  bubble('chatC','in',`<div class="tt">🚫 ${r.n} est à ${r.d} km</div>Au-delà de 5 km à Kin, ton plat arrive froid et ton wewa reste coincé dans les embouteillages 😅<br>Même style de grillades tout près: <b>Mama Kito — 1,2 km</b> 🍗 (dans la liste au-dessus 👆)`);
+  guide('<b>Refus poli + substitution</b> par catégorie de cuisine — la règle protège la qualité ET convertit quand même la commande.');
+}
+function pickResto(r){
+  bubble('chatC','out',r.e+' '+r.n+' ✅');
+  currentResto=r.n;$('restoName').textContent=r.n+' — '+r.q;
+  ledger('Routeur','Resto choisi — bouton',0,'det');
+  showMenu();
+}
+function showMenu(){
+  ledger('Routeur','Catalogue produits WhatsApp — photos, 0 token',0,'det');
+  ledger('Sync','17 catégories réelles importées (export admin cd.tunakula.com) + produits StackFood',0,'det');
+  const d=bubble('chatC','in',`<div class="tt">Menu — ${currentResto} 🍽️</div><small>Catégories StackFood → onglets · photos du catalogue drc.tunakula.com</small>`);
+  const chips=document.createElement('div');chips.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-top:8px';
+  const row=document.createElement('div');row.className='mcards';
+  function render(cat){
+    row.innerHTML='';
+    MENU.filter(m=>cat==='all'||m.cat===cat).forEach(m=>{
+      const c=document.createElement('div');c.className='mcard';
+      c.innerHTML=`<div class="mimg" style="background:${m.g}">${m.e}</div><div class="mbody"><div class="mname">${m.name}</div><div class="mprice">${FC(m.price)}</div></div>`;
+      const b=document.createElement('button');b.className='madd';b.textContent='+ Ajouter';
+      b.onclick=()=>{addToCart(m);b.textContent='✓ Ajouté';setTimeout(()=>b.textContent='+ Ajouter',900)};
+      c.querySelector('.mbody').appendChild(b);row.appendChild(c);
+    });
+  }
+  const present=[...new Set(MENU.map(m=>m.cat))];
+  const chipList=[['all','Tout',null]].concat(present.map(n=>{const c=CATS.find(x=>x.n===n);return [n,(c?c.e+' ':'')+n,c?c.id:null]}));
+  chipList.forEach(([k,l,cid],i)=>{
+    const b=document.createElement('button');b.className='opt';b.style.cssText='flex:0 0 auto;padding:5px 11px;font-size:.7rem';b.textContent=l;
+    b.onclick=()=>{chips.querySelectorAll('button').forEach(x=>x.classList.remove('hot'));b.classList.add('hot');render(k);
+      ledger('Routeur','Catégorie StackFood '+(cid?'#'+cid+' ':'')+'«'+l+'» — chip, 0 token',0,'det')};
+    if(i===0)b.classList.add('hot');chips.appendChild(b);
+  });
+  d.appendChild(chips);d.appendChild(row);render('all');
+  $('chatC').scrollTop=$('chatC').scrollHeight;
+  guide('Hiérarchie StackFood aplatie: <b>catégories = onglets</b>, produits = cartes photo. Fais glisser, filtre, ajoute — toujours 0 token.');
+}
+async function checkout(){
+  if(!cart.length)return;
+  phase='locked';$('orderBtn').classList.remove('next');$('cartbar').classList.remove('on');
+  bubble('chatC','out','Commander 🛒');
+  ledger('Routeur','Checkout — bouton',0,'det');
+  const hasJus=cart.some(c=>c.name==='Jus gingembre');
+  if(!hasJus&&!upsellDone){
+    upsellDone=true;await typing('chatC',1000);
+    ledger('Mama Upsell','1 suggestion contextuelle',0.004,'ai');
+    bubble('chatC','in','<div class="tt">Eh maman! 😄</div>Avec ça, un jus de gingembre bien glacé, ça passe trop bien. J\'ajoute ? <span class="badge ai">IA · Mama Upsell</span>');
+    options('chatC',[
+      {label:'🥤 Oui, ajoute! <span class="price">+2 000 FC</span>',hot:true,next:true,fn:()=>{addToCart(MENU[4],1,true);bubble('chatC','out','Oui, ajoute 🥤');summary()}},
+      {label:'Non merci',fn:()=>{bubble('chatC','out','Non merci');summary()}},
+    ]);
+    guide('<b>Le token le plus rentable</b> du système: 1 upsell contextuel au bon moment.');
+  }else summary();
+}
+
+async function summary(){
+  const f=fees();
+  await typing('chatC',800);
+  let lines=cart.map(c=>`${c.q}× ${c.e} ${c.name} — ${FC(c.price*c.q)}`).join('<br>');
+  bubble('chatC','in',`<div class="tt">Récap TK-347</div>${lines}<br>Sous-total: <b>${FC(cartTotal())}</b><br>Frais service (10%): ${FC(f.svc)}<br>Frais paiement (2%): ${FC(f.proc)}<br>Livraison Zone 1 — même quartier (Graphe de repères): ${FC(f.del)}<br><b>À payer: ${FC(f.tot)}</b><br><small>Frais côté client — Mama Kito garde 100% de son prix.</small>`);
+  refresh();
+  if(!addrSaved){
+    phase='address';$('micBtn').classList.add('hotmic');
+    await typing('chatC',700);
+    bubble('chatC','in','Première commande! Dis-moi où tu es — <b>vocal 🎤</b> (comme à Kin) ou écris ton coin.');
+    guide('Touche le <b>micro 🎤</b> qui clignote — ou écris ton adresse à la kinoise («après l\'église, portail vert…»).');
+    if(autoMode)setTimeout(()=>{if(phase==='address')micTap()},2000);
+  }
+}
+
+async function saveAddress(txt){
+  addrSaved=true;phase='locked';$('micBtn').classList.remove('hotmic');
+  bubble('chatC','in',`<div class="tt">📍 Adresse Vocale enregistrée</div>Bandal · Q. Sainte-Anne · 2e avenue · portail vert.<br><small>Réutilisable en 1 clic. La prochaine fois: 0 token.</small> <span class="badge ai">IA · Agent Adresse</span>`);
+  await wait(500);await typing('chatC',600);
+  bubble('chatC','in','<div class="tt">Comment tu payes ?</div>');
+  options('chatC',[
+    {label:'📱 Mobile Money (M-Pesa)',hot:true,next:true,fn:()=>payMomo()},
+    {label:'💵 Cash à la livraison',fn:()=>payCash()},
+  ]);
+  guide('<b>Deux vrais chemins</b>: Mobile Money (regarde le Lipa Box en Ops 📟) ou Cash (regarde le float du wewa).');
+}
+
+async function payMomo(){
+  payMode='momo';bubble('chatC','out','Mobile Money 📱');
+  ledger('Routeur','Choix paiement — bouton',0,'det');
+  const f=fees();await typing('chatC',800);
+  bubble('chatC','in',`<div class="tt">Paiement M-Pesa</div>Envoie <b>${FC(f.tot)}</b> au marchand <b>*555*88#</b><br>Référence: <b style="font-family:var(--mono)">TK-347</b>`);
+  options('chatC',[
+    {label:'✅ Simuler: je paie sur mon M-Pesa',hot:true,next:true,fn:lipaFlow},
+  ]);
+}
+async function lipaFlow(){
+  const f=fees();
+  bubble('chatC','out','<i>…paiement M-Pesa en cours…</i>');
+  ping('po');await wait(900);
+  sms(`M-PESA: Vous avez reçu ${FC(f.tot)} de +243 81* ** 47. Réf: TK-347. ID: QGH7X2`);sSms();
+  await wait(700);
+  ledger('Lipa Box','SMS transféré → regex → match TK-347',0.0002,'ai');
+  await wait(500);
+  bubble('chatC','in',`<div class="tt">💚 Paiement reçu — ${FC(f.tot)}</div>Confirmé en 22 secondes, <b>sans API</b>.<span class="badge paid">PAYÉ · SMS Ledger Bridge</span>`);
+  sCash();guide('<b>Zéro API mobile money</b> — le SMS a suffi. La commande part chez Mama Kito 🍗.');
+  await wait(700);restoFlow();
+}
+async function payCash(){
+  payMode='cash';bubble('chatC','out','Cash à la livraison 💵');
+  ledger('Routeur','Choix paiement — bouton',0,'det');
+  const f=fees();await typing('chatC',700);
+  bubble('chatC','in',`<div class="tt">💵 Cash à la livraison</div>Prépare <b>${FC(f.tot)}</b> pour Papy. Son float est vérifié — il rend la monnaie.`);
+  guide('Chemin cash: regarde le <b>float de Papy</b> apparaître dans le Lipa Box à la fin.');
+  await wait(700);restoFlow();
+}
+
+/* ---------- resto ---------- */
+async function restoFlow(rerouted){
+  $('chatR').innerHTML='';ping('pr');focusPanel('pr');restoAccepted=false;
+  bubble('chatR','sys',rerouted?'Commande reroutée depuis Mama Kito · 19:16':'Nouvelle commande · 19:12');
+  let lines=cart.map(c=>`${c.q}× ${c.name}`).join('<br>');
+  bubble('chatR','in',`<div class="tt">🔔 TK-347 ${payMode==='momo'?'— PAYÉ ✅':'— CASH 💵'}</div>${lines}<br><b>Ton montant: ${FC(cartTotal())}</b> (frais côté client)<br>Code retrait: <b style="font-family:var(--mono)">347</b><br><small>⏱️ À confirmer sous 60 s, sinon relance automatique.</small>`);
+  ledger('Cuisine Sync','Fiche commande — template + minuteur 60s',0,'det');
+  ledger('Sync','Commande TK-347 créée dans drc.tunakula.com (API StackFood)',0,'det');
+  options('chatR',[
+    {label:'✅ Accepter — prêt en 25 min',next:true,fn:acceptOrder},
+    {label:'📵 Simuler: resto injoignable',fn:()=>{clearTimeout(restTimer);escalateCall()}},
+  ]);
+  guide('Onglet 🍗 <b>Resto</b>: accepte chez '+currentResto+' — ou touche <b>📵 injoignable</b> pour voir ce qui se passe quand le client a payé mais que le resto ne répond pas.');
+  clearTimeout(restTimer);restTimer=setTimeout(escalateCall,20000);
+}
+
+/* ---------- exception: payé mais resto silencieux ---------- */
+async function escalateCall(){
+  if(restoAccepted||ended)return;
+  ping('pr');
+  bubble('chatR','in','📞 <b>Appel Tunakula en cours…</b><br>«'+currentResto+', commande TK-347 payée en attente — confirmez!» <span class="badge ai">IA · Cuisine Sync (appel vocal auto)</span>');
+  ledger('Cuisine Sync','Resto silencieux 60s → appel vocal auto (TTS)',0.008,'ai');
+  bubble('chatC','in','⏳ '+currentResto+' met du temps à confirmer… je la relance moi-même. 2 min maman 🙏<br><small>Ton argent est en sécurité — payé chez Tunakula, pas chez le resto.</small>');
+  guide('<b>Exception détectée</b>: payé, mais resto silencieux. Cuisine Sync appelle automatiquement. Le resto peut encore accepter 🍗 — sinon, plan B côté client.');
+  clearTimeout(restTimer2);restTimer2=setTimeout(escalateOptions,12000);
+}
+async function escalateOptions(){
+  if(restoAccepted||ended)return;
+  focusPanel('pc');ping('pc');
+  await typing('chatC',900);
+  bubble('chatC','in','<div class="tt">😔 '+currentResto+' ne répond pas</div>Pas de panique — ton paiement est chez Tunakula, jamais perdu. Tu choisis:');
+  options('chatC',[
+    {label:'🔁 Basculer chez Chez Nono — même montant, prêt 25 min',hot:true,next:true,fn:reroute},
+    {label:payMode==='momo'?'🎟️ Remboursement instantané en Crédit Tunakula':'❌ Annuler (rien payé)',fn:refundOrder},
+  ]);
+  guide('Voilà pourquoi l\'argent transite par Tunakula: <b>reroutage en 1 clic</b> ou <b>remboursement instantané</b> en Crédit — sans reversement M-Pesa, sans API.');
+}
+async function reroute(){
+  bubble('chatC','out','Bascule chez Chez Nono 🔁');
+  ledger('Dispatch','Reroutage resto voisin — règle métier, 0 token',0,'det');
+  currentResto='Chez Nono';$('restoName').textContent='Chez Nono — Bandal';
+  await typing('chatC',700);
+  bubble('chatC','in','C\'est réglé maman — <b>Chez Nono</b> reprend TK-347, même montant, mêmes plats. 🙏');
+  restoFlow(true);
+}
+async function refundOrder(){
+  const f=fees();
+  if(payMode==='momo'){
+    bubble('chatC','out','Remboursement 🎟️');
+    ledger('Litige','Remboursement → Crédit Tunakula (instantané)',0,'det');
+    sms(`CRÉDIT · +${FC(f.tot)} → wallet client TK-347. Aucun reversement M-Pesa. Litige clos en 40 s.`,true);sCash();
+    bubble('chatC','in','<div class="tt">🎟️ '+FC(f.tot)+' crédités sur ton compte</div>Utilisables immédiatement sur ta prochaine commande + <b>500 FC bonus</b> pour l\'attente. Désolée maman 🙏');
+    guide('<b>Litige clos en 40 secondes.</b> Le remboursement vit en Crédit Tunakula: zéro API, zéro reversement, et le client revient commander. ↺ Rejouer.');
+  }else{
+    bubble('chatC','out','Annuler ❌');
+    bubble('chatC','in','Commande annulée — rien payé, rien perdu. À très vite maman 🙏');
+    guide('Annulation propre côté cash — aucun argent en jeu. ↺ Rejouer.');
+  }
+  ended=true;
+}
+async function acceptOrder(){
+  restoAccepted=true;clearTimeout(restTimer);clearTimeout(restTimer2);
+  bubble('chatR','out','Accepté — 25 min ⏱️');
+  ledger('Cuisine Sync','Acceptation — minuteurs annulés',0,'det');
+  bubble('chatC','in',`👩🏾‍🍳 <b>${currentResto} a accepté!</b> Prête vers 19:40.`);
+  const cook=bubble('chatR','in','<div class="tt">🔥 Cuisson en cours</div><div class="bar"><i id="cookbar"></i></div><small style="font-family:var(--mono);font-size:.62rem">vitesse démo ×250</small>');
+  dispatchFlow();
+  let p=0;const iv=setInterval(()=>{p+=2;const b=cook.querySelector('#cookbar');if(b)b.style.width=p+'%';
+    if(p>=100){clearInterval(iv);
+      options('chatR',[{label:'🍗 Plat PRÊT',next:true,fn:readyOrder}]);
+      guide('La cuisson est finie — Mama Kito touche <b>Plat PRÊT</b> 🍗.');ping('pr');
+    }},120);
+}
+
+/* ---------- wewa ---------- */
+async function dispatchFlow(){
+  $('chatW').innerHTML='';ping('pw');
+  bubble('chatW','sys','Dispatch zone Bandal · algorithme, 0 token');
+  ledger('Dispatch','Attribution zone — algorithme pur',0,'det');
+  const f=fees();
+  bubble('chatW','in',`<div class="tt">🏍️ Course dispo — TK-347</div>Retrait: ${currentResto} (Bandal)<br>Livraison: Sainte-Anne, portail vert<br>Gain: <b>${FC(fees().wewa)}</b> — 70% des frais de livraison (30% Tunakula) · ${payMode==='momo'?'déjà payé, zéro cash':'CASH à encaisser: '+FC(f.tot)}`);
+  options('chatW',[{label:'✋ Je prends!',next:true,fn:()=>{
+    bubble('chatW','out','Je prends! 🏍️');sMoto();
+    bubble('chatW','in','C\'est à toi Papy. Code retrait: <b style="font-family:var(--mono)">347</b>.');
+    ledger('Dispatch','Course attribuée — bouton',0,'det');
+  }}]);
+}
+async function readyOrder(){
+  bubble('chatR','out','Plat prêt 🍗');
+  ledger('Cuisine Sync','PRÊT — template aux 3 parties',0,'det');
+  bubble('chatC','in','🍳 <b>C\'est prêt!</b> Papy arrive au resto.');
+  bubble('chatW','in',`📦 TK-347 est PRÊT chez ${currentResto}. Fonce!`);ping('pw');focusPanel('pw');
+  options('chatW',[{label:'📦 Récupéré (code 347 vérifié)',next:true,fn:rideFlow}]);
+  guide('Onglet 🏍️: Papy montre le <b>code 347</b> au comptoir — anti-vol sans app.');
+}
+async function rideFlow(){
+  bubble('chatW','out','Récupéré ✅ code 347');sMoto();
+  ledger('Dispatch','Retrait confirmé — bouton',0,'det');
+  const live=bubble('chatC','in',`<div class="tt">🏍️ Papy est en route!</div>
+    <div class="route"><div class="rtrack"><div class="rline"></div><div class="rfill" id="rfill"></div><span class="moto" id="moto">🏍️</span></div>
+    <div class="rpts"><span>${currentResto}</span><span>Rond-point</span><span>Sainte-Anne</span><span>Portail vert</span></div>
+    <div class="eta" id="eta">ETA 12 min · suivi par jalons (2 Ko)</div></div>`);
+  ping('pc');focusPanel('pc');
+  guide('Regarde le téléphone 👩🏾 <b>Client</b>: la moto avance par jalons — pas de GPS en continu, 2 Ko de data.');
+  let p=0;const way={35:'🛣️ Papy a passé le rond-point Bandal',70:'⛪ Papy est à Sainte-Anne — 3 min!'};
+  const iv=setInterval(()=>{
+    p+=1.6;
+    const f=live.querySelector('#rfill'),m=live.querySelector('#moto'),e=live.querySelector('#eta');
+    if(f){f.style.width=Math.min(p,100)+'%';m.style.left=Math.min(p,100)+'%'}
+    if(e)e.textContent='ETA '+Math.max(1,Math.round(12-(p/100)*12))+' min · suivi par jalons (2 Ko)';
+    Object.keys(way).forEach(k=>{if(p>=k&&way[k]){bubble('chatC','in',way[k]);sMoto();way[k]=null}});
+    if(p>=100){clearInterval(iv);
+      options('chatW',[{label:payMode==='cash'?'💵 Cash reçu: '+FC(fees().tot):'🏁 LIVRÉ — portail vert',hot:payMode==='cash',next:true,fn:deliverFlow}]);
+      guide(payMode==='cash'?'Onglet 🏍️: Papy encaisse le <b>cash</b> — il entre au float du jour.':'Onglet 🏍️: Papy confirme la <b>livraison</b>.');
+      ping('pw');focusPanel('pw');
+    }
+  },120);
+}
+async function deliverFlow(){
+  const f=fees();
+  if(payMode==='cash'){
+    bubble('chatW','out','Cash reçu 💵 '+FC(f.tot));sCash();
+    sms(`FLOAT · Papy #12 a encaissé ${FC(f.tot)} — garde sa part course ${FC(f.wewa)} (70%), doit ${FC(f.tot-f.wewa)} au point agent avant 18h.`,true);
+    ledger('Lipa Box','Cash au float — ledger wewa (déterministe)',0,'det');
+    bubble('chatW','in','💰 Encaissé '+FC(f.tot)+'. Ta part course <b>'+FC(f.wewa)+'</b> (70%) est à toi tout de suite — tu verses <b>'+FC(f.tot-f.wewa)+'</b> au point agent avant 18h.');
+  }else{
+    bubble('chatW','out','Livré! 🏁');
+    bubble('chatW','in','Bien joué Papy 💪 Ta part course <b>'+FC(f.wewa)+'</b> (70% des frais de livraison) est créditée. Zéro cash — commande prépayée.');
+  }
+  ledger('Dispatch','Livraison confirmée — bouton',0,'det');
+  await typing('chatC',700);
+  bubble('chatC','in','<div class="tt">📍 Papy est au portail vert!</div>Sors récupérer ta commande — vérifie le sac <b>TK-347</b> 🍲');
+  options('chatC',[
+    {label:'✅ Bien reçu — sac TK-347 en main',hot:true,next:true,fn:collected},
+  ]);
+  ping('pc');focusPanel('pc');
+  guide('Dernière étape 👩🏾: le client confirme la <b>remise en main propre</b> — la boucle commande → cuisine → moto → main du client est bouclée.');
+}
+async function collected(){
+  bubble('chatC','out','Bien reçu ✅ 🍲');
+  ledger('Routeur','Remise confirmée par le client — bouton',0,'det');
+  await typing('chatC',600);
+  bubble('chatC','in','<div class="tt">🎉 Bon appétit maman!</div>Livré en 31 min, du feu de Mama Kito à ta main. Note ta commande:');
+  const d=bubble('chatC','in','<div class="stars" id="stars"></div>');
+  const s=d.querySelector('#stars');
+  for(let i=1;i<=5;i++){const b=document.createElement('button');b.textContent='⭐';
+    b.onclick=()=>{[...s.children].forEach((x,j)=>x.classList.toggle('lit',j<i));endFlow(i)};s.appendChild(b)}
+  if(autoMode){setTimeout(()=>{if(s.children[4])s.children[4].click()},1800)}
+  guide('Note la commande ⭐ pour voir le bilan économique final.');
+}
+async function endFlow(n){
+  if(ended)return;ended=true;phase='done';
+  if(autoMode)$('autoBtn').textContent='✔ Flux joué';
+  ledger('Routeur','Note '+n+'★ — bouton',0,'det');
+  beep(880,.1);setTimeout(()=>beep(1108,.1),110);setTimeout(()=>beep(1318,.16),220);
+  const tot=costAI+costMsg,rev=(fees().svc+fees().proc+fees().delCom)/FC_USD;
+  await typing('chatC',900);
+  bubble('chatC','in',`<div class="tt">📟 Bilan NZELA — TK-347</div>
+    Coût IA + messagerie: <b>${fmt$(tot)}</b><br>
+    Marge Tunakula: <b>$${rev.toFixed(2)}</b> (${FC(fees().svc+fees().proc+fees().delCom)}) = service + paiement + 30% livraison<br>
+    Livraison ${FC(fees().del)}: <b>70% wewa</b> (${FC(fees().wewa)}) · <b>30% Tunakula</b> (${FC(fees().delCom)})<br>
+    Couverture: <b>×${Math.round(rev/tot)}</b><br>
+    Appels IA: <b>${nAI}</b> · 0 token: <b>${nDet}</b> · LLM bloqués: <b>${nBlk}</b><br>
+    <small>Paiement: ${payMode==='momo'?'SMS Ledger Bridge — sans API':'cash + float wewa réconcilié'}. Ton Adresse Vocale est enregistrée: prochaine commande en 4 clics.</small>`);
+  guide(`<b>Démo terminée.</b> ${nAI} appels IA, couverture ×${Math.round(rev/tot)}. ↺ Rejouer — essaie l'autre mode de paiement, tape n'importe quoi pour tester le Routeur, ou commande à la voix 🎤.`);
+}
+// Boot in StackFood-style home mode; chat starts on first entry
+let started=false;
+document.querySelector('#pc .screen').classList.add('homemode');
+function enterChat(openRestos){
+  const sc=document.querySelector('#pc .screen');
+  if(sc.classList.contains('homemode')){sc.classList.remove('homemode');beep(700,.08,880)}
+  if(!started){started=true;start();
+    if(openRestos===true)setTimeout(()=>{const b=document.querySelector('#chatC .opt');if(b&&!b.disabled)b.click()},1900);
+  }
+}
+(function(){
+  const cw=document.getElementById('hvCats');
+  if(cw)CATS.forEach(c=>{
+    const d=document.createElement('div');d.className='hv-cat';
+    d.innerHTML='<div class="hv-tile" style="background:'+c.g+'">'+c.e+'</div><b>'+c.n+'</b>';
+    d.onclick=()=>enterChat();cw.appendChild(d);
+  });
+  const wrap=document.getElementById('hvRestos');if(!wrap)return;
+  RESTOS.filter(r=>r.ok).forEach(r=>{
+    const c=document.createElement('div');c.className='hv-rc';
+    c.innerHTML='<div class="rcimg" style="background:'+r.g+'">'+r.e+'</div><span class="hv-heart">🤍</span><div class="rcb"><b>'+r.n+'</b><small>'+r.q+' · '+r.d+' km · '+r.t+'</small><div class="rcstar">★ '+r.r+'</div></div>';
+    c.querySelector('.hv-heart').onclick=function(e){e.stopPropagation();this.textContent=this.textContent==='🤍'?'🧡':'🤍'};
+    c.onclick=()=>enterChat(true);
+    wrap.appendChild(c);
+  });
+})();
+guide('Bienvenue sur <b>Tunakula</b> 🍲 — l\'accueil style app. Touche la <b>barre de recherche</b>, une <b>catégorie</b> ou le bouton <b>💬</b> pour basculer dans la conversation WhatsApp — ou ▶ Flux complet en haut.');
+// Promo carousel auto-advance
+let cix=0;setInterval(()=>{const c=$('caro');if(!c||!c.clientWidth)return;cix=(cix+1)%3;
+  c.scrollTo({left:c.clientWidth*cix,behavior:'smooth'});
+  document.querySelectorAll('#hvDots i').forEach((d,i)=>d.classList.toggle('on',i===cix));const hc=$('hvCount');if(hc)hc.textContent=(cix+1)+'/3';},3500);
+</script>
+</body>
+</html>
