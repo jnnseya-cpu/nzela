@@ -2,7 +2,7 @@
 
 Next.js 14 app (Phase 1+) serving two surfaces:
 
-1. **Entry page** mirroring the drc.tunakula.com StackFood UX (FR-D1) —
+1. **Entry page** mirroring the cd.tunakula.com StackFood UX (FR-D1) —
    search pill, promo carousel, category row, "Popular Restaurants Nearby",
    bottom nav with the central WhatsApp FAB. Every CTA deep-links into the
    WhatsApp conversation (`wa.me` with prefilled context). The authoritative

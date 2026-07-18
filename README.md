@@ -4,8 +4,11 @@
 Kinshasa** — Groupe JNN · Tunakula-Congo.
 
 NZELA-OS adds a conversational channel on top of the existing StackFood
-platform at **drc.tunakula.com**, which remains the single system of record
-for restaurants, menus, prices, orders, and settlement. The design premise:
+platform at **cd.tunakula.com** (admin: cd.tunakula.com/admin), which is
+and remains the single system of record for restaurants, menus, prices,
+orders, and settlement — the WhatsApp channel gets everything from it.
+(The handoff docs write the host as drc.tunakula.com; see
+`docs/ERRATA.md` E-1.) The design premise:
 Uber Eats-style apps fail in Kinshasa because they assume app installs, GPS
 addresses, card payments, and cheap data. NZELA-OS assumes the opposite —
 WhatsApp is already installed, addresses are landmarks, payment is cash or
@@ -24,6 +27,7 @@ against **~$1.10 per-order margin**.
 | [`docs/NZELAOS_Developer_Requirements_v1.0.md`](docs/NZELAOS_Developer_Requirements_v1.0.md) | Binding requirements (FR-xx referenced throughout the code) |
 | [`docs/NZELA_StackFood_Integration_Spec.md`](docs/NZELA_StackFood_Integration_Spec.md) | StackFood API contract — Flows 1–5 |
 | [`docs/TUNAKULA_NZELAOS_Blueprint.md`](docs/TUNAKULA_NZELAOS_Blueprint.md) | Strategy blueprint (thesis, inventions, economics) |
+| [`docs/ERRATA.md`](docs/ERRATA.md) | Recorded product decisions where docs and reality diverge |
 | [`docs/prototype/tunakula-nzela-os-interactive.html`](docs/prototype/tunakula-nzela-os-interactive.html) | **The UX contract** — interactive 4-screen prototype (v1.1, with real category export, cinema mode, resto-injoignable exception path) |
 
 Where code and prototype diverge, flag for product decision — do not assume.
