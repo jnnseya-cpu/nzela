@@ -47,6 +47,7 @@ const PAYMENT_LABELS: Record<PaymentMethod, string> = {
   cash_on_delivery: "Cash à la livraison",
   wallet: "Crédit Tunakula",
   offline_payment: "Mobile Money",
+  digital_payment: "Carte bancaire",
 };
 
 const fmtFc = (n: number) => `${n.toLocaleString("fr-FR")} FC`;

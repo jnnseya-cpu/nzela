@@ -56,8 +56,12 @@ export interface CartLine {
 
 export type PaymentMethod =
   | "cash_on_delivery"
+  /** Crédit Tunakula. */
   | "wallet"
-  | "offline_payment";
+  /** Mobile money via Lipa Box: M-Pesa, Orange, Airtel, Africell. */
+  | "offline_payment"
+  /** Card via the StackFood web checkout gateway (cd.tunakula.com). */
+  | "digital_payment";
 
 export interface PlaceOrderPayload {
   cart: CartLine[];

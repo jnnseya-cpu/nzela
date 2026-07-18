@@ -307,7 +307,7 @@ button:active{transform:scale(.96)}
           <div class="hv-caro" id="caro">
             <div class="hv-ban b1"><div><h4>Poulet mayo en feu ce soir</h4><button class="hv-cta" onclick="enterChat()">Commander</button></div><div class="hv-off">12% OFF</div><span class="hv-em">🍗</span></div>
             <div class="hv-ban b2"><div><h4>Livraison Zone 1 — 3 500 FC</h4><button class="hv-cta" onclick="enterChat()">Voir les restos</button></div><span class="hv-em">🏍️</span></div>
-            <div class="hv-ban b3"><div><h4>Cash, M-Pesa ou Crédit Tunakula</h4><button class="hv-cta" onclick="enterChat()">C'est parti</button></div><span class="hv-em">💚</span></div>
+            <div class="hv-ban b3"><div><h4>Cash, carte ou mobile money — tous les réseaux</h4><button class="hv-cta" onclick="enterChat()">C'est parti</button></div><span class="hv-em">💚</span></div>
           </div>
           <div class="hv-dots" id="hvDots"><i class="on"></i><i></i><i></i><span class="hv-count" id="hvCount">1/3</span></div>
           <div class="hv-h"><span id="hvMind" style="width:auto;height:auto;border:none;display:inline">Qu'est-ce qui te tente ?</span> <span onclick="enterChat()">→</span></div>
@@ -744,10 +744,11 @@ async function saveAddress(txt){
   await wait(500);await typing('chatC',600);
   bubble('chatC','in','<div class="tt">Comment tu payes ?</div>');
   options('chatC',[
-    {label:'📱 Mobile Money (M-Pesa)',hot:true,next:true,fn:()=>payMomo()},
+    {label:'📱 Mobile Money — M-Pesa · Orange · Airtel · Africell',hot:true,next:true,fn:()=>payMomo()},
     {label:'💵 Cash à la livraison',fn:()=>payCash()},
+    {label:'💳 Carte bancaire (site cd.tunakula.com)',keep:true,fn:b=>{b.disabled=true;bubble('chatC','in','💳 La carte passe par le site — même compte, même panier: <b>cd.tunakula.com</b>. Ici sur WhatsApp: mobile money, cash ou Crédit Tunakula 😉');ledger('Routeur','Carte → renvoi site (déterministe)',0,'det')}},
   ]);
-  guide('<b>Deux vrais chemins</b>: Mobile Money (regarde le Lipa Box en Ops 📟) ou Cash (regarde le float du wewa).');
+  guide('<b>Deux chemins jouables</b>: Mobile Money (M-Pesa, Orange, Airtel, Africell — regarde le Lipa Box en Ops 📟) ou Cash (regarde le float du wewa). La carte vit sur le site.');
 }
 
 async function payMomo(){
