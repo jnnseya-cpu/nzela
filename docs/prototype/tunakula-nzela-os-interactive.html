@@ -252,6 +252,9 @@ button:active{transform:scale(.96)}
 .hv-rc b{font-size:.74rem;color:#222;display:block}
 .hv-rc small{font-size:.62rem;color:#8a8a8a}
 .hv-rc .rcstar{color:#F2820A;font-weight:700;font-size:.64rem}
+.hv-langbtn{background:rgba(255,255,255,.2);border-radius:12px;padding:2px 8px;cursor:pointer;font-weight:700;margin-right:6px}
+.hv-langbtn:hover{background:rgba(255,255,255,.35)}
+#homeView[dir="rtl"] .hv-search .hv-mic,#homeView[dir="rtl"] .hv-near .hv-cta{margin-left:0;margin-right:auto}
 .hv-heart{position:absolute;top:6px;right:7px;background:rgba(255,255,255,.92);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 </style>
 </head>
@@ -297,8 +300,8 @@ button:active{transform:scale(.96)}
       <div class="sbar"><span id="clkC">19:12</span><span>▂▄▆█ 4G · 🔋 78%</span></div>
       <div id="homeView">
         <div class="hv-top">
-          <div class="hv-brand">🍲 Tunakula-Congo <span>📍 Bandal, Kinshasa ▾</span></div>
-          <div class="hv-search" onclick="enterChat()">🔍 Are you hungry !! <span class="hv-mic">🎤</span></div>
+          <div class="hv-brand">🍲 Tunakula-Congo <span><span class="hv-langbtn" id="langBtn" onclick="event.stopPropagation();cycleLang()">🌐 FR</span> 📍 Bandal, Kinshasa ▾</span></div>
+          <div class="hv-search" onclick="enterChat()">🔍 <span id="hvSearchTxt">Tu as faim ?!</span> <span class="hv-mic">🎤</span></div>
         </div>
         <div class="hv-body">
           <div class="hv-caro" id="caro">
@@ -307,14 +310,14 @@ button:active{transform:scale(.96)}
             <div class="hv-ban b3"><div><h4>Cash, M-Pesa ou Crédit Tunakula</h4><button class="hv-cta" onclick="enterChat()">C'est parti</button></div><span class="hv-em">💚</span></div>
           </div>
           <div class="hv-dots" id="hvDots"><i class="on"></i><i></i><i></i><span class="hv-count" id="hvCount">1/3</span></div>
-          <div class="hv-h">What's on Your Mind ? <span onclick="enterChat()">→</span></div>
+          <div class="hv-h"><span id="hvMind" style="width:auto;height:auto;border:none;display:inline">Qu'est-ce qui te tente ?</span> <span onclick="enterChat()">→</span></div>
           <div class="hv-cats" id="hvCats"></div>
-          <div class="hv-near" onclick="enterChat()"><span class="hv-um">⛱️</span><div><b>Find Nearby</b><small>Restaurant Near from You</small></div><button class="hv-cta">📍 See Location</button></div>
-          <div class="hv-h">Popular Restaurants Nearby <span onclick="enterChat(true)">→</span></div>
+          <div class="hv-near" onclick="enterChat()"><span class="hv-um">⛱️</span><div><b id="hvNearT">Commande sur WhatsApp</b><small id="hvNearS">Les restos près de chez toi</small></div><button class="hv-cta" id="hvNearCta">📍 Voir les restos</button></div>
+          <div class="hv-h"><span id="hvPopular" style="width:auto;height:auto;border:none;display:inline">Restos populaires près de toi</span> <span onclick="enterChat(true)">→</span></div>
           <div class="hv-rrow" id="hvRestos"></div>
         </div>
         <div class="hv-nav">
-          <span class="on">🏠<br>Home</span><span>🤍<br>Wishlist</span><span class="hv-fab" onclick="enterChat()">💬</span><span>🧾<br>Orders</span><span>☰<br>Menu</span>
+          <span class="on">🏠<br><i id="navHome" style="font-style:normal">Accueil</i></span><span>🤍<br><i id="navWish" style="font-style:normal">Favoris</i></span><span class="hv-fab" onclick="enterChat()">💬</span><span>🧾<br><i id="navOrders" style="font-style:normal">Commandes</i></span><span>☰<br><i id="navMenu" style="font-style:normal">Menu</i></span>
         </div>
       </div>
       <div class="phead"><div class="av">🍲</div><div><b>Mama Tunakula ✔️</b><small id="cStatus">en ligne</small></div><div class="phicons"><span>📹</span><span>📞</span><span>⋮</span></div></div>
@@ -377,6 +380,29 @@ button:active{transform:scale(.96)}
 </main>
 
 <script>
+/* ============ i18n — home screen (main: FR · EN/AR/ES/ZH) ============ */
+const I18N={
+ fr:{dir:'ltr',search:'Tu as faim ?!',mind:"Qu'est-ce qui te tente ?",nearT:'Commande sur WhatsApp',nearS:'Les restos près de chez toi',nearCta:'📍 Voir les restos',popular:'Restos populaires près de toi',nav:['Accueil','Favoris','Commandes','Menu']},
+ en:{dir:'ltr',search:'Are you hungry?!',mind:'What are you craving?',nearT:'Order on WhatsApp',nearS:'Restaurants near you',nearCta:'📍 See restaurants',popular:'Popular restaurants nearby',nav:['Home','Wishlist','Orders','Menu']},
+ ar:{dir:'rtl',search:'هل أنت جائع؟!',mind:'ما الذي تشتهيه؟',nearT:'اطلب عبر واتساب',nearS:'المطاعم القريبة منك',nearCta:'📍 عرض المطاعم',popular:'مطاعم شهيرة بالقرب منك',nav:['الرئيسية','المفضلة','الطلبات','القائمة']},
+ es:{dir:'ltr',search:'¿Tienes hambre?',mind:'¿Qué te apetece?',nearT:'Pide por WhatsApp',nearS:'Restaurantes cerca de ti',nearCta:'📍 Ver restaurantes',popular:'Restaurantes populares cerca',nav:['Inicio','Favoritos','Pedidos','Menú']},
+ zh:{dir:'ltr',search:'饿了吗？',mind:'今天想吃什么？',nearT:'通过 WhatsApp 下单',nearS:'你附近的餐厅',nearCta:'📍 查看餐厅',popular:'附近热门餐厅',nav:['首页','收藏','订单','菜单']}
+};
+const LANGS=['fr','en','ar','es','zh'];let curLang='fr';
+function applyLang(){
+  const t=I18N[curLang];
+  document.getElementById('langBtn').textContent='🌐 '+curLang.toUpperCase();
+  document.getElementById('homeView').setAttribute('dir',t.dir);
+  document.getElementById('hvSearchTxt').textContent=t.search;
+  document.getElementById('hvMind').textContent=t.mind;
+  document.getElementById('hvNearT').textContent=t.nearT;
+  document.getElementById('hvNearS').textContent=t.nearS;
+  document.getElementById('hvNearCta').textContent=t.nearCta;
+  document.getElementById('hvPopular').textContent=t.popular;
+  ['navHome','navWish','navOrders','navMenu'].forEach((id,i)=>{document.getElementById(id).textContent=t.nav[i]});
+}
+function cycleLang(){curLang=LANGS[(LANGS.indexOf(curLang)+1)%LANGS.length];applyLang()}
+
 /* ================= audio ================= */
 let AC=null, soundOn=true;
 function toggleSound(){soundOn=!soundOn;document.getElementById('sndBtn').textContent=soundOn?'🔊 Son':'🔇 Muet'}
