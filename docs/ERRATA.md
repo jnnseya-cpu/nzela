@@ -32,3 +32,14 @@ StackFood-style receipt only (order id, date, restaurant, status, payment,
 items, fee breakdown, total). The economic bilan (AI spend, margin, wewa
 split, coverage) is ops-ledger material — this matches FR-W4 and is
 enforced in code by `assertCustomerSafe()` in the gateway.
+
+## E-4 · Restaurant distance from customer geolocation (2026-07-18)
+
+**Decision (owner: Justin Nseya):** The distance to the closest restaurant
+is calculated from the customer's geolocation — a live position when
+shared (WhatsApp location message, or browser geolocation on the entry
+page), else the saved Adresse Vocale centroid. This is the basis for
+nearest-restaurant selection, the discovery list ordering (FR-D2), and the
+5 km radius gates. FR-R1's landmark-ring hops remain the basis for the
+delivery-zone fee classification (§8) and wewa-facing directions (FR-L3).
+Implemented in `@nzela/landmark-graph` (`distance.ts`).
