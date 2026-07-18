@@ -935,16 +935,29 @@ async function endFlow(n){
   if(autoMode)$('autoBtn').textContent='✔ Flux joué';
   ledger('Routeur','Note '+n+'★ — bouton',0,'det');
   beep(880,.1);setTimeout(()=>beep(1108,.1),110);setTimeout(()=>beep(1318,.16),220);
-  const tot=costAI+costMsg,rev=(fees().svc+fees().proc+fees().delCom)/FC_USD;
+  const tot=costAI+costMsg,fe=fees(),rev=(fe.svc+fe.proc+fe.delCom)/FC_USD;
+  // Customer side: a StackFood-style receipt only — no internal economics (FR-W4).
+  const itemLines=cart.map(c=>`${c.q}× ${c.e} ${c.name} <span class="price">${FC(c.price*c.q)}</span>`).join('<br>');
+  const payLabel=payMode==='momo'?'Mobile Money (M-Pesa)':'Cash à la livraison';
   await typing('chatC',900);
-  bubble('chatC','in',`<div class="tt">📟 Bilan NZELA — TK-347</div>
-    Coût IA + messagerie: <b>${fmt$(tot)}</b><br>
-    Marge Tunakula: <b>$${rev.toFixed(2)}</b> (${FC(fees().svc+fees().proc+fees().delCom)}) = service + paiement + 30% livraison<br>
-    Livraison ${FC(fees().del)}: <b>70% wewa</b> (${FC(fees().wewa)}) · <b>30% Tunakula</b> (${FC(fees().delCom)})<br>
-    Couverture: <b>×${Math.round(rev/tot)}</b><br>
-    Appels IA: <b>${nAI}</b> · 0 token: <b>${nDet}</b> · LLM bloqués: <b>${nBlk}</b><br>
-    <small>Paiement: ${payMode==='momo'?'SMS Ledger Bridge — sans API':'cash + float wewa réconcilié'}. Ton Adresse Vocale est enregistrée: prochaine commande en 4 clics.</small>`);
-  guide(`<b>Démo terminée.</b> ${nAI} appels IA, couverture ×${Math.round(rev/tot)}. ↺ Rejouer — essaie l'autre mode de paiement, tape n'importe quoi pour tester le Routeur, ou commande à la voix 🎤.`);
+  bubble('chatC','in',`<div class="tt">🧾 Reçu — Commande TK-347</div>
+    Date: ${nowT()} · <b>${currentResto} — Bandal</b><br>
+    Type: Livraison · Statut: <b>Livrée ✅</b><br>
+    Paiement: ${payLabel} — <b>payé</b> · Réf: TK-347<br>
+    <div style="border-top:1px dashed #c9b98f;margin:6px 0 4px"></div>
+    ${itemLines}<br>
+    <div style="border-top:1px dashed #c9b98f;margin:4px 0"></div>
+    Sous-total: <b>${FC(cartTotal())}</b><br>
+    Frais de service (10%): ${FC(fe.svc)}<br>
+    Frais de traitement (2%): ${FC(fe.proc)}<br>
+    Livraison: ${FC(fe.del)}<br>
+    <b>Total payé: ${FC(fe.tot)}</b><br>
+    <small>Merci maman 🙏 Ton Adresse Vocale est enregistrée — prochaine commande en 4 clics.</small>`);
+  // Ops side: the economic bilan lives in the Registre, not the customer chat (FR-W4).
+  ledger('Bilan','TK-347 — coût IA+msg '+fmt$(tot)+' · marge $'+rev.toFixed(2)+' ('+FC(fe.svc+fe.proc+fe.delCom)+') · couverture ×'+Math.round(rev/tot),0,'det');
+  ledger('Bilan','Livraison '+FC(fe.del)+': 70% wewa '+FC(fe.wewa)+' · 30% Tunakula '+FC(fe.delCom),0,'det');
+  ledger('Bilan','Appels IA: '+nAI+' · 0 token: '+nDet+' · LLM bloqués: '+nBlk+' · paiement: '+(payMode==='momo'?'SMS Ledger Bridge':'cash + float wewa'),0,'det');
+  guide(`<b>Démo terminée.</b> Bilan économique dans le <b>Registre 📟</b> (côté ops — le client ne voit que son reçu 🧾). ${nAI} appels IA, couverture ×${Math.round(rev/tot)}. ↺ Rejouer — essaie l'autre mode de paiement ou commande à la voix 🎤.`);
 }
 // Boot in StackFood-style home mode; chat starts on first entry
 let started=false;
