@@ -594,7 +594,7 @@ async function handleText(t){
       // Router deflects — no LLM spent
       await typing('chatC',500);
       ledger('Routeur','Hors-sujet → réponse type, LLM refusé',0,'block');
-      bubble('chatC','in','Maman, ici on parle nourriture 😄 Dis-moi un plat — ex. <b>«poulet mayo»</b> — ou touche les boutons. <span class="badge det">Routeur · 0 token</span>');
+      bubble('chatC','in','Maman, ici on parle nourriture 😄 Dis-moi un plat — ex. <b>«poulet mayo»</b> — ou touche les boutons. <span class="badge det">réponse instantanée</span>');
       guide('Le <b>Routeur</b> a refusé l\'appel LLM (colonne «LLM bloqués»). Un curieux ne coûte presque rien.');
     }
   }else if(phase==='address'){
@@ -604,7 +604,7 @@ async function handleText(t){
   }else{
     await typing('chatC',450);
     ledger('Routeur','Message hors flux → réponse type',0,'block');
-    bubble('chatC','in','Ta commande est en route maman, je te tiens au courant étape par étape 🙏 <span class="badge det">Routeur · 0 token</span>');
+    bubble('chatC','in','Ta commande est en route maman, je te tiens au courant étape par étape 🙏 <span class="badge det">réponse instantanée</span>');
   }
 }
 
@@ -740,7 +740,7 @@ async function summary(){
 
 async function saveAddress(txt){
   addrSaved=true;phase='locked';$('micBtn').classList.remove('hotmic');
-  bubble('chatC','in',`<div class="tt">📍 Adresse Vocale enregistrée</div>Bandal · Q. Sainte-Anne · 2e avenue · portail vert.<br><small>Réutilisable en 1 clic. La prochaine fois: 0 token.</small> <span class="badge ai">IA · Agent Adresse</span>`);
+  bubble('chatC','in',`<div class="tt">📍 Adresse Vocale enregistrée</div>Bandal · Q. Sainte-Anne · 2e avenue · portail vert.<br><small>Réutilisable en 1 clic — ta prochaine commande ira encore plus vite.</small> <span class="badge ai">IA · Agent Adresse</span>`);
   await wait(500);await typing('chatC',600);
   bubble('chatC','in','<div class="tt">Comment tu payes ?</div>');
   options('chatC',[
