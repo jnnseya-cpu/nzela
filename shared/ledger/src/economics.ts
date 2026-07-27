@@ -45,6 +45,29 @@ export const DEFAULT_COSTS: CostModel = {
   monthlyFixedUsd: 300, // GCP/Firebase ~200 + numbers/telephony/devices ~100
 };
 
+/**
+ * Load the operational cost model from config/costs.json — the file ops
+ * updates monthly from real invoices. Every field is validated as a
+ * finite non-negative number; unknown/missing fields fall back to
+ * DEFAULT_COSTS so a partial update can never zero-out a cost line.
+ */
+export function parseCostModel(raw: unknown): CostModel {
+  const src = (raw ?? {}) as Record<string, unknown>;
+  const pick = (key: keyof CostModel): number => {
+    const v = src[key];
+    if (typeof v === "number" && Number.isFinite(v) && v >= 0) return v;
+    return DEFAULT_COSTS[key];
+  };
+  return {
+    aiUsd: pick("aiUsd"),
+    waUsd: pick("waUsd"),
+    momoSettlementRate: pick("momoSettlementRate"),
+    cardRate: pick("cardRate"),
+    cardFixedUsd: pick("cardFixedUsd"),
+    monthlyFixedUsd: pick("monthlyFixedUsd"),
+  };
+}
+
 /** Variable (per-order) cost for a given rail and gross amount collected. */
 export function variableCostUsd(
   rail: PaymentRail,

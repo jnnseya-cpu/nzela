@@ -1,0 +1,9 @@
+{
+  "_comment": "All-in cost model — update MONTHLY from real invoices. Sources: aiUsd/waUsd = ledger meters (real metered spend); momoSettlementRate = operator settlement statements; cardRate/cardFixedUsd = Stripe (or PSP) monthly statement; monthlyFixedUsd = GCP/Firebase billing export + numbers/telephony/devices/overhead. Reviewed by: (name) on (date).",
+  "aiUsd": 0.05,
+  "waUsd": 0.024,
+  "momoSettlementRate": 0.015,
+  "cardRate": 0.039,
+  "cardFixedUsd": 0.3,
+  "monthlyFixedUsd": 300
+}

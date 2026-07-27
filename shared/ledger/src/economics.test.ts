@@ -66,3 +66,26 @@ describe("all-in unit economics (×2 rule — ERRATA E-6)", () => {
     expect(DEFAULT_COSTS.cardRate).toBeCloseTo(0.039);
   });
 });
+
+describe("config/costs.json — the ops-editable model", () => {
+  it("the committed config parses and currently matches the defaults", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { fileURLToPath } = await import("node:url");
+    const raw = JSON.parse(
+      readFileSync(
+        fileURLToPath(new URL("../../../config/costs.json", import.meta.url)),
+        "utf8",
+      ),
+    );
+    const { parseCostModel } = await import("./economics.js");
+    expect(parseCostModel(raw)).toEqual(DEFAULT_COSTS);
+  });
+
+  it("a partial or corrupt update never zeroes a cost line", async () => {
+    const { parseCostModel } = await import("./economics.js");
+    const model = parseCostModel({ monthlyFixedUsd: 412, cardRate: "oops", aiUsd: -1 });
+    expect(model.monthlyFixedUsd).toBe(412); // real invoice value taken
+    expect(model.cardRate).toBeCloseTo(0.039); // bad value → default kept
+    expect(model.aiUsd).toBe(0.05); // negative rejected → default kept
+  });
+});
