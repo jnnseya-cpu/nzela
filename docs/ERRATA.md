@@ -56,3 +56,15 @@ to the web checkout on the shared account.
 The monorepo is organised as `frontend/` · `backend/` · `shared/`
 (supersedes the §11 `apps/`+`packages/` naming; package names `@nzela/*`
 unchanged).
+
+## E-6 · All-in cost governance — the ×2 rule (2026-07-26)
+
+**Decision (owner: Justin Nseya):** Profitability is governed against the
+FULL cost stack, not only AI + messaging: AI, WhatsApp, payment-rail fees
+(mobile-money settlement, Stripe/card gateway), and amortized fixed costs
+(Firebase/GCP, numbers, telephony, devices, overhead). Target: every
+order yields **100% profit over all-in cost** (margin ≥ 2 × all-in).
+Model + guard in `shared/ledger/src/economics.ts`; analysis in
+`docs/UNIT_ECONOMICS.md`. Open pricing decision: card orders cannot meet
+the rule at the reference basket — surcharge, restrict to diaspora
+premium, or accept as loss-leader.
