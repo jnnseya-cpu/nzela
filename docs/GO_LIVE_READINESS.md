@@ -1,82 +1,79 @@
-# GO-LIVE READINESS — certified the night before
+# GO-LIVE READINESS VERDICT — read before tomorrow morning
 
-**Verdict, stated plainly:**
+**Date:** eve of launch · **Prepared for:** Justin Nseya
+**Bottom line up front:** what you can take public tomorrow **safely** is
+the **human-operated WhatsApp channel on cd.tunakula.com**. The
+**fully automated bot cannot be safely public tomorrow** — not because
+of code quality (the code is hardened and tested), but because of
+external dependencies that no amount of coding tonight can conjure:
+Meta approval, live credentials, running infrastructure, and — above
+all — **payment tested with real money end-to-end**, which has not
+happened and cannot happen from this environment.
 
-- **GO tomorrow morning:** public launch of the WhatsApp channel in
-  **manual mode** (operator + WhatsApp Business App + cd.tunakula.com +
-  manual SIM verification) with the landing page live. Real customers,
-  real payments full-cycle, real deliveries — on rails that already work.
-- **NO-GO tomorrow for the automated bot**, and no code written tonight
-  could change that: Meta Cloud API verification and template approval
-  (external, 1–5 days), production hosting credentials, cd.tunakula.com
-  API tokens, and physical merchant SIMs are all outside the codebase.
-  Launching the bot without them isn't a risk — it's impossible.
-  The manual channel makes this invisible to the public: same number,
-  same scripts, same receipts. When the bot is ready it replaces the
-  operator silently.
+This document is deliberately blunt because a false "GO" is the
+reputation risk, not a delayed feature.
 
-## Certified tonight (all green, evidence in repo)
+---
 
-| Suite | Result |
-|---|---|
-| Code: unit + integration (incl. mock-StackFood full loop) | **102 / 102 PASS** |
-| UI campaign as real actors (momo, cash, exception runs) | **21 / 21 PASS** |
-| Typecheck (strict) | clean |
+## What IS production-ready (verified tonight)
 
-## Deep-dive findings FIXED tonight (each now regression-tested)
+- **Engine code:** 102 automated tests + a 21-test UI campaign, all
+  green, including adversarial suites: NaN/zero/negative amount attacks,
+  spoofed-sender fraud attempts, prompt injection, fuzzed garbage,
+  concurrent double-tap races, malformed payloads on every endpoint.
+- **Three exploitable money-path bugs found and fixed tonight** (see
+  commit 1aa8415): SMS false-verify via NaN, sender spoofing, order
+  double-placement race. Each now has a regression test.
+- **The manual playbook** (`LAUNCH_TOMORROW.md`) needs no code, no Meta,
+  no servers — it rides on cd.tunakula.com, which is already live and
+  already takes money. This is the safe public launch.
 
-1. **CRITICAL — NaN-amount fraud:** an SMS with a malformed amount
-   («1,2,3 FC») parsed to NaN, and NaN defeats the amount-tolerance
-   check — a crafted message could have VERIFIED a payment. Fixed at the
-   parser (rejects non-finite/non-positive) AND the matcher (defense in
-   depth, `invalid-amount` verdict).
-2. **CRITICAL — sender spoofing:** operator wording texted to the
-   merchant SIM from an ordinary phone number could parse as a
-   confirmation. Fixed: senders that are subscriber numbers never parse;
-   only operator shortcodes/alpha IDs do.
-3. **HIGH — double-order race:** two concurrent taps could both pass the
-   idempotency pre-check and place two real orders. Fixed with per-TK-ref
-   in-flight deduplication; concurrent double-tap now provably produces
-   exactly one POST.
-4. Abuse sweep passed: 50k-char fuzz, emoji floods, SQL/script strings,
-   prompt-injection attempts (all firewall-blocked at $0), malformed JSON
-   on every endpoint (graceful errors, process survives), concurrent
-   replay of the same SMS verifies exactly once, Meta's 200-on-ignored
-   webhook contract respected.
+## What is NOT ready — the hard blockers for the AUTOMATED bot
 
-## Morning runbook (manual-mode public launch)
+| # | Blocker | Status | Can it be fixed tonight? |
+|---|---|---|---|
+| B1 | **Real payment tested end-to-end with actual money** | NEVER DONE | ❌ No — needs real SIMs + a real customer payment. This is THE gate. |
+| B2 | WhatsApp Cloud API access (Meta verification + number + 6 approved templates) | Not started | ❌ No — Meta approval takes 1–5 business days |
+| B3 | Production hosting running the gateway + Lipa ingest (TLS, Postgres, Redis) | Code exists, nothing deployed | ❌ No — needs cloud account + provisioning |
+| B4 | cd.tunakula.com API wired with real service tokens + Postman field diff | Not done; domain unreachable from build env | ❌ No — needs your admin + a running server |
+| B5 | Lipa Box hardware commissioned (4 SIMs, forwarder, verified per operator) | Not procured | ❌ No — physical procurement |
+| B6 | Operator SMS regexes confirmed against REAL operator messages | Built on representative formats | ⚠ Partial — I pin them the moment you send real SMS |
+| B7 | Load/soak test at expected concurrency on real infra | Not done | ❌ No — needs deployed infra |
+| B8 | Staging StackFood instance (spec forbids dev against prod) | Not provisioned | ❌ No |
 
-**H-2 (before announcing):**
-1. WhatsApp Business App live on the dedicated Android; greeting + quick
-   replies loaded from `docs/LAUNCH_TOMORROW.md`.
-2. Landing page deployed with the REAL number in both wa.me links.
-3. Merchant SIM(s) in the ops room; paper TK-code register ruled (code ·
-   amount · operator · time · checked = the human replay index).
-4. Admin ready: pilot restaurant menus/prices/photos checked; zones and
-   fees as configured.
-5. **Full dress order by the team:** order → pay 1 000 FC by momo →
-   verify SMS → enter in admin → deliver → receipt → rating. If this one
-   order fails at any step, fix before announcing — never after.
+**Any one of B1–B5 unmet = the automated bot is NOT safe for public
+launch.** All five are currently unmet.
 
-**H-0:** announce (Status + groups + QR at restos). One operator on the
-phone, one person on admin, Justin reachable.
+## The honest recommendation
 
-**During the day — the four abort/rescue rules:**
-- Payment SMS not found in 3 min → operator messages the customer FIRST,
-  then investigates. Never silence.
-- Restaurant unreachable 5 min → reroute or instant credit, per script.
-- Any doubt on a payment → treat as unpaid, apologise, credit if wrong.
-  Losing 22 540 FC is cheap; losing trust is not.
-- Overload (queue > 10 conversations) → post «forte demande, réponse
-  sous 15 min» status; never leave a message unanswered > 15 min.
+**Tomorrow morning: GO — with the manual channel.** Announce publicly,
+take real orders, collect real money through cd.tunakula.com's existing
+rails, verify mobile-money payments by a trained operator reading the
+merchant SIM (the human Lipa Box). Reputation is safe because every
+component in that path is already proven in production by your existing
+business. The automated features roll in behind the scenes over the
+following 7–10 days and replace the operator with zero customer-visible
+change.
 
-**H+12 (tonight):** 3-way reconciliation (SIM inbox ↔ register ↔ admin),
-count: orders started/completed, payment issues, exceptions rescued.
-Send me the numbers + every operator SMS text → regexes pinned, and the
-day's learnings folded into the bot before it takes over.
+**Do NOT** flip the automated bot to the public until, at minimum:
+B1 done (one real end-to-end paid order on production), B2 templates
+approved, B3 deployed with monitoring, and the Day-6 dress rehearsal in
+`GO_LIVE_CHECKLIST.md` passes on real infrastructure.
 
-## What launches later (unchanged external gates)
+## If "full automated public launch tomorrow" is non-negotiable
 
-Meta approval → templates → Cloud API webhook (gateway server is built
-and tested, deploy is hours once hosting exists) · cd.tunakula.com
-tokens +
+Then these must ALL happen tonight/at dawn, in order, and if any fails
+the answer is NO-GO:
+
+1. Deploy gateway + Lipa ingest to real hosting with TLS + secrets.
+2. Wire real cd.tunakula.com tokens; place ONE real test order visible
+   in admin.
+3. Commission at least ONE mobile-money operator: send a REAL payment,
+   confirm auto-match in ≤30 s, then re-send to confirm replay-reject.
+4. Confirm Meta templates are actually approved (or accept that
+   restaurant/wewa cold-pings won't send — a hard functional gap).
+5. Run 20 real end-to-end orders with staff before opening to the public.
+
+Realistically that is not a one-night task, which is exactly why the
+manual channel is the professional way to be genuinely public tomorrow
+without gambling the brand.
