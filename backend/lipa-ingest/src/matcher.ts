@@ -18,7 +18,10 @@ export interface OpenOrder {
 
 export type MatchResult =
   | { matched: true; order: OpenOrder; exact: boolean }
-  | { matched: false; reason: "no-ref" | "unknown-ref" | "amount-mismatch" };
+  | {
+      matched: false;
+      reason: "no-ref" | "unknown-ref" | "amount-mismatch" | "invalid-amount";
+    };
 
 /** Small tolerance for operator rounding on the FC amount. */
 const AMOUNT_TOLERANCE_FC = 100;
@@ -37,6 +40,14 @@ export function matchPayment(
       tkRef,
       at: new Date(),
     });
+
+  // Defense in depth: the parser already rejects non-finite amounts, but
+  // the matcher must never trust its callers — NaN defeats every numeric
+  // comparison below and would otherwise slide through the tolerance check.
+  if (!Number.isFinite(payment.amountFc) || payment.amountFc <= 0) {
+    log("SMS with invalid amount rejected", payment.tkRef);
+    return { matched: false, reason: "invalid-amount" };
+  }
 
   if (!payment.tkRef) {
     // No TK ref in the reference — try exact-amount fallback before giving

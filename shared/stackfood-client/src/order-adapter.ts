@@ -21,6 +21,11 @@ export interface PlacementResult {
 }
 
 export class OrderAdapter {
+  /** In-flight placements keyed by TK ref — closes the check-then-act
+   *  race where two concurrent taps both pass the existence check and
+   *  both POST. The second caller awaits the first's result. */
+  private readonly inFlight = new Map<string, Promise<PlacementResult>>();
+
   constructor(private readonly client: StackFoodClient) {}
 
   /**
@@ -39,6 +44,26 @@ export class OrderAdapter {
       );
     }
 
+    const running = this.inFlight.get(tkRef);
+    if (running) {
+      const result = await running;
+      return { ...result, recovered: true };
+    }
+
+    const attempt = this.placeOnce(payload, tkRef, customerToken);
+    this.inFlight.set(tkRef, attempt);
+    try {
+      return await attempt;
+    } finally {
+      this.inFlight.delete(tkRef);
+    }
+  }
+
+  private async placeOnce(
+    payload: PlaceOrderPayload,
+    tkRef: string,
+    customerToken: string,
+  ): Promise<PlacementResult> {
     // Check-before-write: a previous ambiguous attempt may have landed.
     const existing = await this.findByTkRef(tkRef, customerToken);
     if (existing) return { orderId: existing.id, recovered: true };

@@ -75,10 +75,21 @@ function parseAmount(raw: string): number {
 }
 
 /**
+ * Operator confirmations come from alphanumeric shortcodes («M-PESA»,
+ * «OrangeMoney»), never from an ordinary subscriber number. A sender that
+ * is just a phone number is a human texting the merchant SIM — possibly a
+ * fraud attempt quoting operator wording — and must never parse as a
+ * payment.
+ */
+const SUBSCRIBER_NUMBER = /^\+?\d{6,15}$/;
+
+/**
  * Parse a forwarded confirmation SMS. `sender` is the forwarding metadata
  * (operator sender id) when available.
  */
 export function parseSms(body: string, sender = ""): ParsedPayment | undefined {
+  if (SUBSCRIBER_NUMBER.test(sender.trim())) return undefined;
+
   const haystack = `${sender}\n${body}`;
   const pattern = PATTERNS.find((p) => p.detect.test(haystack));
   if (!pattern) return undefined;
@@ -86,12 +97,17 @@ export function parseSms(body: string, sender = ""): ParsedPayment | undefined {
   const amountMatch = pattern.amount.exec(body);
   if (!amountMatch?.[1]) return undefined;
 
+  const amountFc = parseAmount(amountMatch[1]);
+  // A malformed amount must never become NaN downstream — NaN defeats
+  // numeric comparisons and could false-verify a payment.
+  if (!Number.isFinite(amountFc) || amountFc <= 0) return undefined;
+
   const txnMatch = pattern.transactionId.exec(body);
   const payerMatch = pattern.payer.exec(body);
 
   return {
     operator: pattern.operator,
-    amountFc: parseAmount(amountMatch[1]),
+    amountFc,
     transactionId: txnMatch?.[1] ?? txnMatch?.[2] ?? undefined,
     payer: payerMatch?.[1]?.trim(),
     tkRef: extractTkRef(body),
