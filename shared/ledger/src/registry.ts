@@ -84,6 +84,16 @@ export const AGENT_REGISTRY: Record<AgentId, AgentSpec> = {
     budgetPerCallUsd: 0.004,
     role: "Exactly one contextual upsell at cart confirmation",
   },
+  seo: {
+    id: "seo",
+    name: "SEO Agent",
+    kind: "llm-single-shot",
+    // One post's prose is the only metered cost; the link graph, schema,
+    // sitemap and meta tags are deterministic (0 tokens). Cap covers a
+    // ~1200-word draft on a small model.
+    budgetPerCallUsd: 0.02,
+    role: "Autopilot blog content with dynamic internal links + SEO metadata",
+  },
 };
 
 /** Pilot exit criteria (§2.3): blended per-order cost ceilings. */

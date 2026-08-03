@@ -12,7 +12,8 @@ export type AgentId =
   | "cuisine-sync"
   | "wewa-dispatch"
   | "litige"
-  | "mama-upsell";
+  | "mama-upsell"
+  | "seo";
 
 export type LedgerEventType =
   /** Zero-token deterministic step (button, rule, state machine). */

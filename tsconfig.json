@@ -16,7 +16,8 @@
     "paths": {
       "@nzela/ledger": ["shared/ledger/src/index.ts"],
       "@nzela/stackfood-client": ["shared/stackfood-client/src/index.ts"],
-      "@nzela/landmark-graph": ["shared/landmark-graph/src/index.ts"]
+      "@nzela/landmark-graph": ["shared/landmark-graph/src/index.ts"],
+      "@nzela/seo-agent": ["backend/seo-agent/src/index.ts"]
     }
   },
   "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]

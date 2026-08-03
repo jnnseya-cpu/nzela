@@ -14,6 +14,7 @@ describe("agent registry (§5)", () => {
     expect(AGENT_REGISTRY["wewa-dispatch"].budgetPerCallUsd).toBe(0);
     expect(AGENT_REGISTRY.litige.budgetPerOrderUsd).toBe(0.01);
     expect(AGENT_REGISTRY["mama-upsell"].budgetPerCallUsd).toBe(0.004);
+    expect(AGENT_REGISTRY.seo.budgetPerCallUsd).toBe(0.02);
   });
 });
 
