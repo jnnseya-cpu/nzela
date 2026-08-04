@@ -1,4 +1,4 @@
-import { BudgetMiddleware, type LedgerSink } from "@nzela/ledger";
+import { BudgetMiddleware, type AcuGating, type LedgerSink } from "@nzela/ledger";
 import type {
   EngagementRecord,
   GeneratedContent,
@@ -28,24 +28,32 @@ export class GrowthEngine {
   constructor(
     private readonly generator: Generator,
     private readonly ledger: LedgerSink,
+    /** ACU gating — partner generators are billed to the partner account. */
+    acu?: AcuGating,
   ) {
-    this.budget = new BudgetMiddleware(ledger);
+    this.budget = new BudgetMiddleware(ledger, acu);
   }
 
   isDeterministic(tool: GrowthTool): boolean {
     return DETERMINISTIC_TOOLS.has(tool);
   }
 
-  /** Run one of the five LLM generators under budget, with fallback. */
+  /**
+   * Run one of the five LLM generators under budget + ACU gate, with
+   * fallback. `account` bills the ACU cost (3× resale) to the partner.
+   */
   async generate(
-    req: Omit<GenerationRequest, "budgetUsd">,
+    req: Omit<GenerationRequest, "budgetUsd"> & { account?: string },
   ): Promise<GeneratedContent> {
     if (DETERMINISTIC_TOOLS.has(req.tool)) {
       throw new Error(`${req.tool} is a deterministic tool — call its method`);
     }
     return this.budget.run(
       "growth",
-      { purpose: `${req.tool} for ${req.brief.restaurantName}` },
+      {
+        purpose: `${req.tool} for ${req.brief.restaurantName}`,
+        account: req.account,
+      },
       async (budgetUsd) => {
         const content = await this.generator.generate({ ...req, budgetUsd });
         return { value: content, costUsd: content.costUsd };

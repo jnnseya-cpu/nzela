@@ -25,6 +25,8 @@ export type LedgerEventType =
   | "block"
   /** Budget cap reached — degraded to deterministic fallback (FR-A1). */
   | "budget-exhausted"
+  /** AI action refused: no ACU balance to cover it (no free AI, ever). */
+  | "acu-gated"
   /** WhatsApp message cost event (FR-M4). */
   | "wa-message"
   /** Order lifecycle / exception-ladder event (FR-K3). */

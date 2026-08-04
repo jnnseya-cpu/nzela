@@ -68,3 +68,13 @@ Model + guard in `shared/ledger/src/economics.ts`; analysis in
 `docs/UNIT_ECONOMICS.md`. Open pricing decision: card orders cannot meet
 the rule at the reference basket — surcharge, restrict to diaspora
 premium, or accept as loss-leader.
+
+## E-7 · No free AI action — ACU gating (2026-07-26)
+
+**Decision (owner: Justin Nseya):** Every AI action is metered AND gated
+by available ACUs. Before any LLM/STT/TTS call, its max cost is reserved
+against the billed account's ACU balance; insufficient balance refuses
+the call (deterministic fallback), so no AI runs for free — regardless.
+Deterministic steps cost 0 ACU. 1 ACU = $0.001; resale agents (seo,
+growth) bill at the 3× multiplier, internal agents at 1×. Implemented in
+shared/ledger (acu.ts + BudgetMiddleware gating); see docs/ACU_METERING.md.

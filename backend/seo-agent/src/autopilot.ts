@@ -1,4 +1,4 @@
-import { BudgetMiddleware, type LedgerSink } from "@nzela/ledger";
+import { BudgetMiddleware, type AcuGating, type LedgerSink } from "@nzela/ledger";
 import type { BacklinkTarget, BlogPost, SiteConfig } from "./types.js";
 import {
   buildLinkGraph,
@@ -64,8 +64,10 @@ export class SeoAutopilot {
     private readonly writer: DraftWriter,
     ledger: LedgerSink,
     private readonly linking: LinkingOptions = DEFAULT_LINKING,
+    /** ACU gating — the draft call is billed to this account. */
+    private readonly acu?: AcuGating,
   ) {
-    this.budget = new BudgetMiddleware(ledger);
+    this.budget = new BudgetMiddleware(ledger, acu);
   }
 
   /**
