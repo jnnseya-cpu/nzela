@@ -13,7 +13,8 @@ export type AgentId =
   | "wewa-dispatch"
   | "litige"
   | "mama-upsell"
-  | "seo";
+  | "seo"
+  | "growth";
 
 export type LedgerEventType =
   /** Zero-token deterministic step (button, rule, state machine). */

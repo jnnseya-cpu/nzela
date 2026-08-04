@@ -45,6 +45,12 @@ importers:
         specifier: workspace:*
         version: link:../../shared/stackfood-client
 
+  backend/growth-engine:
+    dependencies:
+      '@nzela/ledger':
+        specifier: workspace:*
+        version: link:../../shared/ledger
+
   backend/lipa-ingest:
     dependencies:
       '@nzela/ledger':

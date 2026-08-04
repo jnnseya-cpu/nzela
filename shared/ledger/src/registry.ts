@@ -94,6 +94,16 @@ export const AGENT_REGISTRY: Record<AgentId, AgentSpec> = {
     budgetPerCallUsd: 0.02,
     role: "Autopilot blog content with dynamic internal links + SEO metadata",
   },
+  growth: {
+    id: "growth",
+    name: "Growth Engine",
+    kind: "llm-single-shot",
+    // Partner marketing generators (post/advert/email/landing/video).
+    // Analytics, timing, hashtags and audience tools are deterministic
+    // (0 tokens). Cap covers one generation on a small model.
+    budgetPerCallUsd: 0.01,
+    role: "Partner AI marketing suite: content generators + growth analytics",
+  },
 };
 
 /** Pilot exit criteria (§2.3): blended per-order cost ceilings. */

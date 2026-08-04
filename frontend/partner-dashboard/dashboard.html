@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tunakula Pro — Moteur de Croissance IA</title>
+<link rel="stylesheet" href="../landing/fonts.css">
+<style>
+:root{
+  --nuit:#080D0A;--nuit2:#0C1310;--panel:rgba(19,28,22,.72);--line:rgba(246,239,224,.12);
+  --manioc:#F6EFE0;--smoke:#9FB8A9;--wax:#F2820A;--wax-deep:#C96703;--gold:#E8B44C;
+  --money:#2FBF71;--rouge:#E2001B;--wa:#25D366;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:
+  radial-gradient(1000px 500px at 85% -10%,rgba(242,130,10,.10),transparent 60%),
+  var(--nuit);color:var(--manioc);min-height:100vh}
+h1,h2,h3{font-family:'Unbounded',sans-serif}
+.top{display:flex;align-items:center;gap:14px;padding:16px 26px;border-bottom:1px solid var(--line);background:rgba(8,13,10,.8);position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.logo{font-family:'Unbounded';font-weight:900;font-size:1rem}
+.logo em{font-style:normal;background:linear-gradient(90deg,var(--wax),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pro{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--gold);border:1px solid var(--gold);border-radius:12px;padding:3px 9px}
+.who{margin-left:auto;font-size:.82rem;color:var(--smoke)}
+.who b{color:var(--manioc)}
+.wrap{max-width:1180px;margin:0 auto;padding:26px}
+.hd{margin-bottom:8px;font-size:1.5rem;font-weight:900}
+.sub{color:var(--smoke);font-size:.9rem;margin-bottom:24px}
+.sub b{color:var(--gold)}
+
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+@media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;backdrop-filter:blur(10px)}
+.kpi small{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);display:block;margin-bottom:6px}
+.kpi b{font-family:var(--mono);font-size:1.6rem;color:var(--gold);font-variant-numeric:tabular-nums}
+.kpi .d{font-size:.7rem;color:var(--money);margin-top:2px}
+
+/* tool grid */
+.section-h{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--wax);margin:26px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;backdrop-filter:blur(10px);cursor:pointer;transition:transform .14s,border-color .2s;position:relative}
+.tool:hover{transform:translateY(-3px);border-color:rgba(242,130,10,.5)}
+.tool .ico{font-size:1.7rem;margin-bottom:10px}
+.tool h3{font-size:.92rem;font-weight:700;margin-bottom:6px}
+.tool p{font-size:.76rem;color:var(--smoke);line-height:1.45}
+.tag{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;padding:3px 7px;border-radius:9px}
+.tag.free{background:#e3efe7;color:#2c6647}
+.tag.ai{background:#fbe6cc;color:#a35403}
+
+/* recommendations */
+.recos{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
+.reco{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed rgba(246,239,224,.08);font-size:.84rem}
+.reco:last-child{border-bottom:none}
+.reco .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.reco.action .dot{background:var(--rouge)}.reco.warn .dot{background:var(--wax)}.reco.info .dot{background:var(--money)}
+.reco b{color:var(--gold)}
+
+/* channel table */
+.tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem}
+.tbl th{text-align:left;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);padding:8px 10px;border-bottom:1px solid var(--line)}
+.tbl td{padding:9px 10px;border-bottom:1px solid rgba(246,239,224,.06);font-variant-numeric:tabular-nums}
+.tbl .best{color:var(--money);font-weight:700}
+.bar{height:6px;border-radius:4px;background:rgba(246,239,224,.1);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--wax),var(--gold))}
+
+/* preview panel */
+.preview{margin-top:14px;background:#0a0f0c;border:1px solid var(--line);border-radius:16px;padding:18px;min-height:120px}
+.preview .ph{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.preview pre{white-space:pre-wrap;font-family:'Space Grotesk';font-size:.86rem;line-height:1.5;color:#e7dfcd}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-family:var(--mono);font-size:.7rem;background:rgba(242,130,10,.14);color:var(--gold);border:1px solid rgba(242,130,10,.3);border-radius:12px;padding:3px 9px}
+.note{font-family:var(--mono);font-size:.58rem;color:#7f9a8c;margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">TUNAKULA <em>Pro</em></div>
+  <span class="pro">MOTEUR DE CROISSANCE IA</span>
+  <div class="who">Partenaire: <b id="whoName">Mama Kito — Bandal</b></div>
+</header>
+
+<main class="wrap">
+  <h1 class="hd">Fais grandir ton resto — automatiquement.</h1>
+  <p class="sub">Dix outils IA pour toucher plus de clients. <b>Cinq gratuits</b> (analyses sur tes propres chiffres, zéro coût) et cinq générateurs de contenu <b>facturés au token près</b>, chacun sous budget avec repli automatique.</p>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="section-h">📈 Analyses — gratuit, 0 token</div>
+  <div class="grid" id="detTools"></div>
+
+  <div class="recos" id="recos"></div>
+
+  <table class="tbl" id="channelTbl">
+    <thead><tr><th>Canal</th><th>Commandes</th><th>Coût / commande</th><th>Budget conseillé</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="section-h">✨ Générateurs de contenu — IA, sous budget</div>
+  <div class="grid" id="aiTools"></div>
+
+  <div class="preview" id="preview">
+    <div class="ph">🖥️ Aperçu — touche un générateur</div>
+    <pre>Le contenu généré apparaît ici. Chaque génération est journalisée dans Le Compteur avec son coût réel, et si l'IA dépasse son budget ou tombe en panne, un modèle par défaut est servi — jamais de tableau de bord vide.</pre>
+  </div>
+
+  <p class="note">Économie: les analyses (hashtags, meilleur horaire, recommandations, audience, performance) sont déterministes — elles ne coûtent aucun token. Seuls les 5 générateurs appellent un LLM, plafonnés à $0.01 par génération (agent «growth» du registre NZELA-OS), avec repli déterministe garanti.</p>
+</main>
+
+<script>
+const brief = { restaurantName:"Mama Kito", quartier:"Bandal", highlights:["Poulet mayo","Thomson braisé"], lang:"fr", waLink:"https://wa.me/243000000000?text=Nakolia" };
+
+// Mirrors backend @nzela/growth-engine outputs (same logic, demo data).
+const analytics = { impressions:2700, clicks:140, orders:27, spendUsd:9.5, ctr:0.052, conversionRate:0.193, costPerOrderUsd:0.352,
+  byChannel:{ "whatsapp-status":{orders:12,spendUsd:0,costPerOrderUsd:0}, instagram:{orders:6,spendUsd:1.5,costPerOrderUsd:0.25}, facebook:{orders:9,spendUsd:8,costPerOrderUsd:0.889} } };
+const recos = [
+  {severity:"info", message:"Ton meilleur canal est whatsapp-status à $0.00/commande — mets-y plus."},
+  {severity:"action", message:"facebook coûte $0.89/commande (cible $0.50). Réalloue le budget vers ton meilleur canal."},
+];
+const audience = [ {channel:"whatsapp-status",share:0.55}, {channel:"instagram",share:0.30}, {channel:"facebook",share:0.15} ];
+const hashtags = ["#mama","#kito","#bandal","#poulet","#mayo","#thomson","#kinshasa","#cuisinecongolaise","#livraison","#foodkin","#rdc","#tunakula"];
+
+const kpi = (label,val,delta) => `<div class="kpi"><small>${label}</small><b>${val}</b>${delta?`<div class="d">${delta}</div>`:""}</div>`;
+document.getElementById("kpis").innerHTML =
+  kpi("Impressions","2 700") + kpi("Commandes attribuées","27","+18% vs 7j") +
+  kpi("Taux de conversion","19,3%") + kpi("Coût / commande","$0.35","cible $0.50 ✅");
+
+const det = [
+  {t:"hashtags",i:"🏷️",h:"Générateur de hashtags",p:"Hashtags optimisés à partir de tes plats et ton quartier."},
+  {t:"best-time",i:"⏰",h:"Meilleur horaire de publication",p:"Quand publier pour le plus de commandes, selon TES chiffres."},
+  {t:"performance-recos",i:"🎯",h:"Recommandations de performance",p:"Actions concrètes pour dépenser moins et vendre plus."},
+  {t:"audience-optimisation",i:"👥",h:"Optimisation d'audience",p:"Répartit ton budget vers les canaux les plus rentables."},
+  {t:"campaign-analytics",i:"📊",h:"Analyses de campagne",p:"Impressions, clics, commandes et coûts, par canal."},
+];
+const ai = [
+  {t:"social-post",i:"📱",h:"Post réseaux sociaux",p:"Publications prêtes pour Facebook, Instagram, TikTok, Status."},
+  {t:"advert",i:"📣",h:"Créateur de publicité",p:"Annonces courtes et percutantes pour convertir la faim."},
+  {t:"email-campaign",i:"✉️",h:"Campagne e-mail",p:"E-mails de relance et d'offres, prêts à envoyer."},
+  {t:"landing-page",i:"🖼️",h:"Page d'atterrissage",p:"Une page qui pousse vers WhatsApp, générée en un clic."},
+  {t:"video-script",i:"🎬",h:"Script vidéo",p:"Scripts 15s plan par plan pour Reels et TikTok."},
+];
+const card = (x,cls,tag) => `<div class="tool" data-t="${x.t}" data-cls="${cls}"><span class="tag ${tag}">${tag==="free"?"GRATUIT":"IA"}</span><div class="ico">${x.i}</div><h3>${x.h}</h3><p>${x.p}</p></div>`;
+document.getElementById("detTools").innerHTML = det.map(x=>card(x,"det","free")).join("");
+document.getElementById("aiTools").innerHTML = ai.map(x=>card(x,"ai","ai")).join("");
+
+// recommendations
+document.getElementById("recos").innerHTML = "<div class='section-h' style='margin:0 0 8px'>🎯 Recommandations IA</div>" +
+  recos.map(r=>`<div class="reco ${r.severity}"><span class="dot"></span><span>${r.message}</span></div>`).join("");
+
+// channel table
+const chBody = document.querySelector("#channelTbl tbody");
+const shareByCh = Object.fromEntries(audience.map(a=>[a.channel,a.share]));
+chBody.innerHTML = Object.entries(analytics.byChannel).sort((a,b)=>a[1].costPerOrderUsd-b[1].costPerOrderUsd)
+  .map(([ch,c],i)=>`<tr><td class="${i===0?'best':''}">${ch}${i===0?' ★':''}</td><td>${c.orders}</td><td>${c.costPerOrderUsd===0?"gratuit":"$"+c.costPerOrderUsd.toFixed(2)}</td><td>${Math.round((shareByCh[ch]||0)*100)}%<div class="bar"><i style="width:${(shareByCh[ch]||0)*100}%"></i></div></td></tr>`).join("");
+
+// demo generator outputs (deterministic previews mirroring the fallback shapes)
+const outputs = {
+  "hashtags": {ph:"🏷️ Hashtags générés", chips:hashtags},
+  "best-time":{ph:"⏰ Meilleurs horaires", body:"1. Dimanche 19h — meilleure conversion\n2. Lundi 19h\n3. Dimanche 20h\n\n(calculé sur tes 4 dernières semaines)"},
+  "performance-recos":{ph:"🎯 Recommandations", body:recos.map(r=>"• "+r.message).join("\n\n")},
+  "audience-optimisation":{ph:"👥 Répartition conseillée", body:audience.map(a=>`${a.channel}: ${Math.round(a.share*100)}%`).join("\n")},
+  "campaign-analytics":{ph:"📊 Vue d'ensemble", body:`Impressions 2 700 · Clics 140 (CTR 5,2%)\nCommandes 27 · Conversion 19,3%\nDépense $9.50 · Coût/commande $0.35`},
+  "social-post":{ph:"📱 Post Instagram", body:"😋 Poulet mayo fumant chez Mama Kito (Bandal) — livré chaud sur WhatsApp, paie cash ou mobile money. Commande maintenant 👇", chips:["#bandal","#pouletmayo","#foodkin"], cost:"$0.008"},
+  "advert":{ph:"📣 Publicité", body:"Faim à Bandal? 🍗 Mama Kito te livre ton poulet mayo en 30 min. Sans app. Commande sur WhatsApp.", cost:"$0.007"},
+  "email-campaign":{ph:"✉️ E-mail", body:"Objet: Ton poulet mayo t'attend 🍗\n\nBonjour! Envie d'un bon repas ce soir? Mama Kito livre à Bandal, chaud et rapide. Commande sur WhatsApp — cash ou mobile money.", cost:"$0.009"},
+  "landing-page":{ph:"🖼️ Page (aperçu)", body:"# Mama Kito — Bandal\nPoulet mayo, Thomson braisé, livrés chauds.\n[ Commander sur WhatsApp ]", cost:"$0.01"},
+  "video-script":{ph:"🎬 Script 15s", body:"[0-3s] Gros plan poulet mayo fumant\n[3-7s] «Mama Kito, Bandal»\n[7-12s] Le wewa arrive au portail vert\n[12-15s] «Commande sur WhatsApp»", cost:"$0.008"},
+};
+document.querySelectorAll(".tool").forEach(el=>el.onclick=()=>{
+  const o = outputs[el.dataset.t]; if(!o) return;
+  const isAi = el.dataset.cls==="ai";
+  document.getElementById("preview").innerHTML =
+    `<div class="ph">${o.ph}${o.cost?` · <span style="color:#a35403">IA ${o.cost}</span>`:` · <span style="color:#2c6647">0 token</span>`}</div>`+
+    (o.body?`<pre>${o.body}</pre>`:"")+
+    (o.chips?`<div class="chips">${o.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>`:"");
+});
+</script>
+</body>
+</html>
