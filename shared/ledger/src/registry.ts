@@ -104,6 +104,16 @@ export const AGENT_REGISTRY: Record<AgentId, AgentSpec> = {
     budgetPerCallUsd: 0.01,
     role: "Partner AI marketing suite: content generators + growth analytics",
   },
+  sentinelle: {
+    id: "sentinelle",
+    name: "Sentinelle (Anti-Hacking)",
+    kind: "llm-small",
+    // WAF signatures, rate limits, humanity scoring and anomaly rules are
+    // deterministic (0 tokens). The LLM fires ONLY to triage an ambiguous
+    // or novel threat the rules can't classify. Cap covers one triage.
+    budgetPerCallUsd: 0.006,
+    role: "Humanity gate, non-human-instruction firewall, threat detection",
+  },
 };
 
 /** Pilot exit criteria (§2.3): blended per-order cost ceilings. */

@@ -70,6 +70,12 @@ importers:
 
   shared/ledger: {}
 
+  shared/security:
+    dependencies:
+      '@nzela/ledger':
+        specifier: workspace:*
+        version: link:../ledger
+
   shared/stackfood-client: {}
 
 packages:

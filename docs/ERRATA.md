@@ -78,3 +78,14 @@ the call (deterministic fallback), so no AI runs for free — regardless.
 Deterministic steps cost 0 ACU. 1 ACU = $0.001; resale agents (seo,
 growth) bill at the 3× multiplier, internal agents at 1×. Implemented in
 shared/ledger (acu.ts + BudgetMiddleware gating); see docs/ACU_METERING.md.
+
+## E-8 · Humans-only access + anti-hacking agent (2026-07-26)
+
+**Decision (owner: Justin Nseya):** Only humans sign up and log in to every
+section; all non-human instructions are blocked; an anti-hacking agent
+(Sentinelle, #11) is active. Deterministic-first: humanity gate,
+instruction firewall and WAF signatures run at 0 tokens; the LLM triages
+only ambiguous threats, budget-capped and ACU-gated, failing SAFE
+(challenge, never silent allow). Architectural backstop: WhatsApp-native
+accounts are bound to a real SIM + real payment, making mass fake accounts
+pointless. Implemented in @nzela/security; see docs/SECURITY_HUMANS_ONLY.md.

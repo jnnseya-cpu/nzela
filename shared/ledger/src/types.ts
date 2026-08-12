@@ -14,7 +14,8 @@ export type AgentId =
   | "litige"
   | "mama-upsell"
   | "seo"
-  | "growth";
+  | "growth"
+  | "sentinelle";
 
 export type LedgerEventType =
   /** Zero-token deterministic step (button, rule, state machine). */
