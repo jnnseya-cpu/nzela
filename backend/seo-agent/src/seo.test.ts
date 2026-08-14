@@ -67,6 +67,28 @@ describe("dynamic internal linking (deterministic, 0 tokens)", () => {
     );
   });
 
+  it("never injects a link inside an existing link's URL (corruption bug)", () => {
+    // Post whose body mentions BOTH a slug-word and another keyword that
+    // appears inside the first injected URL. Pre-fix, the 2nd injection
+    // matched 'whatsapp' inside /blog/...-whatsapp-... and broke the URL.
+    const src = post({
+      slug: "src",
+      keywords: ["commander", "whatsapp"],
+      bodyMarkdown: "Tu peux commander sur whatsapp facilement.",
+    });
+    const t1 = post({ slug: "commander-nourriture-whatsapp-kinshasa", title: "Commander sur WhatsApp", keywords: ["commander"] });
+    const t2 = post({ slug: "guide-whatsapp", title: "Guide WhatsApp", keywords: ["whatsapp"] });
+    const graph = buildLinkGraph([src, t1, t2]);
+    const bySlug = new Map([src, t1, t2].map((p) => [p.slug, p]));
+    const body = injectInternalLinks(src, graph, bySlug, SITE.baseUrl);
+    // Every injected URL must be a clean, whole slug — no nested brackets.
+    const urls = [...body.matchAll(/\]\((https:\/\/tunakula\.com\/blog\/[^)]+)\)/g)].map((m) => m[1]);
+    for (const u of urls) {
+      expect(u).not.toContain("[");
+      expect(u).toMatch(/^https:\/\/tunakula\.com\/blog\/[a-z0-9-]+$/);
+    }
+  });
+
   it("appends an 'À lire aussi' block when no keyword mention exists", () => {
     const noMention = post({
       slug: "actu",

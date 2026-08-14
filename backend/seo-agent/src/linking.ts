@@ -90,13 +90,18 @@ export function injectInternalLinks(
     const keyword = link.via[0];
     let injected = false;
     if (keyword) {
-      // Match the keyword only when NOT already inside a markdown link.
-      const re = new RegExp(
-        `(?<!\\[)\\b(${escapeRe(keyword)})\\b(?!\\]|\\()`,
-        "i",
-      );
-      if (re.test(body)) {
-        body = body.replace(re, `[$1](${url})`);
+      // Replace the first keyword occurrence that is OUTSIDE any existing
+      // markdown link. Scanning link spans (rather than a lookbehind) is
+      // what makes this safe: a keyword like "whatsapp" must never match
+      // inside a previously injected URL slug and corrupt it.
+      const idx = firstKeywordOutsideLinks(body, keyword);
+      if (idx >= 0) {
+        const matchLen = keyword.length;
+        const matched = body.slice(idx, idx + matchLen);
+        body =
+          body.slice(0, idx) +
+          `[${matched}](${url})` +
+          body.slice(idx + matchLen);
         injected = true;
       }
     }
@@ -125,6 +130,32 @@ function readAlsoLabel(lang: BlogPost["lang"]): string {
 
 function escapeRe(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Ranges [start,end) covered by existing markdown links `[text](url)`. */
+function markdownLinkSpans(body: string): [number, number][] {
+  const spans: [number, number][] = [];
+  const re = /\[[^\]]*\]\([^)]*\)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(body)) !== null) spans.push([m.index, m.index + m[0].length]);
+  return spans;
+}
+
+/**
+ * Index of the first whole-word, case-insensitive occurrence of `keyword`
+ * that lies entirely outside any existing markdown link — or -1. This is
+ * the safety that prevents injecting a link inside another link's URL/anchor.
+ */
+function firstKeywordOutsideLinks(body: string, keyword: string): number {
+  const spans = markdownLinkSpans(body);
+  const inSpan = (i: number, len: number) =>
+    spans.some(([s, e]) => i < e && i + len > s);
+  const re = new RegExp(`\\b${escapeRe(keyword)}\\b`, "gi");
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(body)) !== null) {
+    if (!inSpan(m.index, m[0].length)) return m.index;
+  }
+  return -1;
 }
 
 /** Orphan detection — pages nothing links TO waste crawl budget. */
