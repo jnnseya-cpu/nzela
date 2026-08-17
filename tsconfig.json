@@ -20,7 +20,8 @@
       "@nzela/seo-agent": ["backend/seo-agent/src/index.ts"],
       "@nzela/growth-engine": ["backend/growth-engine/src/index.ts"],
       "@nzela/security": ["shared/security/src/index.ts"],
-      "@nzela/acquisition": ["backend/acquisition/src/index.ts"]
+      "@nzela/acquisition": ["backend/acquisition/src/index.ts"],
+      "@nzela/newsletter": ["backend/newsletter/src/index.ts"]
     }
   },
   "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]

@@ -66,6 +66,12 @@ importers:
         specifier: workspace:*
         version: link:../../shared/stackfood-client
 
+  backend/newsletter:
+    dependencies:
+      '@nzela/ledger':
+        specifier: workspace:*
+        version: link:../../shared/ledger
+
   backend/seo-agent:
     dependencies:
       '@nzela/ledger':
