@@ -1,0 +1,17 @@
+{
+  "name": "Tunakula Pro — Moteur de Croissance",
+  "short_name": "Tunakula Pro",
+  "description": "Outils marketing IA pour les restaurants partenaires Tunakula.",
+  "start_url": "dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080D0A",
+  "theme_color": "#0B120E",
+  "lang": "fr",
+  "icons": [
+    { "src": "../pwa/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "../pwa/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "../pwa/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

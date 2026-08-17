@@ -1,0 +1,17 @@
+{
+  "name": "Tunakula — Livraison à Kinshasa",
+  "short_name": "Tunakula",
+  "description": "Commande ton repas sur WhatsApp à Kinshasa — sans app, livré chaud.",
+  "start_url": "landing.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080D0A",
+  "theme_color": "#0B120E",
+  "lang": "fr",
+  "icons": [
+    { "src": "../pwa/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "../pwa/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "../pwa/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

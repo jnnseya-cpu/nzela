@@ -40,7 +40,8 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 |---|---|
 | `frontend/blog` | ✅ 12 SEO posts, engine-linked, number set (wa.me/447493216101), deploy-ready |
 | `frontend/landing` | ✅ landing + splash, number set, self-contained |
-| `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); needs Next.js host + live data |
+| `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); needs Next.js host + live data — PWA-enabled |
+| `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; wired into landing + partner-dashboard (installable, branded splash on launch); reuse for ops-console |
 | `frontend/ops-console` | ⬜ placeholder README only; Next.js app not scaffolded |
 | `docs/prototype` | ✅ interactive 4-screen prototype (UX contract) |
 
