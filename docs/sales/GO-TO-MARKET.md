@@ -1,5 +1,9 @@
-# NZELA-OS — Go-To-Market Plan
-### Tunakula-Congo · Bandalungwa (Bandal), Kinshasa · Groupe JNN
+# GO-TO-MARKET — NZELA-OS
+### Tunakula-Congo · Groupe JNN
+
+**LAUNCH CITY (LOCKED): Bandalungwa (Bandal), Kinshasa, DRC.** One commune,
+one dense beachhead. No second quartier or city opens until Bandal is
+proven (see §7 gates). This is a decision, not a placeholder.
 
 **One line:** Launch a WhatsApp-native, cash-first food-delivery channel in
 Bandal, get to the first 100 paying customers in 30 days through
@@ -197,7 +201,64 @@ cost-per-order by channel, referral k-factor, repeat rate, ×2-rule pass %.
 
 ---
 
-## 8. Risks & mitigations
+## 8. Launch budget — 90 days (Bandal)
+
+Real figures, grounded in the repo's cost model (`config/costs.json`:
+$300/mo fixed stack) and the reference basket (§7). Two flagged items are
+**estimates to confirm** — marked *(est.)* — because they depend on a quote
+or a rate card we don't yet hold. Nothing here is invented to look tidy; the
+estimates are labelled so ops can replace them with real quotes.
+
+### 8.1 One-time (setup)
+| Item | Cost (USD) | Basis |
+|---|---|---|
+| Lipa Box hardware (2× Android + SIMs, spare) | **$200** | `docs/LIPA_BOX_BUILD.md` — SMS Ledger Bridge device |
+| Restaurant onboarding kit (bag tags, counter QR, printed cards ×5) | **$100** | 5 restaurants × ~$20 print/setup |
+| Brand & launch creative (posters, QR, Status pack) *(est.)* | **$200** | marketwaros.com or local designer, one-off |
+| **One-time subtotal** | **$500** | |
+
+### 8.2 Monthly recurring (×3 months = 90 days)
+| Item | Cost/mo (USD) | 90-day (USD) | Basis |
+|---|---|---|---|
+| Infra — Firebase/GCP/numbers/domain | **$300** | **$900** | `config/costs.json` monthlyFixedUsd |
+| Ops operator (manual WhatsApp line) *(est.)* | **$200** | **$600** | 1 part-time operator, Kinshasa rate |
+| Community / groups seeding *(est.)* | **$150** | **$450** | Bandal WhatsApp + micro-influencer stipends |
+| marketwaros.com execution retainer *(est.)* | **$500** | **$1 500** | site egress-blocked — **quote to confirm** |
+| **Recurring subtotal** | **$1 150** | **$3 450** | |
+
+### 8.3 Growth incentives (90-day pool, funded from service fee)
+| Item | Cost (USD) | Basis |
+|---|---|---|
+| First-order incentive (livraison offerte / credit) | **$150** | ~150 first orders × ~3 500 FC (~$1.25) |
+| Referral rewards (Crédit Tunakula, paid on real 1st order) | **$100** | ~80 rewarded referrals × ~4 000 FC |
+| Contingency (float shortfalls, reroutes, rescue credits) | **$300** | ~10% buffer on the above |
+| **Incentives subtotal** | **$550** | |
+
+### 8.4 90-day total
+| Block | USD |
+|---|---|
+| One-time setup | $500 |
+| Recurring (3 mo) | $3 450 |
+| Growth incentives | $550 |
+| **90-DAY LAUNCH BUDGET** | **≈ $4 500** |
+
+**Read this honestly:**
+- **Paid ads are $0 in this budget.** They only switch on in Phase 2 *after*
+  organic proves a cost-per-order inside the ×2 headroom (§7). The Jumia trap
+  is not buying customers before the unit economics hold.
+- **LLM / voice-agent API spend enters Phase 2+**, ACU-gated and ≤ $0.05/order
+  — it does not load the launch budget while the manual operator runs the line.
+- **Break-even is beyond 90 days.** The ×2 rule needs ~631 cash or ~845 momo
+  orders/month (§7); at Bandal launch volumes the ~$1 150/mo run-rate is
+  covered by margin only as order volume climbs through Phase 2. Budget the
+  **≈ $4 500 as launch capital to reach proof**, not as a self-funding month 1.
+- **The three *(est.)* lines** (creative, operator, community, marketwaros
+  retainer) are the ones to firm up with real quotes; the infra and incentive
+  lines are grounded in code/basket and are firm.
+
+---
+
+## 9. Risks & mitigations
 
 | Risk | Mitigation |
 |---|---|
@@ -210,7 +271,7 @@ cost-per-order by channel, referral k-factor, repeat rate, ×2-rule pass %.
 
 ---
 
-## 9. The ask / immediate next steps (this week)
+## 10. The ask / immediate next steps (this week)
 
 1. **Confirm the customer-facing number** (+243 local vs the +44 line).
 2. **Sign the first 3–5 Bandal restaurants** + 5–8 wewas (supply gate).
