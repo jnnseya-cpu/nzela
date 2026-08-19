@@ -4,9 +4,10 @@
  * through the ledger's BudgetMiddleware (FR-A1). Phase 2 of the delivery
  * plan.
  *
- * The contracts below are the interfaces the gateway codes against today,
- * with deterministic fallbacks so the order loop ships in Phase 1 without
- * any LLM in the path.
+ * The contracts below are the interfaces the gateway codes against today.
+ * The deterministic fallbacks that let the order loop ship in Phase 1
+ * without any LLM in the path live in the gateway router (backend/gateway),
+ * NOT in this package — this package ships interfaces only until Phase 2.
  */
 
 import type { LandmarkAddress } from "@nzela/landmark-graph";

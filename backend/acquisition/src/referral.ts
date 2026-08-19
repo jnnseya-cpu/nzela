@@ -37,7 +37,7 @@ export function referralCode(waId: string): string {
   const digits = waId.replace(/\D/g, "");
   const tail = digits.slice(-4).padStart(4, "0");
   const sum = [...digits].reduce((s, d) => s + Number(d), 0);
-  const check = "ABCDEFGHJKMNPQRالسن".slice(0, 10)[sum % 10] ?? "X";
+  const check = "ABCDEFGHJK"[sum % 10] ?? "X";
   return `TK${tail}${check}`;
 }
 

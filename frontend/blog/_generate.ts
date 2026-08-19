@@ -12,7 +12,7 @@ const SITE: SiteConfig = {
   baseUrl: "https://tunakula.com",
   siteName: "Tunakula-Congo",
   defaultAuthor: "Tunakula-Congo",
-  waLink: "https://wa.me/243000000000?text=Nakolia",
+  waLink: "https://wa.me/447493216101?text=Nakolia",
 };
 const OUT = "/home/user/nzela/frontend/blog";
 mkdirSync(OUT, { recursive: true });

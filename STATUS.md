@@ -4,8 +4,9 @@
 what remains. Read this BEFORE building anything — do not rebuild what is
 listed as done. Update it when status changes. (Operating directive §3, §48.)
 
-**Last verified:** 163 tests passing (24 files), typecheck clean, git tree
-clean. Branch `claude/new-session-yygh5a`.
+**Last verified:** 2026-08-19 — **179 tests passing (26 files)**, typecheck
+clean, git tree clean. (Working branch is whatever the current session uses;
+do not treat a branch name here as canonical — it goes stale across sessions.)
 
 Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not built ·
 📄 document only.
@@ -59,10 +60,44 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 
 ## Persistence contracts (interfaces awaiting real backends)
 
-`TokenCache`, `AcuWallet`, `ReplayIndex`, `RateLimiter`, referral
-code/rewards resolvers, open-orders lookup — all defined as interfaces with
-in-memory implementations for tests. Production wires Redis/Postgres behind
-the same interfaces. (No schema migrations written yet. ⬜)
+`TokenCache`, `AcuWallet`, `ReplayIndex`, `RateLimiter`, `PasswordVault`,
+`SentLog`, referral code/rewards resolvers (`resolveCode`, `rewardsEarned`,
+`CreditIssuer`), gateway `phaseFor`/`tkRefFor`, lipa `openOrders` — all
+defined as interfaces with in-memory implementations for tests. Production
+wires Redis/Postgres + a real secrets manager behind the same interfaces.
+(No schema migrations written yet. ⬜) Every durability guarantee
+(replay-once, idempotent send, ACU balance) is process-memory-only until
+those backends are wired. `PasswordVault` now has an `InMemoryPasswordVault`
+(previously the only auth port with no implementation at all).
+
+## Open decisions (must be closed by the owner — single list)
+
+These are unresolved across the docs; recorded here so they live in one
+place instead of scattered. None is code — each needs Justin's call.
+
+| # | Decision | Why it matters | Where flagged |
+|---|---|---|---|
+| **D-1** | **Customer-facing WhatsApp number: the +44 line (447493216101) already baked into blog/landing/GTM, OR a new local +243 number.** | Gates the manual launch, QR posters, every blog/referral link. Runbooks still carry a `243000000000` placeholder while shipped assets carry +44 — they cannot both be right. **The single most important open decision.** | GO_LIVE_CHECKLIST D-1; GO-TO-MARKET §8/§10 |
+| **D-2** | Card payments can't meet the ×2 rule at the reference basket — surcharge the gateway fee, reserve card for diaspora-premium, or drop card at launch. | Decides whether card is offered week 1. | ERRATA E-6; UNIT_ECONOMICS; GTM §7 |
+| **D-3** | Merchant SIM numbers (M-Pesa / Orange / Airtel / Africell) to print in the pay instructions. | No mobile-money payment can happen until these exist. | GO_LIVE_CHECKLIST D-4; LIPA_BOX_BUILD |
+| **D-4** | KODA Master Spec v2.0 — commit it into the repo or mark KODA_Integration_Notes out-of-scope for launch. | The notes doc references a file not in the repo. | KODA_Integration_Notes |
+| **D-5** | Escalation calls: TTS telephony provider, or confirm manual ops calls for the pilot. | Pilot can run manual; only matters at scale. | GO_LIVE_CHECKLIST D-2 |
+
+## Biggest genuinely-unfinished code gap (not a stub, a missing layer)
+
+**The gateway has no conversation/dispatch layer.**
+`backend/gateway/src/server.ts:80-98` computes a router decision for every
+inbound message but only *acts* on `firewall-block`; deterministic UI
+actions and agent escalations are computed and then discarded (deferred to a
+"conversation service" that does not exist in the repo). Net effect: a
+normal ordering message currently produces no reply. Everything else the
+audit found is either an injected port with an in-memory impl (works in
+tests, needs a real backend at deploy) or an explicitly Phase-2 LLM tier.
+This dispatch layer is the one place a whole layer is *referenced but
+absent* — building it (deterministic-only, no LLM keys needed) is the
+highest-value next code task, but it is architecturally significant and
+depends on D-1 + the WhatsApp Cloud API adapter, so it is scoped, not
+silently built.
 
 ## Key documents (`docs/`)
 

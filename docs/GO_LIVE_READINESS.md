@@ -17,7 +17,7 @@ reputation risk, not a delayed feature.
 
 ## What IS production-ready (verified tonight)
 
-- **Engine code:** 102 automated tests + a 21-test UI campaign, all
+- **Engine code:** 173 automated tests (25 files), all
   green, including adversarial suites: NaN/zero/negative amount attacks,
   spoofed-sender fraud attempts, prompt injection, fuzzed garbage,
   concurrent double-tap races, malformed payloads on every endpoint.

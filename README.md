@@ -51,7 +51,7 @@ backend/
                    Orange, Airtel, Africell), TK-ref payment↔order matcher,
                    replay protection (FR-P1/P4)
 shared/
-  ledger/          Ledger events, 8-agent registry with hard budgets (§5),
+  ledger/          Ledger events, 11-agent registry with hard budgets (§5),
                    budget middleware (FR-A1), per-order cost meters (FR-M4)
   stackfood-client/ Typed StackFood v1 REST client: retry/timeout contract,
                    idempotency keys (FR-O4), TK refs, auth provisioning,

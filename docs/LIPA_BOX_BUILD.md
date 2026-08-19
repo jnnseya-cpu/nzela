@@ -11,7 +11,7 @@ in `backend/lipa-ingest` — the ingest endpoint is built and tested
 | Item | Spec | Why |
 |---|---|---|
 | 2 × Android phones | Any dual-SIM Android 9+, e.g. entry-level Samsung/Tecno/Infinix, ~$60–90 each | 2 phones × 2 SIMs = 4 operators; two devices = no single point of failure |
-| 4 × merchant SIMs | M-Pesa (Vodacom), Orange Money, Airtel Money, Afrimoney — registered as **merchant/agent numbers** in the business name | Customers pay these numbers; confirmations arrive as SMS |
+| 4 × merchant SIMs | M-Pesa (Vodacom), Orange Money, Airtel Money, Africell Money — registered as **merchant/agent numbers** in the business name | Customers pay these numbers; confirmations arrive as SMS |
 | Chargers + power strip (+ small UPS/power bank) | — | Kin power cuts must not kill payment verification |
 | A locked drawer/box in the ops room | — | "Supervised" is a security control: these SIMs receive money |
 

@@ -76,6 +76,6 @@ running proven rails — the safe way to have real customers this weekend.
 2. No WhatsApp number live → hard stop. (Human task.)
 3. No payment path verified → run cash-only Saturday, add momo when ready.
 
-None of these are code. The code is done and tested (162 tests green).
+None of these are code. The code is done and tested (173 tests green).
 Saturday is won or lost on the phone number, the restaurants, and the
 posters — start those today.

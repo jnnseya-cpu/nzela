@@ -264,7 +264,7 @@ button:active{transform:scale(.96)}
   <div class="sp-in">
     <div class="sp-mark">TUNAKULA</div>
     <div class="sp-os">NZELA-OS</div>
-    <div class="sp-tag">Le système d'exploitation de la livraison à Kinshasa.<br>WhatsApp-natif · Cash-first · IA gouvernée au token près · Synchronisé avec drc.tunakula.com</div>
+    <div class="sp-tag">Le système d'exploitation de la livraison à Kinshasa.<br>WhatsApp-natif · Cash-first · IA gouvernée au token près · Synchronisé avec cd.tunakula.com</div>
     <div class="sp-stats">
       <div><b>≤ $0.05</b><span>coût IA / commande</span></div>
       <div><b>×30+</b><span>couverture marge</span></div>
@@ -272,7 +272,7 @@ button:active{transform:scale(.96)}
       <div><b>$0</b><span>conversation client (fenêtre service)</span></div>
     </div>
     <button class="sp-btn" onclick="enterSim()">▶ Entrer dans la simulation</button>
-    <div class="sp-foot">Groupe JNN · Tunakula-Congo · drc.tunakula.com</div>
+    <div class="sp-foot">Groupe JNN · Tunakula-Congo · cd.tunakula.com</div>
   </div>
 </div>
 
@@ -655,7 +655,7 @@ async function start(){
 }
 function showRestos(){
   ledger('Rayon','Filtre 5 km — distance par anneaux de repères, 0 token',0,'det');
-  ledger('Sync','Restos + distances tirés de drc.tunakula.com (zones StackFood)',0,'det');
+  ledger('Sync','Restos + distances tirés de cd.tunakula.com (zones StackFood)',0,'det');
   bubble('chatC','in','<div class="tt">📍 Restos autour de toi</div><small>Règle Tunakula: <b>≤ 5 km</b> — pour que ton plat arrive chaud malgré les embouteillages de Kin.</small>');
   options('chatC',RESTOS.map(r=>({
     label:`${r.e} ${r.n} ★${r.r} — ${r.q} · ${r.d} km ${r.ok?'✅':'🚫 hors rayon'}`,
@@ -680,7 +680,7 @@ function pickResto(r){
 function showMenu(){
   ledger('Routeur','Catalogue produits WhatsApp — photos, 0 token',0,'det');
   ledger('Sync','17 catégories réelles importées (export admin cd.tunakula.com) + produits StackFood',0,'det');
-  const d=bubble('chatC','in',`<div class="tt">Menu — ${currentResto} 🍽️</div><small>Catégories StackFood → onglets · photos du catalogue drc.tunakula.com</small>`);
+  const d=bubble('chatC','in',`<div class="tt">Menu — ${currentResto} 🍽️</div><small>Catégories StackFood → onglets · photos du catalogue cd.tunakula.com</small>`);
   const chips=document.createElement('div');chips.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-top:8px';
   const row=document.createElement('div');row.className='mcards';
   function render(cat){
@@ -788,7 +788,7 @@ async function restoFlow(rerouted){
   let lines=cart.map(c=>`${c.q}× ${c.name}`).join('<br>');
   bubble('chatR','in',`<div class="tt">🔔 TK-347 ${payMode==='momo'?'— PAYÉ ✅':'— CASH 💵'}</div>${lines}<br><b>Ton montant: ${FC(cartTotal())}</b> (frais côté client)<br>Code retrait: <b style="font-family:var(--mono)">347</b><br><small>⏱️ À confirmer sous 60 s, sinon relance automatique.</small>`);
   ledger('Cuisine Sync','Fiche commande — template + minuteur 60s',0,'det');
-  ledger('Sync','Commande TK-347 créée dans drc.tunakula.com (API StackFood)',0,'det');
+  ledger('Sync','Commande TK-347 créée dans cd.tunakula.com (API StackFood)',0,'det');
   options('chatR',[
     {label:'✅ Accepter — prêt en 25 min',next:true,fn:acceptOrder},
     {label:'📵 Simuler: resto injoignable',fn:()=>{clearTimeout(restTimer);escalateCall()}},

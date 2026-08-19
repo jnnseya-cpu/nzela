@@ -34,7 +34,7 @@ wallets and UPI/PIX are excluded as roadmap adapters.
 ## How the two systems share code
 
 - **NZELA-OS is a Door 3 consumer.** Tunakula's Lipa Box is the first
-  production tenant of the engine: `apps/lipa-ingest` (operator parsers,
+  production tenant of the engine: `backend/lipa-ingest` (operator parsers,
   TK-ref matching, replay index) is the engine core; the DRC operator
   regexes are the first Template Pack (M-Pesa, Orange Money, Airtel
   Money, Africell).

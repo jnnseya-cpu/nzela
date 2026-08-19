@@ -89,3 +89,17 @@ only ambiguous threats, budget-capped and ACU-gated, failing SAFE
 (challenge, never silent allow). Architectural backstop: WhatsApp-native
 accounts are bound to a real SIM + real payment, making mass fake accounts
 pointless. Implemented in @nzela/security; see docs/SECURITY_HUMANS_ONLY.md.
+
+## E-9 · Agent registry grew 8 → 11 (2026-08-19)
+
+**Reconciliation (not a new product decision):** the original handoff docs
+(Requirements v1.0, Blueprint, StackFood Integration Spec) describe an
+**8-agent** lean registry. The registry shipped in code is **11 agents**:
+the original 8 (router, commande, adresse, lipa, cuisine-sync,
+wewa-dispatch, litige, mama-upsell) plus **#9 seo** (E-? SEO autopilot),
+**#10 growth** (AI Growth Engine) and **#11 sentinelle** (E-8 anti-hacking).
+The authoritative count is **11** (see `shared/ledger/src/registry.ts` and
+STATUS.md). The three handoff docs are historical snapshots and are left as
+written; README and STATUS state 11. This errata is the single record that
+reconciles the drift — no doc should be "fixed" to 11 except current-state
+docs (README, STATUS).

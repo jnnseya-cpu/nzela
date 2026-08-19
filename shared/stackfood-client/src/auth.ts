@@ -33,6 +33,32 @@ export interface PasswordVault {
   passwordFor(waId: string): Promise<string>;
 }
 
+/**
+ * In-memory PasswordVault for dev/test parity — the only auth port that
+ * previously shipped no implementation. Synthesizes a stable password per
+ * wa_id on first use and remembers it for the process lifetime. Production
+ * wires a real secrets manager (KMS / Secrets Manager) behind this same
+ * interface; customer passwords are never persisted in plaintext at scale.
+ */
+export class InMemoryPasswordVault implements PasswordVault {
+  private readonly store = new Map<string, string>();
+  async passwordFor(waId: string): Promise<string> {
+    const existing = this.store.get(waId);
+    if (existing) return existing;
+    const pw = synthesizePassword(waId);
+    this.store.set(waId, pw);
+    return pw;
+  }
+}
+
+/** Deterministic, strong-shaped synthetic password from a wa_id (dev/test). */
+function synthesizePassword(waId: string): string {
+  const digits = waId.replace(/\D/g, "");
+  let h = 0;
+  for (const ch of waId) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return `Tk!${digits.slice(-6).padStart(6, "0")}${h.toString(36)}`;
+}
+
 /** Synthetic e-mail per §2: `<phone>@wa.tunakula.com` (no leading +). */
 export function emailForWaId(waId: string): string {
   return `${waId.replace(/^\+/, "")}@wa.tunakula.com`;
