@@ -13,3 +13,14 @@ Next.js 14 app (Phase 1+) serving two surfaces:
 
 Not yet scaffolded: waiting on Next.js app bootstrap in Phase 1. The data
 contracts it consumes live in `@nzela/ledger`.
+
+**When scaffolded, it must include the shared analytics kit** (Meta Pixel +
+Google gtag) like every other surface — add to the app `<head>`:
+
+```html
+<script src="/pwa/analytics.config.js" defer></script>
+<script src="/pwa/analytics.js" defer></script>
+```
+
+Server-side conversions (order placed / payment verified) are already
+emitted from the money path via `@nzela/analytics` (Meta CAPI + GA4 MP).

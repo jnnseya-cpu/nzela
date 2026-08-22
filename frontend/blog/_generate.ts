@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, copyFileSync } from "node:fs";
 import { marked } from "marked";
 import { buildLinkGraph, injectInternalLinks, findOrphans } from "/home/user/nzela/backend/seo-agent/src/linking.ts";
 import {
@@ -67,6 +67,8 @@ article a{color:var(--wa);font-weight:600}
 const shell = (head: string, bodyHtml: string) =>
 `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 ${head}
+<script src="analytics.config.js" defer></script>
+<script src="analytics.js" defer></script>
 <style>${PAGE_CSS}</style></head><body>
 <div class="top"><a href="/blog/">TUNAKULA <em>NZELA-OS</em> · Blog</a></div>
 <div class="wrap">${bodyHtml}</div>
@@ -101,6 +103,13 @@ writeFileSync(`${OUT}/index.html`, shell(
 // --- 7. Sitemap + robots (real engine output) ---
 writeFileSync(`${OUT}/sitemap.xml`, renderSitemap(CORPUS, SITE));
 writeFileSync(`${OUT}/robots.txt`, renderRobots(SITE));
+
+// --- 7b. Ship the shared analytics kit alongside the blog (single source
+// lives in frontend/pwa; copied so the blog deploy is self-contained). ---
+const PWA = "/home/user/nzela/frontend/pwa";
+for (const f of ["analytics.config.js", "analytics.js"]) {
+  copyFileSync(`${PWA}/${f}`, `${OUT}/${f}`);
+}
 
 console.log(`posts: ${CORPUS.length}`);
 console.log(`internal links injected by engine: ${totalLinks}`);

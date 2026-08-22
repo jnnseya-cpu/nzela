@@ -28,6 +28,7 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 | `backend/acquisition` | Referral loop (abuse-proof), funnel analytics, viral k-factor, win-back targeting | ✅ | 1 file |
 | `backend/newsletter` | Weekly email to consented users: feature catalog (links to blog), consent+unsubscribe, hyperlink-dense HTML/text composer, idempotent resilient weekly scheduler | ✅ (needs email provider + subscriber DB at deploy) | 1 file |
 | `backend/agents` | LLM agent contracts (Commande/Adresse/Litige/Upsell) — interfaces only | 🟡 contracts only; LangGraph impls Phase 2 | 0 |
+| `backend/analytics` | Server-side conversion spine: Meta Conversions API + GA4 Measurement Protocol, SHA-256 PII hashing, pixel dedup by shared event_id, fail-safe fan-out; wired into the lipa payment-verified path (Purchase) | ✅ (needs Meta/GA4 tokens at deploy) | 1 file |
 
 **Agent registry (11):** router, commande, adresse, lipa, cuisine-sync,
 wewa-dispatch, litige, mama-upsell, seo, growth, sentinelle. Deterministic
@@ -42,7 +43,7 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 | `frontend/blog` | ✅ 12 SEO posts, engine-linked, number set (wa.me/447493216101), deploy-ready |
 | `frontend/landing` | ✅ landing + splash, number set, self-contained |
 | `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); needs Next.js host + live data — PWA-enabled |
-| `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; wired into landing + partner-dashboard (installable, branded splash on launch); reuse for ops-console |
+| `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; **shared analytics kit (`analytics.config.js` + `analytics.js`: Meta Pixel + Google gtag, single config)** wired into landing, partner-dashboard, blog (all pages) + prototype; reuse for ops-console |
 | `frontend/ops-console` | ⬜ placeholder README only; Next.js app not scaffolded |
 | `docs/prototype` | ✅ interactive 4-screen prototype (UX contract) |
 

@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {
+    "@nzela/analytics": "workspace:*",
     "@nzela/ledger": "workspace:*",
     "@nzela/stackfood-client": "workspace:*"
   }

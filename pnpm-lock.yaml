@@ -39,6 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../../shared/stackfood-client
 
+  backend/analytics: {}
+
   backend/gateway:
     dependencies:
       '@nzela/landmark-graph':
@@ -59,6 +61,9 @@ importers:
 
   backend/lipa-ingest:
     dependencies:
+      '@nzela/analytics':
+        specifier: workspace:*
+        version: link:../analytics
       '@nzela/ledger':
         specifier: workspace:*
         version: link:../../shared/ledger

@@ -1,6 +1,7 @@
 import { createServer, type IncomingMessage, type Server } from "node:http";
 import { timingSafeEqual } from "node:crypto";
 import { MemoryLedger, type LedgerSink } from "@nzela/ledger";
+import { AnalyticsSpine, NoopSink, eventIdFor } from "@nzela/analytics";
 import { parseSms } from "./parsers.js";
 import { verifyPayment, MemoryReplayIndex, type ReplayIndex } from "./replay.js";
 import type { OpenOrder } from "./matcher.js";
@@ -29,6 +30,12 @@ export interface LipaIngestConfig {
   onVerified: (tkRef: string, operator: string) => Promise<void>;
   ledger?: LedgerSink;
   replayIndex?: ReplayIndex;
+  /**
+   * Conversion spine — fires a server-side Purchase (Meta CAPI + GA4 MP) the
+   * moment a payment verifies. Optional and fail-safe: defaults to a no-op,
+   * and a spine never throws, so analytics can never break the money path.
+   */
+  analytics?: AnalyticsSpine;
 }
 
 async function readBody(req: IncomingMessage): Promise<string> {
@@ -47,6 +54,7 @@ function tokenOk(provided: string | string[] | undefined, expected: string) {
 export function createLipaIngest(config: LipaIngestConfig): Server {
   const ledger = config.ledger ?? new MemoryLedger();
   const replay = config.replayIndex ?? new MemoryReplayIndex();
+  const analytics = config.analytics ?? new AnalyticsSpine({ sinks: [new NoopSink()] });
   let lastSmsAt: Date | undefined;
 
   return createServer(async (req, res) => {
@@ -96,6 +104,17 @@ export function createLipaIngest(config: LipaIngestConfig): Server {
         );
         if (result.matched) {
           await config.onVerified(result.order.tkRef, parsed.operator);
+          // Server-side Purchase — the real money conversion (happens in
+          // WhatsApp, not a browser). Fail-safe: emit never throws.
+          await analytics.emit({
+            name: "Purchase",
+            eventId: eventIdFor("Purchase", result.order.tkRef),
+            at: Date.now(),
+            value: parsed.amountFc,
+            currency: "CDF",
+            tkRef: result.order.tkRef,
+            custom: { operator: parsed.operator, channel: "whatsapp" },
+          });
           return json(200, {
             verdict: "verified",
             tkRef: result.order.tkRef,
