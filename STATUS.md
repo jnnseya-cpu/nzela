@@ -23,12 +23,13 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 | `shared/security` | Humanity gate, non-human-instruction firewall, WAF/threat detection, Sentinelle agent (ACU-gated, fail-safe) | ✅ | 1 file |
 | `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder | ✅ | 5 files |
 | `backend/lipa-ingest` | SMS Ledger Bridge: 4-operator parsers, matcher, replay protection, ingest HTTP endpoint | ✅ | 4 files |
-| `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU) | ✅ | 1 file |
+| `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), **per-post SEO score 0–100 (deterministic, weighted breakdown)** | ✅ | 2 files |
 | `backend/growth-engine` | Partner marketing suite — 5 deterministic analytics tools + 5 LLM generators (budget+ACU) | ✅ | 1 file |
 | `backend/acquisition` | Referral loop (abuse-proof), funnel analytics, viral k-factor, win-back targeting | ✅ | 1 file |
 | `backend/newsletter` | Weekly email to consented users: feature catalog (links to blog), consent+unsubscribe, hyperlink-dense HTML/text composer, idempotent resilient weekly scheduler | ✅ (needs email provider + subscriber DB at deploy) | 1 file |
 | `backend/agents` | LLM agent contracts (Commande/Adresse/Litige/Upsell) — interfaces only | 🟡 contracts only; LangGraph impls Phase 2 | 0 |
 | `backend/analytics` | Server-side conversion spine: Meta Conversions API + GA4 Measurement Protocol, SHA-256 PII hashing, pixel dedup by shared event_id, fail-safe fan-out; wired into the lipa payment-verified path (Purchase) | ✅ (needs Meta/GA4 tokens at deploy) | 1 file |
+| `backend/views` | Blog post view counter: increment/read HTTP endpoint, per-slug store (in-memory port; Redis at deploy), slug validation, CORS, best-effort per-IP de-dup window | ✅ (needs hosting at deploy) | 1 file |
 
 **Agent registry (11):** router, commande, adresse, lipa, cuisine-sync,
 wewa-dispatch, litige, mama-upsell, seo, growth, sentinelle. Deterministic
@@ -40,7 +41,7 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 
 | Surface | Status |
 |---|---|
-| `frontend/blog` | ✅ 12 SEO posts, engine-linked, number set (wa.me/447493216101), deploy-ready |
+| `frontend/blog` | ✅ 12 SEO posts, engine-linked, number set (wa.me/447493216101), deploy-ready; **on-page view counter (`views.js` → `@nzela/views`) + build-time `seo-report.json` (per-post SEO score)** |
 | `frontend/landing` | ✅ landing + splash, number set, self-contained |
 | `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); needs Next.js host + live data — PWA-enabled |
 | `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; **shared analytics kit (`analytics.config.js` + `analytics.js`: Meta Pixel + Google gtag, single config)** wired into landing, partner-dashboard, blog (all pages) + prototype; reuse for ops-console |

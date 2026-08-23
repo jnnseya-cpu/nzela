@@ -83,6 +83,8 @@ importers:
         specifier: workspace:*
         version: link:../../shared/ledger
 
+  backend/views: {}
+
   shared/landmark-graph: {}
 
   shared/ledger: {}

@@ -6,7 +6,8 @@ import {
   validatePost, canonicalUrl,
 } from "/home/user/nzela/backend/seo-agent/src/metadata.ts";
 import type { SiteConfig } from "/home/user/nzela/backend/seo-agent/src/types.ts";
-import { CORPUS } from "./corpus.ts";
+import { seoScore } from "/home/user/nzela/backend/seo-agent/src/scoring.ts";
+import { CORPUS } from "./_corpus.ts";
 
 const SITE: SiteConfig = {
   baseUrl: "https://tunakula.com",
@@ -69,9 +70,11 @@ const shell = (head: string, bodyHtml: string) =>
 ${head}
 <script src="analytics.config.js" defer></script>
 <script src="analytics.js" defer></script>
+<script src="views.config.js" defer></script>
+<script src="views.js" defer></script>
 <style>${PAGE_CSS}</style></head><body>
 <div class="top"><a href="/blog/">TUNAKULA <em>NZELA-OS</em> · Blog</a></div>
-<div class="wrap">${bodyHtml}</div>
+<div class="wrap"><span class="tk-views" hidden></span>${bodyHtml}</div>
 <div class="foot">© Tunakula-Congo · Kinshasa, RDC · <a href="${SITE.waLink}" style="color:var(--wa)">Commander sur WhatsApp</a></div>
 </body></html>`;
 
@@ -107,12 +110,35 @@ writeFileSync(`${OUT}/robots.txt`, renderRobots(SITE));
 // --- 7b. Ship the shared analytics kit alongside the blog (single source
 // lives in frontend/pwa; copied so the blog deploy is self-contained). ---
 const PWA = "/home/user/nzela/frontend/pwa";
-for (const f of ["analytics.config.js", "analytics.js"]) {
+for (const f of ["analytics.config.js", "analytics.js", "views.config.js", "views.js"]) {
   copyFileSync(`${PWA}/${f}`, `${OUT}/${f}`);
 }
+
+// --- 8. SEO score every post (deterministic engine) + write report ---
+const scores = CORPUS.map((post) => {
+  const linksOut = graph.filter((l) => l.fromSlug === post.slug).length;
+  return seoScore(post, { internalLinksOut: linksOut });
+}).sort((a, b) => b.score - a.score);
+const avgScore = Math.round(scores.reduce((s, r) => s + r.score, 0) / scores.length);
+const report = {
+  generatedForCorpusSize: CORPUS.length,
+  averageScore: avgScore,
+  posts: scores.map((s) => ({
+    slug: s.slug,
+    score: s.score,
+    grade: s.grade,
+    issues: s.issues,
+  })),
+};
+writeFileSync(`${OUT}/seo-report.json`, JSON.stringify(report, null, 2));
 
 console.log(`posts: ${CORPUS.length}`);
 console.log(`internal links injected by engine: ${totalLinks}`);
 console.log(`orphans (linked to by nobody): ${orphans.length ? orphans.join(", ") : "none"}`);
 console.log(`avg links per post: ${(totalLinks / CORPUS.length).toFixed(1)}`);
+console.log(`\nSEO scores (avg ${avgScore}/100):`);
+for (const s of scores) {
+  console.log(`  ${s.grade}  ${String(s.score).padStart(3)}  ${s.slug}`);
+}
+console.log("seo-report.json written");
 console.log("written to", OUT);
