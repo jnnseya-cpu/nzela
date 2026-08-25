@@ -1,111 +1,93 @@
 {
   "generatedForCorpusSize": 12,
-  "averageScore": 77,
+  "averageScore": 96,
   "posts": [
+    {
+      "slug": "commander-a-la-voix-lingala-francais",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "regle-5-km-plat-chaud",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "payer-mobile-money-mpesa-orange-airtel-africell",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "diaspora-offrir-repas-famille-kinshasa",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
     {
       "slug": "commander-nourriture-whatsapp-kinshasa",
       "score": 94,
       "grade": "A",
       "issues": [
-        "Contenu ≥ 300 mots — 166 mots (7/13)"
+        "Contenu ≥ 300 mots — 286 mots (7/13)"
       ]
     },
     {
       "slug": "livraison-repas-bandal",
-      "score": 87,
-      "grade": "B",
+      "score": 94,
+      "grade": "A",
       "issues": [
-        "Contenu ≥ 300 mots — 120 mots (0/13)"
+        "Contenu ≥ 300 mots — 277 mots (7/13)"
       ]
     },
     {
       "slug": "adresse-vocale-sans-gps",
-      "score": 87,
-      "grade": "B",
+      "score": 94,
+      "grade": "A",
       "issues": [
-        "Contenu ≥ 300 mots — 107 mots (0/13)"
+        "Contenu ≥ 300 mots — 277 mots (7/13)"
       ]
     },
     {
       "slug": "payer-cash-a-la-livraison",
-      "score": 87,
-      "grade": "B",
+      "score": 94,
+      "grade": "A",
       "issues": [
-        "Contenu ≥ 300 mots — 99 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "restaurants-gardez-100-du-prix",
-      "score": 87,
-      "grade": "B",
-      "issues": [
-        "Contenu ≥ 300 mots — 115 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "devenir-wewa-70-pourcent",
-      "score": 87,
-      "grade": "B",
-      "issues": [
-        "Contenu ≥ 300 mots — 101 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "diaspora-offrir-repas-famille-kinshasa",
-      "score": 77,
-      "grade": "B",
-      "issues": [
-        "Mot-clé principal dans la description — « diaspora » (0/10)",
-        "Contenu ≥ 300 mots — 116 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "commander-a-la-voix-lingala-francais",
-      "score": 72,
-      "grade": "C",
-      "issues": [
-        "Mot-clé principal dans le titre — « vocal » (0/15)",
-        "Contenu ≥ 300 mots — 118 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "payer-mobile-money-mpesa-orange-airtel-africell",
-      "score": 72,
-      "grade": "C",
-      "issues": [
-        "Mot-clé principal dans le titre — « mobile money » (0/15)",
-        "Contenu ≥ 300 mots — 102 mots (0/13)"
+        "Contenu ≥ 300 mots — 269 mots (7/13)"
       ]
     },
     {
       "slug": "rembourse-40-secondes-credit-tunakula",
-      "score": 62,
-      "grade": "C",
+      "score": 94,
+      "grade": "A",
       "issues": [
-        "Mot-clé principal dans le titre — « remboursement » (0/15)",
-        "Mot-clé principal dans la description — « remboursement » (0/10)",
-        "Contenu ≥ 300 mots — 89 mots (0/13)"
+        "Contenu ≥ 300 mots — 292 mots (7/13)"
+      ]
+    },
+    {
+      "slug": "restaurants-gardez-100-du-prix",
+      "score": 94,
+      "grade": "A",
+      "issues": [
+        "Contenu ≥ 300 mots — 271 mots (7/13)"
+      ]
+    },
+    {
+      "slug": "devenir-wewa-70-pourcent",
+      "score": 94,
+      "grade": "A",
+      "issues": [
+        "Contenu ≥ 300 mots — 276 mots (7/13)"
       ]
     },
     {
       "slug": "parraine-un-ami-gagne-du-credit",
-      "score": 62,
-      "grade": "C",
+      "score": 94,
+      "grade": "A",
       "issues": [
-        "Mot-clé principal dans le titre — « parrainage » (0/15)",
-        "Mot-clé principal dans la description — « parrainage » (0/10)",
-        "Contenu ≥ 300 mots — 98 mots (0/13)"
-      ]
-    },
-    {
-      "slug": "regle-5-km-plat-chaud",
-      "score": 52,
-      "grade": "D",
-      "issues": [
-        "Mot-clé principal dans le titre — « 5 km » (0/15)",
-        "Mot-clé principal dans la description — « 5 km » (0/10)",
-        "Mot-clé dans l'introduction — « 5 km » (0/10)",
-        "Contenu ≥ 300 mots — 120 mots (0/13)"
+        "Contenu ≥ 300 mots — 293 mots (7/13)"
       ]
     }
   ]
