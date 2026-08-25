@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { extractTkRef } from "@nzela/stackfood-client";
 
 /**
@@ -26,6 +27,15 @@ export interface ParsedPayment {
   payer?: string;
   /** NZELA order ref quoted in the payment reference. */
   tkRef?: string;
+  /**
+   * Content fingerprint of the raw confirmation (operator + body). Replay
+   * protection burns this so the SAME forwarded SMS can never verify twice —
+   * even when the operator format carries no transaction id to burn. Two
+   * genuinely distinct payments have distinct bodies (timestamps/txn), so
+   * this never blocks a real second payment. Always set by `parseSms`;
+   * optional only so hand-built payments in tests need not compute it.
+   */
+  dedupHash?: string;
 }
 
 interface OperatorPattern {
@@ -105,11 +115,16 @@ export function parseSms(body: string, sender = ""): ParsedPayment | undefined {
   const txnMatch = pattern.transactionId.exec(body);
   const payerMatch = pattern.payer.exec(body);
 
+  const dedupHash = createHash("sha256")
+    .update(`${pattern.operator}\n${body.trim()}`)
+    .digest("hex");
+
   return {
     operator: pattern.operator,
     amountFc,
     transactionId: txnMatch?.[1] ?? txnMatch?.[2] ?? undefined,
     payer: payerMatch?.[1]?.trim(),
     tkRef: extractTkRef(body),
+    dedupHash,
   };
 }

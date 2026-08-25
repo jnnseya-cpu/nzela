@@ -20,16 +20,43 @@ export type MatchResult =
   | { matched: true; order: OpenOrder; exact: boolean }
   | {
       matched: false;
-      reason: "no-ref" | "unknown-ref" | "amount-mismatch" | "invalid-amount";
+      reason:
+        | "no-ref"
+        | "unknown-ref"
+        | "amount-mismatch"
+        | "underpaid"
+        | "invalid-amount";
     };
 
-/** Small tolerance for operator rounding on the FC amount. */
-const AMOUNT_TOLERANCE_FC = 100;
+/**
+ * Amount tolerance is ASYMMETRIC on purpose. Underpayment is a direct loss
+ * to us, so the default forgives NONE of it — a payment short of the due
+ * amount is never auto-matched, it escalates to ops (FR-P4). Overpayment is
+ * the customer's choice and costs us nothing, so a small band is accepted so
+ * a rounded-up transfer still matches. Ops can widen `underpayFc` from
+ * config if real operator behaviour ever demands it — it is a money
+ * decision, made explicitly, never a silent default.
+ */
+export interface MatchTolerance {
+  /** Max FC a payment may fall SHORT of the due amount and still match. */
+  underpayFc: number;
+  /** Max FC a payment may EXCEED the due amount and still match. */
+  overpayFc: number;
+}
+
+export const DEFAULT_TOLERANCE: MatchTolerance = { underpayFc: 0, overpayFc: 100 };
+
+/** Does the paid amount clear the due amount within the asymmetric band? */
+function amountOk(dueFc: number, paidFc: number, t: MatchTolerance): boolean {
+  const diff = paidFc - dueFc; // <0 = underpaid, >0 = overpaid
+  return diff >= -t.underpayFc && diff <= t.overpayFc;
+}
 
 export function matchPayment(
   payment: ParsedPayment,
   openOrders: readonly OpenOrder[],
   ledger: LedgerSink,
+  tolerance: MatchTolerance = DEFAULT_TOLERANCE,
 ): MatchResult {
   const log = (purpose: string, tkRef?: string) =>
     ledger.write({
@@ -50,10 +77,10 @@ export function matchPayment(
   }
 
   if (!payment.tkRef) {
-    // No TK ref in the reference — try exact-amount fallback before giving
-    // up: a single open order with this exact total is an unambiguous match.
-    const byAmount = openOrders.filter(
-      (o) => Math.abs(o.totalFc - payment.amountFc) <= AMOUNT_TOLERANCE_FC,
+    // No TK ref — try amount fallback: a single open order this payment
+    // fully covers (no underpay) is an unambiguous match.
+    const byAmount = openOrders.filter((o) =>
+      amountOk(o.totalFc, payment.amountFc, tolerance),
     );
     if (byAmount.length === 1) {
       const order = byAmount[0]!;
@@ -70,12 +97,14 @@ export function matchPayment(
     return { matched: false, reason: "unknown-ref" };
   }
 
-  if (Math.abs(order.totalFc - payment.amountFc) > AMOUNT_TOLERANCE_FC) {
+  if (!amountOk(order.totalFc, payment.amountFc, tolerance)) {
+    const underpaid = payment.amountFc < order.totalFc;
     log(
-      `SMS ${payment.tkRef}: amount ${payment.amountFc} FC ≠ due ${order.totalFc} FC`,
+      `SMS ${payment.tkRef}: ${underpaid ? "UNDERPAID" : "amount"} ${payment.amountFc} FC vs due ${order.totalFc} FC`,
       order.tkRef,
     );
-    return { matched: false, reason: "amount-mismatch" };
+    // Underpayment must never silently settle an order — it is a loss.
+    return { matched: false, reason: underpaid ? "underpaid" : "amount-mismatch" };
   }
 
   log(`payment matched to ${order.tkRef}`, order.tkRef);

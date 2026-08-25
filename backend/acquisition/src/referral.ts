@@ -22,6 +22,13 @@ export interface ReferralConfig {
   maxRewardsPerReferrer: number;
   /** Minimum order value (FC) for a referral to qualify (no 1 FC gaming). */
   minQualifyingOrderFc: number;
+  /**
+   * Require the qualifying order to be SETTLED (delivered & past the refund
+   * window) before paying rewards. Default true — this closes the
+   * pay→reward→refund farm: without it a fraudster could place a qualifying
+   * order, trigger both credits, then cancel/refund and keep the credit.
+   */
+  rewardRequiresSettlement: boolean;
 }
 
 export const DEFAULT_REFERRAL: ReferralConfig = {
@@ -29,6 +36,7 @@ export const DEFAULT_REFERRAL: ReferralConfig = {
   refereeRewardFc: 2000,
   maxRewardsPerReferrer: 20,
   minQualifyingOrderFc: 5000,
+  rewardRequiresSettlement: true,
 };
 
 /** Deterministic, human-readable referral code from a wa_id. */
@@ -56,10 +64,12 @@ export interface QualifyingOrder {
   paid: boolean;
   /** True only for a customer's very first paid order. */
   isFirstPaidOrder: boolean;
+  /** Delivered and past the refund window — safe to pay rewards against. */
+  settled?: boolean;
 }
 
 export type RewardOutcome =
-  | { rewarded: false; reason: "not-referred" | "not-first-order" | "unpaid" | "below-minimum" | "referrer-cap" | "unknown-referrer" | "self-referral" }
+  | { rewarded: false; reason: "not-referred" | "not-first-order" | "unpaid" | "below-minimum" | "referrer-cap" | "unknown-referrer" | "self-referral" | "not-settled" | "already-rewarded" }
   | {
       rewarded: true;
       referrerWaId: string;
@@ -82,6 +92,12 @@ export class ReferralEngine {
     private readonly resolveCode: (code: string) => string | undefined,
     /** How many rewards this referrer has already earned this period. */
     private readonly rewardsEarned: (waId: string) => number,
+    /**
+     * Per-order idempotency guard so one order can never reward twice
+     * (defends against replayed payment callbacks). In-memory by default;
+     * inject a Redis/PG-backed set in production.
+     */
+    private readonly rewardedRefs: { has(tkRef: string): boolean; add(tkRef: string): void } = new Set<string>(),
   ) {}
 
   /**
@@ -96,6 +112,16 @@ export class ReferralEngine {
     if (order.amountFc < this.config.minQualifyingOrderFc) {
       return this.log({ rewarded: false, reason: "below-minimum" });
     }
+    // Settlement gate — never reward against an order that can still be
+    // refunded (closes the pay→reward→refund farm).
+    if (this.config.rewardRequiresSettlement && !order.settled) {
+      return this.log({ rewarded: false, reason: "not-settled" });
+    }
+    // Idempotency — a given order rewards at most once, even if the paid
+    // callback fires again.
+    if (this.rewardedRefs.has(order.tkRef)) {
+      return this.log({ rewarded: false, reason: "already-rewarded" });
+    }
     const referrerWaId = this.resolveCode(referredByCode);
     if (!referrerWaId) return this.log({ rewarded: false, reason: "unknown-referrer" });
     if (referrerWaId === order.waId) return this.log({ rewarded: false, reason: "self-referral" });
@@ -103,6 +129,9 @@ export class ReferralEngine {
       return this.log({ rewarded: false, reason: "referrer-cap" });
     }
 
+    // Mark BEFORE issuing so a concurrent replay can't slip a second reward
+    // in between the two credit calls.
+    this.rewardedRefs.add(order.tkRef);
     await this.credit.issueCredit(referrerWaId, this.config.referrerRewardFc, `parrainage ${order.tkRef}`);
     await this.credit.issueCredit(order.waId, this.config.refereeRewardFc, `bienvenue ${order.tkRef}`);
 

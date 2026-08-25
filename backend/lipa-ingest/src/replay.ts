@@ -1,6 +1,12 @@
 import type { LedgerSink } from "@nzela/ledger";
 import type { ParsedPayment } from "./parsers.js";
-import { matchPayment, type MatchResult, type OpenOrder } from "./matcher.js";
+import {
+  matchPayment,
+  DEFAULT_TOLERANCE,
+  type MatchResult,
+  type MatchTolerance,
+  type OpenOrder,
+} from "./matcher.js";
 
 /**
  * Replay protection — KODA engine doctrine: a code used once is dead
@@ -34,6 +40,7 @@ export type VerifiedMatch =
 
 const refKey = (tkRef: string) => `ref:${tkRef}`;
 const txnKey = (operator: string, txnId: string) => `txn:${operator}:${txnId}`;
+const contentKey = (dedupHash: string) => `content:${dedupHash}`;
 
 /**
  * matchPayment wrapped with the replay index. On a successful match, both
@@ -45,12 +52,18 @@ export function verifyPayment(
   openOrders: readonly OpenOrder[],
   index: ReplayIndex,
   ledger: LedgerSink,
+  tolerance: MatchTolerance = DEFAULT_TOLERANCE,
 ): VerifiedMatch {
   const keys: string[] = [];
   if (payment.tkRef) keys.push(refKey(payment.tkRef));
   if (payment.transactionId) {
     keys.push(txnKey(payment.operator, payment.transactionId));
   }
+  // Content fingerprint: burns the exact forwarded SMS so it can never
+  // verify twice, even for operator formats that carry no transaction id.
+  // This is what stops one real (or screenshotted) amount-only confirmation
+  // being replayed to settle several same-amount orders.
+  if (payment.dedupHash) keys.push(contentKey(payment.dedupHash));
 
   const replayed = keys.find((k) => index.has(k));
   if (replayed) {
@@ -65,7 +78,7 @@ export function verifyPayment(
     return { matched: false, replay: true, reason: "replayed-reference" };
   }
 
-  const result = matchPayment(payment, openOrders, ledger);
+  const result = matchPayment(payment, openOrders, ledger, tolerance);
   if (result.matched) {
     keys.push(refKey(result.order.tkRef));
     for (const key of new Set(keys)) index.add(key);

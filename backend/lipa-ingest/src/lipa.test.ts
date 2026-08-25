@@ -55,13 +55,31 @@ describe("payment ↔ order matching (FR-P1/P4)", () => {
     expect(ledger.events[0]).toMatchObject({ agent: "lipa", costUsd: 0.0002 });
   });
 
-  it("flags amount mismatches instead of force-matching", () => {
+  it("flags an underpayment instead of force-matching (never a silent loss)", () => {
     const result = matchPayment(
       { operator: "mpesa", amountFc: 10000, tkRef: "TK-347" },
       orders,
       new MemoryLedger(),
     );
-    expect(result).toMatchObject({ matched: false, reason: "amount-mismatch" });
+    expect(result).toMatchObject({ matched: false, reason: "underpaid" });
+  });
+
+  it("rejects a small underpayment (default underpay tolerance = 0)", () => {
+    const result = matchPayment(
+      { operator: "mpesa", amountFc: 22540 - 50, tkRef: "TK-347" },
+      orders,
+      new MemoryLedger(),
+    );
+    expect(result).toMatchObject({ matched: false, reason: "underpaid" });
+  });
+
+  it("accepts a small overpayment within the band (no loss to us)", () => {
+    const result = matchPayment(
+      { operator: "mpesa", amountFc: 22540 + 80, tkRef: "TK-347" },
+      orders,
+      new MemoryLedger(),
+    );
+    expect(result).toMatchObject({ matched: true, exact: true });
   });
 
   it("falls back to a unique exact amount when the customer forgot the ref", () => {

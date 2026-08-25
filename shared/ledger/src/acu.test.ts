@@ -143,3 +143,42 @@ describe("BudgetMiddleware ACU gating — no free AI action", () => {
     expect(ledger.events.find((e) => e.type === "ai")?.costUsd).toBeCloseTo(0.005);
   });
 });
+
+describe("ACU wallet — money-safety guards", () => {
+  it("rejects non-positive / non-integer / non-finite top-ups", () => {
+    const w = new InMemoryAcuWallet();
+    expect(() => w.topUp("acct", 0)).toThrow(RangeError);
+    expect(() => w.topUp("acct", -100)).toThrow(RangeError);
+    expect(() => w.topUp("acct", 1.5)).toThrow(RangeError);
+    expect(() => w.topUp("acct", NaN)).toThrow(RangeError);
+    expect(() => w.topUp("acct", Infinity)).toThrow(RangeError);
+    expect(w.balance("acct")).toBe(0); // nothing was written
+  });
+
+  it("refuses a NaN reservation instead of minting a hold", () => {
+    const w = new InMemoryAcuWallet({ acct: 1000 });
+    const res = w.reserve("acct", NaN);
+    expect(res.ok).toBe(false);
+    expect(res.reserved).toBe(0);
+    expect(w.balance("acct")).toBe(1000); // balance intact, not NaN
+  });
+
+  it("cannot mint free ACU by double-releasing a hold", () => {
+    const w = new InMemoryAcuWallet({ acct: 100 });
+    const res = w.reserve("acct", 40);
+    expect(res.ok).toBe(true);
+    expect(w.balance("acct")).toBe(60);
+    w.release("acct", 40);
+    w.release("acct", 40); // stray second release must not inflate balance
+    expect(w.balance("acct")).toBe(100); // never exceeds the real balance
+  });
+
+  it("never drives a balance negative on a stray double-commit", () => {
+    const w = new InMemoryAcuWallet({ acct: 50 });
+    const res = w.reserve("acct", 50);
+    expect(res.ok).toBe(true);
+    w.commit("acct", 50, 50);
+    w.commit("acct", 50, 50); // stray replay
+    expect(w.balance("acct")).toBe(0); // clamped, not negative
+  });
+});

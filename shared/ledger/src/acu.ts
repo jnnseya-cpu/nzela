@@ -76,7 +76,16 @@ export class InMemoryAcuWallet implements AcuWallet {
     }
   }
 
+  /**
+   * Credit ACUs to an account. Top-ups are money-backed, so the amount must
+   * be a positive, finite integer — a NaN/negative/fractional value would
+   * corrupt the balance (and NaN silently defeats every later comparison),
+   * so it is rejected loudly rather than written.
+   */
   topUp(account: string, acu: number): void {
+    if (!Number.isInteger(acu) || acu <= 0) {
+      throw new RangeError(`topUp requires a positive integer ACU, got ${acu}`);
+    }
     this.balances.set(account, (this.balances.get(account) ?? 0) + acu);
   }
 
@@ -86,7 +95,9 @@ export class InMemoryAcuWallet implements AcuWallet {
 
   reserve(account: string, maxAcu: number): AcuReservation {
     const available = this.balance(account);
-    if (maxAcu <= 0 || available < maxAcu) {
+    // A non-finite or non-positive request is refused: NaN must never pass
+    // the balance check (NaN comparisons are always false) and mint a hold.
+    if (!Number.isFinite(maxAcu) || maxAcu <= 0 || available < maxAcu) {
       return { ok: false, reserved: 0, balanceAfter: available };
     }
     this.held.set(account, (this.held.get(account) ?? 0) + maxAcu);
@@ -94,13 +105,16 @@ export class InMemoryAcuWallet implements AcuWallet {
   }
 
   commit(account: string, reserved: number, actualAcu: number): void {
-    const spend = Math.min(Math.max(actualAcu, 0), reserved);
-    this.held.set(account, (this.held.get(account) ?? 0) - reserved);
-    this.balances.set(account, (this.balances.get(account) ?? 0) - spend);
+    const spend = Math.min(Math.max(actualAcu, 0), Math.max(reserved, 0));
+    // Clamp at 0: a stray double-commit/release must never drive `held`
+    // negative (which would inflate available balance = free ACU) or push a
+    // balance below zero.
+    this.held.set(account, Math.max(0, (this.held.get(account) ?? 0) - reserved));
+    this.balances.set(account, Math.max(0, (this.balances.get(account) ?? 0) - spend));
   }
 
   release(account: string, reserved: number): void {
-    this.held.set(account, (this.held.get(account) ?? 0) - reserved);
+    this.held.set(account, Math.max(0, (this.held.get(account) ?? 0) - reserved));
   }
 }
 

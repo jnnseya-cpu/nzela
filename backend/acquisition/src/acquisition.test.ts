@@ -19,6 +19,7 @@ const order = (over: Partial<QualifyingOrder>): QualifyingOrder => ({
   amountFc: 17000,
   paid: true,
   isFirstPaidOrder: true,
+  settled: true,
   ...over,
 });
 
@@ -83,6 +84,22 @@ describe("referral rewards — only real paid first orders (abuse-proof)", () =>
     const eng = new ReferralEngine(DEFAULT_REFERRAL, ledger,
       { async issueCredit() {} }, () => undefined, () => 0);
     expect(await eng.onOrderPaid(order({}), "TKZZZZZ")).toMatchObject({ rewarded: false, reason: "unknown-referrer" });
+  });
+
+  it("does NOT reward until the order is settled (blocks pay→reward→refund farming)", async () => {
+    const { eng, issued } = engine();
+    const out = await eng.onOrderPaid(order({ settled: false }), "TK0047A");
+    expect(out).toMatchObject({ rewarded: false, reason: "not-settled" });
+    expect(issued).toEqual([]);
+  });
+
+  it("rewards a paid order at most once even if the callback replays", async () => {
+    const { eng, issued } = engine();
+    const first = await eng.onOrderPaid(order({}), "TK0047A");
+    expect(first.rewarded).toBe(true);
+    const replay = await eng.onOrderPaid(order({}), "TK0047A");
+    expect(replay).toMatchObject({ rewarded: false, reason: "already-rewarded" });
+    expect(issued.length).toBe(2); // two credits from the FIRST call only
   });
 });
 
