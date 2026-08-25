@@ -46,6 +46,9 @@ importers:
 
   backend/gateway:
     dependencies:
+      '@nzela/analytics':
+        specifier: workspace:*
+        version: link:../analytics
       '@nzela/landmark-graph':
         specifier: workspace:*
         version: link:../../shared/landmark-graph

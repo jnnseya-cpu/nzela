@@ -4,6 +4,7 @@ import type { StackFoodOrderStatus } from "@nzela/stackfood-client";
 import { Router, type SessionPhase } from "./router.js";
 import { renderMilestone } from "./status-mapping.js";
 import { verifyWebhookSignature } from "./webhook.js";
+import { dispatch, type DispatchDeps } from "./dispatch.js";
 
 /**
  * NZELA Gateway — the deployable HTTP service. Dependency-free (node:http)
@@ -35,6 +36,13 @@ export interface GatewayConfig {
   phaseFor?: (waId: string) => SessionPhase;
   /** TK ref lookup for an order id (nzela_order_map). */
   tkRefFor?: (orderId: number) => string | undefined;
+  /**
+   * Conversation dispatch providers (restaurants/menu/cart/checkout/status,
+   * LLM agents, analytics). All optional — absent providers degrade to safe
+   * canned replies so the order loop always answers. `sender`/`ledger` are
+   * supplied by the gateway itself.
+   */
+  dispatch?: Omit<DispatchDeps, "sender" | "ledger">;
 }
 
 async function readBody(req: IncomingMessage): Promise<string> {
@@ -90,11 +98,13 @@ export function createGateway(config: GatewayConfig): Server {
             },
             phaseFor(waId),
           );
-          if (decision.kind === "firewall-block") {
-            await config.sender.sendText(waId, decision.reply);
-          }
-          // deterministic actions & agent escalations are dispatched by the
-          // conversation service; the decision is returned for it below.
+          // Every decision now gets a reply — deterministic actions, agent
+          // escalations and firewall blocks all flow through dispatch.
+          await dispatch(decision, waId, {
+            sender: config.sender,
+            ledger,
+            ...config.dispatch,
+          });
         }
         return json(200, { received: messages.length });
       }

@@ -21,7 +21,7 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 | `shared/stackfood-client` | StackFood REST client (retry/timeout), idempotency, TK refs, auth provisioning, idempotent Order Adapter, category registry, in-process integration test | ✅ | 6 files |
 | `shared/landmark-graph` | Landmark addressing→StackFood fields, geolocation distance, 5 km gates + rain mode, zone tariffs | ✅ | 2 files |
 | `shared/security` | Humanity gate, non-human-instruction firewall, WAF/threat detection, Sentinelle agent (ACU-gated, fail-safe) | ✅ | 1 file |
-| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, **server-authoritative pricing (`pricing.ts`): menu-priced quotes + payload tamper guard** | ✅ | 6 files |
+| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, server-authoritative pricing (`pricing.ts`), **conversation dispatch (`dispatch.ts`): every decision now gets a reply — deterministic-first with injected providers + agent fallbacks + InitiateCheckout signal** | ✅ | 7 files |
 | `backend/lipa-ingest` | SMS Ledger Bridge: 4-operator parsers, matcher, replay protection, ingest HTTP endpoint. **Money-hardened: no-underpayment asymmetric tolerance; content-fingerprint replay burn (no double-credit even without a txn id)** | ✅ | 4 files |
 | `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), **per-post SEO score 0–100 (deterministic, weighted breakdown)** | ✅ | 2 files |
 | `backend/growth-engine` | Partner marketing suite — 5 deterministic analytics tools + 5 LLM generators (budget+ACU) | ✅ | 1 file |
@@ -85,21 +85,23 @@ place instead of scattered. None is code — each needs Justin's call.
 | **D-4** | KODA Master Spec v2.0 — commit it into the repo or mark KODA_Integration_Notes out-of-scope for launch. | The notes doc references a file not in the repo. | KODA_Integration_Notes |
 | **D-5** | Escalation calls: TTS telephony provider, or confirm manual ops calls for the pilot. | Pilot can run manual; only matters at scale. | GO_LIVE_CHECKLIST D-2 |
 
-## Biggest genuinely-unfinished code gap (not a stub, a missing layer)
+## Conversation/dispatch layer — BUILT (2026-08-25)
 
-**The gateway has no conversation/dispatch layer.**
-`backend/gateway/src/server.ts:80-98` computes a router decision for every
-inbound message but only *acts* on `firewall-block`; deterministic UI
-actions and agent escalations are computed and then discarded (deferred to a
-"conversation service" that does not exist in the repo). Net effect: a
-normal ordering message currently produces no reply. Everything else the
-audit found is either an injected port with an in-memory impl (works in
-tests, needs a real backend at deploy) or an explicitly Phase-2 LLM tier.
-This dispatch layer is the one place a whole layer is *referenced but
-absent* — building it (deterministic-only, no LLM keys needed) is the
-highest-value next code task, but it is architecturally significant and
-depends on D-1 + the WhatsApp Cloud API adapter, so it is scoped, not
-silently built.
+The gateway previously computed a router decision per inbound message but
+only *acted* on `firewall-block`, so a normal ordering message got no reply.
+`backend/gateway/src/dispatch.ts` closes that: every decision
+(deterministic actions, agent escalations, firewall blocks) is now rendered
+into a reply and sent. Deterministic-first — restaurants/menu/cart/checkout/
+status come from injected providers with safe canned fallbacks, so the order
+loop always answers with no LLM keys and no live number. Agent escalations
+call the (Phase-2) LLM agent when wired, else degrade to a deterministic
+nudge; nothing throws to the loop. A server-side `InitiateCheckout` analytics
+signal fires on checkout.
+
+**Still needed at deploy (not code):** the WhatsApp Cloud API `sender`
+adapter + live number (D-1), the LLM agents (Phase 2), and the production
+data providers (StackFood catalog, session cart, `priceOrder`-built checkout
+récap) wired into `GatewayConfig.dispatch`.
 
 ## Key documents (`docs/`)
 

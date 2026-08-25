@@ -58,6 +58,22 @@ describe("gateway HTTP service", () => {
     expect(sent.at(-1)!.body).toContain("nourriture");
   });
 
+  it("now REPLIES to a deterministic ordering message (order loop answers)", async () => {
+    const before = sent.length;
+    const res = await fetch(`${base}/wa/webhook`, {
+      method: "POST",
+      body: JSON.stringify({
+        entry: [{ changes: [{ value: { messages: [
+          { from: "243810000047", type: "text", text: { body: "nakolia" } },
+        ] } }] }],
+      }),
+    });
+    expect(res.status).toBe(200);
+    // Before the dispatch layer, this produced NO reply. Now it must.
+    expect(sent.length).toBe(before + 1);
+    expect(sent.at(-1)).toMatchObject({ waId: "+243810000047" });
+  });
+
   it("rejects StackFood webhooks with a bad signature", async () => {
     const res = await fetch(`${base}/hooks/stackfood`, {
       method: "POST",
