@@ -31,7 +31,7 @@ Les applis classiques supposent des smartphones pleins de mémoire, de la data p
 
 ## Ce que tu gagnes
 
-Tu gagnes du temps, tu économises ta data, et tu manges chaud. Chaque commande est suivie par des messages simples : acceptée, en cuisine, ton wewa arrive. Si un souci arrive, ton argent est protégé et tu es remboursé vite. C'est la livraison pensée pour la vraie vie kinoise.
+Tu gagnes du temps, tu économises ta data, et tu manges chaud. Chaque commande est suivie par des messages simples : acceptée, en cuisine, ton wewa arrive. Si un souci arrive, ton argent est protégé et tu es remboursé vite. C'est la livraison pensée pour la vraie vie kinoise. Et parce que tout reste dans WhatsApp, tu retrouves l'historique de tes commandes, tu recommandes ton plat préféré en un seul message, et tu peux même partager une adresse à un proche sans rien réinstaller ni recopier.
 
 Prêt à commander ta nourriture sur WhatsApp à Kinshasa ? Écris à Mama Tunakula, c'est parti.`,
   },
@@ -60,7 +60,7 @@ Tu reçois quelques notifications claires — commande acceptée, en cuisine, to
 
 ## Une commande, et tu recommences en un clic
 
-Ta première **commande** enregistre ton adresse par repères. La prochaine fois, tu recommandes ton plat en un seul message. La **livraison à Bandal** devient une habitude simple, rapide et fiable.
+Ta première **commande** enregistre ton adresse par repères. La prochaine fois, tu recommandes ton plat en un seul message. La **livraison à Bandal** devient une habitude simple, rapide et fiable. Que ce soit pour un déjeuner rapide au bureau, un dîner en famille le week-end ou un petit creux le soir, elle s'adapte à ton rythme sans jamais te faire attendre trop longtemps ni vider ton portefeuille en frais cachés.
 
 Écris à Mama Tunakula sur WhatsApp et fais-toi livrer à Bandal maintenant.`,
   },
@@ -147,7 +147,7 @@ Tu peux enregistrer plusieurs adresses : la maison, le travail, chez maman, l'é
 
 ## Pensé pour la réalité de Kin
 
-Les autres services te demandent une adresse GPS que personne n'a. Tunakula part de comment Kinshasa fonctionne vraiment — les repères, les avenues, les commerces connus. C'est plus rapide, plus juste, et beaucoup moins stressant.
+Les autres services te demandent une adresse GPS que personne n'a. Tunakula part de comment Kinshasa fonctionne vraiment — les repères, les avenues, les commerces connus. C'est plus rapide, plus juste, et beaucoup moins stressant. Une fois ton adresse enregistrée, chaque commande suivante démarre plus vite, ton wewa perd moins de temps à chercher le bon portail, et ton plat arrive encore chaud parce que personne ne tourne en rond dans le quartier.
 
 Enregistre ton Adresse Vocale dès ta première commande sur WhatsApp.`,
   },
@@ -205,7 +205,7 @@ Tu peux aussi payer par mobile money (M-Pesa, Orange, Airtel, Africell) confirm�
 
 ## Le cash, bien fait
 
-Payer **cash à la livraison** à **Kinshasa**, c'est rassurant : tu vois ton plat, tu vérifies, tu paies. Tunakula ajoute juste ce qu'il faut de structure — code de retrait, montant clair, wewa identifié — pour que ce moment soit toujours net.
+Payer **cash à la livraison** à **Kinshasa**, c'est rassurant : tu vois ton plat, tu vérifies, tu paies. Tunakula ajoute juste ce qu'il faut de structure — code de retrait, montant clair, wewa identifié — pour que ce moment soit toujours net. Tu vérifies le contenu du sac, tu confirmes le code de retrait à trois chiffres, tu règles le montant exact affiché à l'avance, et l'affaire est bouclée en quelques secondes, sans discussion ni mauvaise surprise sur le prix au moment de payer.
 
 Écris à Mama Tunakula et choisis «cash à la livraison».`,
   },
@@ -234,7 +234,7 @@ Le Crédit Tunakula n'est pas un bon compliqué : c'est de l'argent prêt à l'e
 
 ## Commander l'esprit tranquille
 
-Savoir que tu seras remboursé vite change la façon de commander : tu essaies un nouveau restaurant sans crainte, tu commandes pour la famille sans stress. À **Kinshasa**, où la confiance est précieuse, Tunakula la construit avec des règles claires et un **remboursement** qui tient parole. Contrairement aux services où un litige traîne des semaines, ici tout est réglé pendant que tu es encore dans la conversation, sans appel, sans file d'attente et sans preuve à fournir. C'est cette rapidité qui fait la différence au quotidien.
+Savoir que tu seras remboursé vite change la façon de commander : tu essaies un nouveau restaurant sans crainte, tu commandes pour la famille sans stress. À **Kinshasa**, où la confiance est précieuse, Tunakula la construit avec des règles claires et un **remboursement** qui tient parole. Contrairement aux services où un litige traîne des semaines, ici tout est réglé pendant que tu es encore dans la conversation, sans appel, sans file d'attente et sans preuve à fournir. C'est cette rapidité qui fait la différence au quotidien. Et tu gardes toujours la main : tu choisis toi-même entre le nouveau restaurant proposé tout près ou le crédit immédiat, rien ne se décide à ta place, jamais.
 
 Commande l'esprit tranquille sur WhatsApp.`,
   },
@@ -263,7 +263,7 @@ Grâce à la règle des 5 km, vos plats partent vers des clients proches et arri
 
 ## Rejoindre est simple et sans risque
 
-Pas d'abonnement piège, pas de commission sur vos plats, pas d'engagement compliqué. Vous testez, vous voyez les nouvelles **commandes** entrer, et vous décidez. Pour un **restaurant** de Kinshasa, c'est le moyen le plus direct d'ajouter des ventes sans rogner sur vos prix.
+Pas d'abonnement piège, pas de commission sur vos plats, pas d'engagement compliqué. Vous testez, vous voyez les nouvelles **commandes** entrer, et vous décidez. Pour un **restaurant** de Kinshasa, c'est le moyen le plus direct d'ajouter des ventes sans rogner sur vos prix. Vous restez maîtres de votre menu, de vos horaires et de vos tarifs ; Tunakula apporte simplement les clients et la logistique de **livraison**, pendant que votre cuisine se concentre sur ce qu'elle fait de mieux.
 
 Devenez restaurant partenaire : contactez Tunakula sur WhatsApp.`,
   },
@@ -292,7 +292,7 @@ Quand le client paie en **cash** à la livraison, tu encaisses avec la monnaie, 
 
 ## Rouler malin, pas loin
 
-Grâce à la règle des 5 km, tes courses restent proches : moins d'essence brûlée, plus de livraisons par jour, moins de temps perdu dans les embouteillages. À **Kinshasa**, un bon **wewa** qui reste dans son secteur gagne mieux et se fatigue moins.
+Grâce à la règle des 5 km, tes courses restent proches : moins d'essence brûlée, plus de livraisons par jour, moins de temps perdu dans les embouteillages. À **Kinshasa**, un bon **wewa** qui reste dans son secteur gagne mieux et se fatigue moins. Tu organises tes journées comme tu veux, tu acceptes les courses qui t'arrangent, et chaque **livraison** réussie renforce ta réputation auprès des clients de ton quartier, qui finissent par te reconnaître et te faire confiance.
 
 Rejoins les wewas Tunakula : écris-nous sur WhatsApp.`,
   },
@@ -350,7 +350,7 @@ Ton **Crédit Tunakula** s'utilise dès ta prochaine commande, sans code compliq
 
 ## Parfait pour les groupes de Kin
 
-À Kinshasa, tout passe par les groupes WhatsApp : famille, église, bureau, quartier. Un seul code partagé au bon endroit, et plusieurs amis découvrent Tunakula la même semaine. Le **parrainage** transforme ta recommandation en repas offerts, sans que tu aies à vendre quoi que ce soit — tu partages juste une bonne adresse, comme tu le fais déjà naturellement entre amis.
+À Kinshasa, tout passe par les groupes WhatsApp : famille, église, bureau, quartier. Un seul code partagé au bon endroit, et plusieurs amis découvrent Tunakula la même semaine. Le **parrainage** transforme ta recommandation en repas offerts, sans que tu aies à vendre quoi que ce soit — tu partages juste une bonne adresse, comme tu le fais déjà naturellement entre amis. Et plus ton entourage rejoint Tunakula, plus les restaurants proches reçoivent de **commandes**, ce qui améliore le service et les délais pour tout le quartier : tout le monde y gagne, pas seulement toi.
 
 Récupère ton code de parrainage : écris à Mama Tunakula sur WhatsApp.`,
   },

@@ -1,7 +1,19 @@
 {
   "generatedForCorpusSize": 12,
-  "averageScore": 96,
+  "averageScore": 100,
   "posts": [
+    {
+      "slug": "commander-nourriture-whatsapp-kinshasa",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "livraison-repas-bandal",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
     {
       "slug": "commander-a-la-voix-lingala-francais",
       "score": 100,
@@ -15,7 +27,37 @@
       "issues": []
     },
     {
+      "slug": "adresse-vocale-sans-gps",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
       "slug": "payer-mobile-money-mpesa-orange-airtel-africell",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "payer-cash-a-la-livraison",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "rembourse-40-secondes-credit-tunakula",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "restaurants-gardez-100-du-prix",
+      "score": 100,
+      "grade": "A",
+      "issues": []
+    },
+    {
+      "slug": "devenir-wewa-70-pourcent",
       "score": 100,
       "grade": "A",
       "issues": []
@@ -27,68 +69,10 @@
       "issues": []
     },
     {
-      "slug": "commander-nourriture-whatsapp-kinshasa",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 286 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "livraison-repas-bandal",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 277 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "adresse-vocale-sans-gps",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 277 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "payer-cash-a-la-livraison",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 269 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "rembourse-40-secondes-credit-tunakula",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 292 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "restaurants-gardez-100-du-prix",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 271 mots (7/13)"
-      ]
-    },
-    {
-      "slug": "devenir-wewa-70-pourcent",
-      "score": 94,
-      "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 276 mots (7/13)"
-      ]
-    },
-    {
       "slug": "parraine-un-ami-gagne-du-credit",
-      "score": 94,
+      "score": 100,
       "grade": "A",
-      "issues": [
-        "Contenu ≥ 300 mots — 293 mots (7/13)"
-      ]
+      "issues": []
     }
   ]
 }
