@@ -46,6 +46,8 @@ export interface AcuReservation {
  * gives the same contract for tests and the deterministic core.
  */
 export interface AcuWallet {
+  /** Credit ACU (a positive integer) — money-backed top-up. */
+  topUp(account: string, acu: number): void;
   /** Reserve up to `maxAcu`; returns ok=false if balance can't cover it. */
   reserve(account: string, maxAcu: number): AcuReservation;
   /** Commit actual usage ≤ reserved; releases the unused hold. */

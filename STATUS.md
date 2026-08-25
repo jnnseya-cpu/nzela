@@ -17,11 +17,11 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 
 | Package | Purpose | Status | Tests |
 |---|---|---|---|
-| `shared/ledger` | Ledger events, 8→11 agent registry + hard budgets, budget middleware, ACU wallet+gating, per-order cost meters, all-in economics (×2 rule) | ✅ | 3 files |
+| `shared/ledger` | Ledger events, 8→11 agent registry + hard budgets, budget middleware, ACU wallet+gating, per-order cost meters, all-in economics (×2 rule), **idempotent money-in funding: ACU top-up + subscription-period grant** | ✅ | 4 files |
 | `shared/stackfood-client` | StackFood REST client (retry/timeout), idempotency, TK refs, auth provisioning, idempotent Order Adapter, category registry, in-process integration test | ✅ | 6 files |
 | `shared/landmark-graph` | Landmark addressing→StackFood fields, geolocation distance, 5 km gates + rain mode, zone tariffs | ✅ | 2 files |
 | `shared/security` | Humanity gate, non-human-instruction firewall, WAF/threat detection, Sentinelle agent (ACU-gated, fail-safe) | ✅ | 1 file |
-| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder | ✅ | 5 files |
+| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, **server-authoritative pricing (`pricing.ts`): menu-priced quotes + payload tamper guard** | ✅ | 6 files |
 | `backend/lipa-ingest` | SMS Ledger Bridge: 4-operator parsers, matcher, replay protection, ingest HTTP endpoint. **Money-hardened: no-underpayment asymmetric tolerance; content-fingerprint replay burn (no double-credit even without a txn id)** | ✅ | 4 files |
 | `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), **per-post SEO score 0–100 (deterministic, weighted breakdown)** | ✅ | 2 files |
 | `backend/growth-engine` | Partner marketing suite — 5 deterministic analytics tools + 5 LLM generators (budget+ACU) | ✅ | 1 file |

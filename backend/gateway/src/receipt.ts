@@ -113,16 +113,23 @@ export function renderCustomerReceipt(r: OrderReceipt): string {
 }
 
 export function totalFc(r: OrderReceipt): number {
-  return (
+  const gross =
     itemsTotalFc(r.items) +
     addonsTotalFc(r.items) +
     r.fees.serviceFc +
     r.fees.processingFc +
     r.fees.deliveryFc +
-    (r.dmTipsFc ?? 0) -
-    (r.discountFc ?? 0) -
-    (r.couponFc ?? 0)
-  );
+    (r.dmTipsFc ?? 0);
+  const discount = r.discountFc ?? 0;
+  const coupon = r.couponFc ?? 0;
+  // A negative discount/coupon would INFLATE the total the customer is
+  // charged; a discount larger than the gross would make the total negative
+  // (us paying the customer). Neither is ever allowed.
+  if (discount < 0 || coupon < 0) {
+    throw new Error("discount/coupon cannot be negative");
+  }
+  const reductions = Math.min(discount + coupon, gross);
+  return gross - reductions; // ≥ 0 by construction
 }
 
 /**

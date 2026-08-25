@@ -81,3 +81,26 @@ describe("customer receipt (StackFood order-details mirror)", () => {
     ).toThrow(/ops-only/);
   });
 });
+
+describe("receipt total — money-safety guards", () => {
+  const base: OrderReceipt = {
+    ...receipt,
+    items: [{ name: "Item", quantity: 1, unitPriceFc: 10000 }],
+    fees: feeBreakdown(10000, 1),
+  };
+
+  it("never goes negative when a discount exceeds the gross (we never pay the customer)", () => {
+    const t = totalFc({ ...base, discountFc: 999999 });
+    expect(t).toBe(0);
+  });
+
+  it("rejects a negative discount or coupon (would inflate the charge)", () => {
+    expect(() => totalFc({ ...base, discountFc: -5000 })).toThrow();
+    expect(() => totalFc({ ...base, couponFc: -1 })).toThrow();
+  });
+
+  it("applies a valid discount normally", () => {
+    const full = totalFc(base);
+    expect(totalFc({ ...base, discountFc: 1000 })).toBe(full - 1000);
+  });
+});

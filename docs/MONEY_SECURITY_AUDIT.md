@@ -66,6 +66,24 @@ off. Ground truth after this pass: **210 tests, typecheck clean.**
   welcome credit lands after delivery, not at payment. Confirm this matches
   the promised UX; relax `rewardRequiresSettlement` only knowingly.
 
+## Round 2 — full-permission seal (2026-08-25)
+
+With explicit authorisation to close everything, the items previously
+flagged as "decisions/deploy" that could be sealed in code now are, plus the
+biggest structural vector: **price authority**.
+
+| # | Loophole | Impact | Fix |
+|---|---|---|---|
+| **M8** | **Price / order_amount tampering.** `CartLine.price` and `PlaceOrderPayload.order_amount` are caller-supplied and StackFood trusts them. If the order builder ever copied a customer-influenced price, a customer could **pay less for real goods**. | The largest possible leak — buy real food at a declared price. | New **server-authoritative pricing** (`gateway/pricing.ts`): `priceOrder` computes every unit price from the menu (`PriceBook`) and derives `order_amount` — never accepts one. `verifyPayloadPricing` recomputes and **rejects any tampered payload** before placement. The matcher's "due" now traces to an authoritative total. |
+| **M9** | **Cart abuse** — negative/zero/huge quantities, unknown items, mismatched add-on arrays. | Zero/negative totals, absurd orders, unpriced items. | `priceOrder` validates every line: quantity a positive integer ≤ 50, ≤ 50 lines, unknown food/add-on **fails closed** (never priced at 0), add-on arrays must align. |
+| **M10** | **Negative order total.** `totalFc` subtracted discount/coupon with no floor — a discount above the gross made the total **negative (us paying the customer)**, and a negative discount inflated the charge. | We pay the customer / overcharge. | `totalFc` rejects negative discount/coupon and clamps reductions to the gross, so the total is **always ≥ 0**. `receipt.ts`. |
+| **M11** | **Top-up / subscription funding** had no idempotent, payment-gated primitive — a replayed funding callback could double-credit ACU or double-grant a plan; a small payment could round **up**. | Free ACU balance / free entitlement. | New `ledger/funding.ts`: `fundAcuTopUp` is idempotent per funding-txn, **floors** the ACU credit, validates the amount; `grantSubscriptionPeriod` grants once per (account, plan, period) — no double-charge, no free extension. Both must be called only after the funding payment settles. |
+
+**Now sealed in code (previously deploy-only notes):** top-up double-credit,
+top-up-without-amount, over-credit rounding, subscription double-grant. The
+idempotency **stores** still need Redis/PG in production (below), but the
+**logic** that prevents the loss now exists and is tested.
+
 ## Deploy requirements (must hold in production stores)
 
 - **Atomic, handle-idempotent ACU wallet.** The in-memory wallet is
