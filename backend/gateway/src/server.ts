@@ -5,6 +5,7 @@ import { Router, type SessionPhase } from "./router.js";
 import { renderMilestone } from "./status-mapping.js";
 import { verifyWebhookSignature } from "./webhook.js";
 import { dispatch, type DispatchDeps } from "./dispatch.js";
+import type { ConversationEngine } from "./conversation.js";
 
 /**
  * NZELA Gateway — the deployable HTTP service. Dependency-free (node:http)
@@ -43,6 +44,13 @@ export interface GatewayConfig {
    * supplied by the gateway itself.
    */
   dispatch?: Omit<DispatchDeps, "sender" | "ledger">;
+  /**
+   * Full stateful conversation engine (session + cart + real order
+   * placement). When set, it drives every inbound message and its replies
+   * are sent — this is the live ordering path. When absent, the gateway
+   * falls back to the stateless router+dispatch path.
+   */
+  conversation?: ConversationEngine;
 }
 
 async function readBody(req: IncomingMessage): Promise<string> {
@@ -87,24 +95,27 @@ export function createGateway(config: GatewayConfig): Server {
           payload?.entry?.[0]?.changes?.[0]?.value?.messages ?? [];
         for (const m of messages) {
           const waId: string = `+${m.from}`;
-          const decision = router.route(
-            {
-              waId,
-              text: m.text?.body,
-              buttonId:
-                m.interactive?.button_reply?.id ??
-                m.interactive?.list_reply?.id,
-              isVoiceNote: m.type === "audio",
-            },
-            phaseFor(waId),
-          );
-          // Every decision now gets a reply — deterministic actions, agent
-          // escalations and firewall blocks all flow through dispatch.
-          await dispatch(decision, waId, {
-            sender: config.sender,
-            ledger,
-            ...config.dispatch,
-          });
+          const inbound = {
+            text: m.text?.body,
+            buttonId:
+              m.interactive?.button_reply?.id ??
+              m.interactive?.list_reply?.id,
+            isVoiceNote: m.type === "audio",
+          };
+
+          if (config.conversation) {
+            // Live stateful ordering path: session → cart → placement.
+            const { replies } = await config.conversation.handle(waId, inbound);
+            for (const reply of replies) await config.sender.sendText(waId, reply);
+          } else {
+            // Stateless fallback: router classifies, dispatch replies.
+            const decision = router.route({ waId, ...inbound }, phaseFor(waId));
+            await dispatch(decision, waId, {
+              sender: config.sender,
+              ledger,
+              ...config.dispatch,
+            });
+          }
         }
         return json(200, { received: messages.length });
       }

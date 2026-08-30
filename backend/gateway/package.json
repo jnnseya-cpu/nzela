@@ -8,6 +8,7 @@
     "@nzela/ledger": "workspace:*",
     "@nzela/stackfood-client": "workspace:*",
     "@nzela/landmark-graph": "workspace:*",
-    "@nzela/analytics": "workspace:*"
+    "@nzela/analytics": "workspace:*",
+    "@nzela/persistence": "workspace:*"
   }
 }

@@ -89,23 +89,32 @@ place instead of scattered. None is code — each needs Justin's call.
 | **D-4** | KODA Master Spec v2.0 — commit it into the repo or mark KODA_Integration_Notes out-of-scope for launch. | The notes doc references a file not in the repo. | KODA_Integration_Notes |
 | **D-5** | Escalation calls: TTS telephony provider, or confirm manual ops calls for the pilot. | Pilot can run manual; only matters at scale. | GO_LIVE_CHECKLIST D-2 |
 
-## Conversation/dispatch layer — BUILT (2026-08-25)
+## Conversation engine — BUILT & INTEGRATION-TESTED (2026-08-30)
 
-The gateway previously computed a router decision per inbound message but
-only *acted* on `firewall-block`, so a normal ordering message got no reply.
-`backend/gateway/src/dispatch.ts` closes that: every decision
-(deterministic actions, agent escalations, firewall blocks) is now rendered
-into a reply and sent. Deterministic-first — restaurants/menu/cart/checkout/
-status come from injected providers with safe canned fallbacks, so the order
-loop always answers with no LLM keys and no live number. Agent escalations
-call the (Phase-2) LLM agent when wired, else degrade to a deterministic
-nudge; nothing throws to the loop. A server-side `InitiateCheckout` analytics
-signal fires on checkout.
+The full stateful ordering loop is real, not a stub:
 
-**Still needed at deploy (not code):** the WhatsApp Cloud API `sender`
-adapter + live number (D-1), the LLM agents (Phase 2), and the production
-data providers (StackFood catalog, session cart, `priceOrder`-built checkout
-récap) wired into `GatewayConfig.dispatch`.
+- `backend/gateway/src/session.ts` — per-customer session (phase, selected
+  restaurant, cart, address), durable via `FileSessionStore` or in-memory.
+- `backend/gateway/src/conversation.ts` — `ConversationEngine`: the order
+  state machine driving restaurants → menu → cart → address →
+  authoritative-priced checkout → idempotent placement, with reset/firewall/
+  status handling. Deterministic; catalog + order ports injected.
+- `backend/gateway/src/conversation-stackfood.ts` — the REAL ports:
+  `buildStackFoodCatalog` (getRestaurants/getLatestProducts) and
+  `buildStackFoodOrderPort` (authoritative `priceOrder` → `OrderAdapter`
+  idempotent placement, customer token via `CustomerAuthProvisioner`).
+- Wired into the server: when `GatewayConfig.conversation` is set it drives
+  every inbound message; the stateless router+dispatch remains the fallback.
+- **Integration-tested end-to-end** (`conversation-integration.test.ts`):
+  the real engine + real client/adapter/pricing/auth place a
+  correctly-priced order against an in-process StackFood server, and do not
+  double-place. This same code hits the live API unchanged.
+
+**Still needed to go live (not code — credentials/network):** the WhatsApp
+Cloud API `sender` adapter + live number (D-1), and running where the code
+can reach `cd.tunakula.com` with real StackFood credentials. LLM voice
+agents remain Phase 2 (the deterministic numbered-list flow works without
+them).
 
 ## Key documents (`docs/`)
 
