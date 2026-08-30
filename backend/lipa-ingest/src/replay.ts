@@ -1,3 +1,4 @@
+import { FileKV } from "@nzela/persistence";
 import type { LedgerSink } from "@nzela/ledger";
 import type { ParsedPayment } from "./parsers.js";
 import {
@@ -30,6 +31,24 @@ export class MemoryReplayIndex implements ReplayIndex {
   }
   add(key: string): void {
     this.seen.add(key);
+  }
+}
+
+/**
+ * Durable, file-backed replay index — the "a code verifies once" guarantee
+ * now SURVIVES A RESTART with no external database (single instance). A
+ * multi-instance deploy still wants Redis behind this same interface.
+ */
+export class FileReplayIndex implements ReplayIndex {
+  private readonly kv: FileKV;
+  constructor(path: string) {
+    this.kv = new FileKV(path);
+  }
+  has(key: string): boolean {
+    return this.kv.has(key);
+  }
+  add(key: string): void {
+    this.kv.set(key, 1);
   }
 }
 

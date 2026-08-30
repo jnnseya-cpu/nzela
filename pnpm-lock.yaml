@@ -73,6 +73,9 @@ importers:
       '@nzela/ledger':
         specifier: workspace:*
         version: link:../../shared/ledger
+      '@nzela/persistence':
+        specifier: workspace:*
+        version: link:../../shared/persistence
       '@nzela/stackfood-client':
         specifier: workspace:*
         version: link:../../shared/stackfood-client
@@ -89,11 +92,21 @@ importers:
         specifier: workspace:*
         version: link:../../shared/ledger
 
-  backend/views: {}
+  backend/views:
+    dependencies:
+      '@nzela/persistence':
+        specifier: workspace:*
+        version: link:../../shared/persistence
 
   shared/landmark-graph: {}
 
-  shared/ledger: {}
+  shared/ledger:
+    dependencies:
+      '@nzela/persistence':
+        specifier: workspace:*
+        version: link:../persistence
+
+  shared/persistence: {}
 
   shared/security:
     dependencies:

@@ -100,3 +100,28 @@ describe("replay protection (a code used once is dead forever)", () => {
     });
   });
 });
+
+import { FileReplayIndex } from "./replay.js";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+describe("FileReplayIndex — verify-once survives a restart", () => {
+  it("a burned reference is still burned after a simulated restart", () => {
+    const dir = mkdtempSync(join(tmpdir(), "nzela-replay-"));
+    try {
+      const path = join(dir, "replay.json");
+      const index = new FileReplayIndex(path);
+      const ledger = new MemoryLedger();
+      const first = verifyPayment(payment, orders, index, ledger);
+      expect(first).toMatchObject({ matched: true, replay: false });
+
+      // restart: fresh index reading the same file
+      const index2 = new FileReplayIndex(path);
+      const second = verifyPayment(payment, orders, index2, ledger);
+      expect(second).toMatchObject({ matched: false, replay: true });
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});

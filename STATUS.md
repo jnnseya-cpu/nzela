@@ -65,12 +65,16 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 `TokenCache`, `AcuWallet`, `ReplayIndex`, `RateLimiter`, `PasswordVault`,
 `SentLog`, referral code/rewards resolvers (`resolveCode`, `rewardsEarned`,
 `CreditIssuer`), gateway `phaseFor`/`tkRefFor`, lipa `openOrders` — all
-defined as interfaces with in-memory implementations for tests. Production
-wires Redis/Postgres + a real secrets manager behind the same interfaces.
-(No schema migrations written yet. ⬜) Every durability guarantee
-(replay-once, idempotent send, ACU balance) is process-memory-only until
-those backends are wired. `PasswordVault` now has an `InMemoryPasswordVault`
-(previously the only auth port with no implementation at all).
+defined as interfaces with in-memory implementations for tests, and now
+**durable file-backed implementations** for single-instance production:
+`@nzela/persistence` (`FileKV`, atomic writes) backs `FileAcuWallet` +
+`FileFundingLedger` (ledger), `FileReplayIndex` (lipa) and `FileViewStore`
+(views) — so verify-once / reward-once / balances / view counts **survive a
+restart with no external database** (tested across a simulated restart).
+Wire them by passing a file path (e.g. `new FileReplayIndex(dataDir +
+"/replay.json")`). A multi-instance / high-concurrency deploy still wants
+Redis/Postgres behind the same interfaces (+ a real secrets manager for
+`PasswordVault`); no schema migrations written yet. ⬜
 
 ## Open decisions (must be closed by the owner — single list)
 

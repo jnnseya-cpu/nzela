@@ -84,15 +84,30 @@ top-up-without-amount, over-credit rounding, subscription double-grant. The
 idempotency **stores** still need Redis/PG in production (below), but the
 **logic** that prevents the loss now exists and is tested.
 
-## Deploy requirements (must hold in production stores)
+## Durable stores — SHIPPED (2026-08-30)
 
-- **Atomic, handle-idempotent ACU wallet.** The in-memory wallet is
-  correct for the single-call contract; the production Redis/PG wallet must
-  make `reserve`/`commit`/`release` atomic and idempotent per reservation id
-  so concurrent AI calls can't oversell a balance.
-- **Persistent replay index & reward guard.** `ReplayIndex` and the
-  referral `rewardedRefs` are in-memory here; back them with Redis/PG so the
-  "verify once / reward once" guarantees survive a restart.
+The money guarantees no longer live only in memory. `@nzela/persistence`
+(`FileKV`, atomic temp-write + rename) backs real, tested, file-durable
+implementations that **survive a restart with no external database**:
+
+- `FileAcuWallet`, `FileFundingLedger` (`shared/ledger`)
+- `FileReplayIndex` (`backend/lipa-ingest`)
+- `FileViewStore` (`backend/views`)
+
+Wire them by passing a file path, e.g.
+`createLipaIngest({ replayIndex: new FileReplayIndex(dataDir + "/replay.json"), … })`.
+Tests prove verify-once / fund-once / balances / view counts persist across a
+simulated restart. This closes the single-instance durability gap below.
+
+## Deploy requirements (still true for multi-instance / high concurrency)
+
+- **Atomic, handle-idempotent ACU wallet at scale.** The file wallet is
+  durable and correct for one instance; a horizontally-scaled deploy needs a
+  Redis/PG wallet with `reserve`/`commit`/`release` atomic and idempotent per
+  reservation id so concurrent AI calls across instances can't oversell.
+- **Shared replay index & reward guard at scale.** `FileReplayIndex` and the
+  referral `rewardedRefs` are per-instance; multiple gateway/lipa instances
+  need Redis/PG so "verify once / reward once" holds across all of them.
 - **Top-up only after settled payment.** When a top-up flow is built, credit
   ACU only after the funding payment verifies (same SMS Ledger discipline),
   and make the credit idempotent per funding-transaction id.

@@ -7,6 +7,7 @@
   "dependencies": {
     "@nzela/analytics": "workspace:*",
     "@nzela/ledger": "workspace:*",
+    "@nzela/persistence": "workspace:*",
     "@nzela/stackfood-client": "workspace:*"
   }
 }

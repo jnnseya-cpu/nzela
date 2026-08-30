@@ -97,3 +97,27 @@ describe("createViewsServer", () => {
     expect(r.headers.get("access-control-allow-methods")).toContain("POST");
   });
 });
+
+import { FileViewStore } from "./store.js";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+describe("FileViewStore — counts survive a restart", () => {
+  it("persists view counts to a fresh instance", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "nzela-views-"));
+    try {
+      const path = join(dir, "views.json");
+      const s1 = new FileViewStore(path);
+      await s1.increment("livraison-repas-bandal");
+      await s1.increment("livraison-repas-bandal");
+      expect(await s1.get("livraison-repas-bandal")).toBe(2);
+
+      const s2 = new FileViewStore(path); // restart
+      expect(await s2.get("livraison-repas-bandal")).toBe(2);
+      expect(await s2.increment("livraison-repas-bandal")).toBe(3);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});

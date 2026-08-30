@@ -23,7 +23,8 @@
       "@nzela/acquisition": ["backend/acquisition/src/index.ts"],
       "@nzela/newsletter": ["backend/newsletter/src/index.ts"],
       "@nzela/analytics": ["backend/analytics/src/index.ts"],
-      "@nzela/views": ["backend/views/src/index.ts"]
+      "@nzela/views": ["backend/views/src/index.ts"],
+      "@nzela/persistence": ["shared/persistence/src/index.ts"]
     }
   },
   "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]
