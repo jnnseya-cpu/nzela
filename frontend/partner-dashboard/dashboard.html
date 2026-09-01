@@ -6,7 +6,7 @@
 <title>Tunakula Pro — Moteur de Croissance IA</title>
 <!-- PWA (shared kit in ../pwa) -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0B120E">
+<meta name="theme-color" content="#070C09">
 <link rel="apple-touch-icon" href="../pwa/apple-touch-icon-180.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../pwa/favicon-32.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -20,76 +20,82 @@
 <link rel="stylesheet" href="../landing/fonts.css">
 <style>
 :root{
-  --nuit:#080D0A;--nuit2:#0C1310;--panel:rgba(19,28,22,.72);--line:rgba(246,239,224,.12);
-  --manioc:#F6EFE0;--smoke:#9FB8A9;--wax:#F2820A;--wax-deep:#C96703;--gold:#E8B44C;
-  --money:#2FBF71;--rouge:#E2001B;--wa:#25D366;--mono:'IBM Plex Mono',monospace;
+  --nuit:#070C09;--nuit2:#0C1310;--card:#0F1712;--card2:#111C15;--line:rgba(246,239,224,.10);
+  --manioc:#F7F1E4;--smoke:#9DB3A6;--smoke2:#6E8377;--wax:#E0730F;--wax2:#C25E08;--gold:#E8C77A;
+  --money:#3AAE6B;--rouge:#E2564B;--wa:#25D366;
+  --disp:'Unbounded',Georgia,serif;--body:'Space Grotesk',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Space Grotesk',system-ui,sans-serif;background:
-  radial-gradient(1000px 500px at 85% -10%,rgba(242,130,10,.10),transparent 60%),
-  var(--nuit);color:var(--manioc);min-height:100vh}
-h1,h2,h3{font-family:'Unbounded',sans-serif}
-.top{display:flex;align-items:center;gap:14px;padding:16px 26px;border-bottom:1px solid var(--line);background:rgba(8,13,10,.8);position:sticky;top:0;z-index:10;flex-wrap:wrap}
-.logo{font-family:'Unbounded';font-weight:900;font-size:1rem}
-.logo em{font-style:normal;background:linear-gradient(90deg,var(--wax),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-.pro{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--gold);border:1px solid var(--gold);border-radius:12px;padding:3px 9px}
-.who{margin-left:auto;font-size:.82rem;color:var(--smoke)}
-.who b{color:var(--manioc)}
-.wrap{max-width:1180px;margin:0 auto;padding:26px}
-.hd{margin-bottom:8px;font-size:1.5rem;font-weight:900}
-.sub{color:var(--smoke);font-size:.9rem;margin-bottom:24px}
-.sub b{color:var(--gold)}
-
-/* KPI strip */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+body{font-family:var(--body);color:var(--manioc);background:
+  radial-gradient(1100px 520px at 88% -12%,rgba(224,115,15,.09),transparent 60%),var(--nuit);min-height:100vh;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(224,115,15,.3)}
+svg{display:block}
+h1,h2,h3{font-family:var(--disp);letter-spacing:-.01em}
+/* nav */
+.top{display:flex;align-items:center;gap:14px;padding:0 26px;height:64px;border-bottom:1px solid var(--line);background:rgba(7,12,9,.9);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg{width:32px;height:32px}
+.brand b{font-family:var(--disp);font-weight:800;font-size:.95rem}
+.brand b i{font-style:normal;color:var(--gold)}
+.pro{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:var(--gold);border:1px solid rgba(232,199,122,.4);border-radius:8px;padding:5px 9px}
+.who{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--smoke);background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 13px}
+.who .av{width:22px;height:22px;border-radius:50%;background:#8a3b12;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:.66rem;color:#fff}
+.who b{color:var(--manioc);font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 26px 60px}
+.hd{font-size:1.7rem;font-weight:800;margin-bottom:8px}
+.sub{color:var(--smoke);font-size:.94rem;max-width:680px;line-height:1.6}
+.sub b{color:var(--gold);font-weight:600}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wax);margin:34px 0 14px;display:flex;align-items:center;gap:9px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--wax)}
+.eyebrow .free{color:var(--money)}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
 @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;backdrop-filter:blur(10px)}
-.kpi small{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);display:block;margin-bottom:6px}
-.kpi b{font-family:var(--mono);font-size:1.6rem;color:var(--gold);font-variant-numeric:tabular-nums}
-.kpi .d{font-size:.7rem;color:var(--money);margin-top:2px}
-
-/* tool grid */
-.section-h{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--wax);margin:26px 0 12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.tool{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;backdrop-filter:blur(10px);cursor:pointer;transition:transform .14s,border-color .2s;position:relative}
-.tool:hover{transform:translateY(-3px);border-color:rgba(242,130,10,.5)}
-.tool .ico{font-size:1.7rem;margin-bottom:10px}
-.tool h3{font-size:.92rem;font-weight:700;margin-bottom:6px}
-.tool p{font-size:.76rem;color:var(--smoke);line-height:1.45}
-.tag{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;padding:3px 7px;border-radius:9px}
-.tag.free{background:#e3efe7;color:#2c6647}
-.tag.ai{background:#fbe6cc;color:#a35403}
-
-/* recommendations */
-.recos{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
-.reco{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed rgba(246,239,224,.08);font-size:.84rem}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpi small{font-family:var(--mono);font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;color:var(--smoke2);display:block;margin-bottom:9px}
+.kpi b{font-family:var(--disp);font-weight:700;font-size:1.6rem;color:var(--manioc);font-variant-numeric:tabular-nums}
+.kpi .d{font-size:.72rem;color:var(--money);margin-top:4px;font-family:var(--mono)}
+/* tools */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;transition:transform .14s,border-color .2s,background .2s;position:relative}
+.tool:hover{transform:translateY(-3px);border-color:rgba(224,115,15,.45);background:var(--card2)}
+.tool .ico{width:30px;height:30px;color:var(--wax);margin-bottom:14px}
+.tool h3{font-size:.92rem;font-weight:700;margin-bottom:6px;color:var(--manioc);font-family:var(--body)}
+.tool p{font-size:.78rem;color:var(--smoke);line-height:1.5}
+.tag{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;padding:4px 8px;border-radius:8px}
+.tag.free{background:rgba(58,174,107,.16);color:#7fd6a3;border:1px solid rgba(58,174,107,.3)}
+.tag.ai{background:rgba(224,115,15,.16);color:var(--gold);border:1px solid rgba(224,115,15,.3)}
+/* recos */
+.recos{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:14px}
+.reco{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:.86rem;color:#D6E0D6}
 .reco:last-child{border-bottom:none}
-.reco .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.reco .dot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex-shrink:0}
 .reco.action .dot{background:var(--rouge)}.reco.warn .dot{background:var(--wax)}.reco.info .dot{background:var(--money)}
 .reco b{color:var(--gold)}
-
-/* channel table */
-.tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem}
-.tbl th{text-align:left;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);padding:8px 10px;border-bottom:1px solid var(--line)}
-.tbl td{padding:9px 10px;border-bottom:1px solid rgba(246,239,224,.06);font-variant-numeric:tabular-nums}
+/* table */
+.tbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:.84rem}
+.tbl th{text-align:left;font-family:var(--mono);font-size:.55rem;letter-spacing:.09em;text-transform:uppercase;color:var(--smoke2);padding:9px 12px;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 12px;border-bottom:1px solid rgba(246,239,224,.05);font-variant-numeric:tabular-nums;color:#D6E0D6}
 .tbl .best{color:var(--money);font-weight:700}
-.bar{height:6px;border-radius:4px;background:rgba(246,239,224,.1);overflow:hidden;margin-top:4px}
+.bar{height:6px;border-radius:4px;background:rgba(246,239,224,.08);overflow:hidden;margin-top:5px}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--wax),var(--gold))}
-
-/* preview panel */
-.preview{margin-top:14px;background:#0a0f0c;border:1px solid var(--line);border-radius:16px;padding:18px;min-height:120px}
-.preview .ph{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:10px;display:flex;gap:8px;align-items:center}
-.preview pre{white-space:pre-wrap;font-family:'Space Grotesk';font-size:.86rem;line-height:1.5;color:#e7dfcd}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.chip{font-family:var(--mono);font-size:.7rem;background:rgba(242,130,10,.14);color:var(--gold);border:1px solid rgba(242,130,10,.3);border-radius:12px;padding:3px 9px}
-.note{font-family:var(--mono);font-size:.58rem;color:#7f9a8c;margin-top:14px;line-height:1.5}
+/* preview */
+.preview{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;min-height:130px}
+.preview .ph{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--smoke);margin-bottom:12px}
+.preview pre{white-space:pre-wrap;font-family:var(--body);font-size:.88rem;line-height:1.6;color:#e7dfcd}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.chip{font-family:var(--mono);font-size:.7rem;background:rgba(224,115,15,.14);color:var(--gold);border:1px solid rgba(224,115,15,.3);border-radius:11px;padding:4px 10px}
+.note{font-family:var(--mono);font-size:.6rem;color:var(--smoke2);margin-top:18px;line-height:1.6;max-width:820px}
 </style>
 </head>
 <body>
 <header class="top">
-  <div class="logo">TUNAKULA <em>Pro</em></div>
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="11" fill="#0F1712" stroke="#20281f"/><path d="M8 30c4-14 20-14 24 0" stroke="#E0730F" stroke-width="2.4" stroke-linecap="round"/><circle cx="20" cy="12.5" r="3.1" fill="#E8C77A"/></svg>
+    <b>TUNAKULA <i>Pro</i></b>
+  </div>
   <span class="pro">MOTEUR DE CROISSANCE IA</span>
-  <div class="who">Partenaire: <b id="whoName">Mama Kito — Bandal</b></div>
+  <div class="who"><span class="av">MK</span><span>Partenaire · <b id="whoName">Mama Kito — Bandal</b></span></div>
 </header>
 
 <main class="wrap">
@@ -98,7 +104,7 @@ h1,h2,h3{font-family:'Unbounded',sans-serif}
 
   <div class="kpis" id="kpis"></div>
 
-  <div class="section-h">📈 Analyses — gratuit, 0 token</div>
+  <div class="eyebrow">Analyses · <span class="free">gratuit, 0 token</span></div>
   <div class="grid" id="detTools"></div>
 
   <div class="recos" id="recos"></div>
@@ -108,15 +114,15 @@ h1,h2,h3{font-family:'Unbounded',sans-serif}
     <tbody></tbody>
   </table>
 
-  <div class="section-h">✨ Générateurs de contenu — IA, sous budget</div>
+  <div class="eyebrow">Générateurs de contenu · IA sous budget</div>
   <div class="grid" id="aiTools"></div>
 
   <div class="preview" id="preview">
-    <div class="ph">🖥️ Aperçu — touche un générateur</div>
+    <div class="ph">Aperçu — touche un générateur</div>
     <pre>Le contenu généré apparaît ici. Chaque génération est journalisée dans Le Compteur avec son coût réel, et si l'IA dépasse son budget ou tombe en panne, un modèle par défaut est servi — jamais de tableau de bord vide.</pre>
   </div>
 
-  <p class="note">Économie: les analyses (hashtags, meilleur horaire, recommandations, audience, performance) sont déterministes — elles ne coûtent aucun token. Seuls les 5 générateurs appellent un LLM, plafonnés à $0.01 par génération (agent «growth» du registre NZELA-OS), avec repli déterministe garanti.</p>
+  <p class="note">Économie : les analyses (hashtags, meilleur horaire, recommandations, audience, performance) sont déterministes — elles ne coûtent aucun token. Seuls les 5 générateurs appellent un LLM, plafonnés à $0.01 par génération (agent « growth » du registre NZELA-OS), avec repli déterministe garanti.</p>
 </main>
 
 <script>
@@ -132,57 +138,69 @@ const recos = [
 const audience = [ {channel:"whatsapp-status",share:0.55}, {channel:"instagram",share:0.30}, {channel:"facebook",share:0.15} ];
 const hashtags = ["#mama","#kito","#bandal","#poulet","#mayo","#thomson","#kinshasa","#cuisinecongolaise","#livraison","#foodkin","#rdc","#tunakula"];
 
+// Inline SVG icon set — no emoji chrome.
+const S=(p)=>`<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC={
+  hashtags:S('<path d="M9 4L7 20M17 4l-2 16M4 9h16M3 15h16"/>'),
+  "best-time":S('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  "performance-recos":S('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>'),
+  "audience-optimisation":S('<circle cx="9" cy="9" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M16 6a3 3 0 010 6M21 20c0-2-1-3.5-3-4.3"/>'),
+  "campaign-analytics":S('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  "social-post":S('<circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M8.2 10.9l7.6-3.8M8.2 13.1l7.6 3.8"/>'),
+  advert:S('<path d="M3 11v2a1 1 0 001 1h2l4 4V6L6 10H4a1 1 0 00-1 1z"/><path d="M16 8a5 5 0 010 8M19 5a9 9 0 010 14"/>'),
+  "email-campaign":S('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+  "landing-page":S('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01"/>'),
+  "video-script":S('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5M16 4v5M8 20v-5M16 20v-5"/>'),
+};
+
 const kpi = (label,val,delta) => `<div class="kpi"><small>${label}</small><b>${val}</b>${delta?`<div class="d">${delta}</div>`:""}</div>`;
 document.getElementById("kpis").innerHTML =
   kpi("Impressions","2 700") + kpi("Commandes attribuées","27","+18% vs 7j") +
-  kpi("Taux de conversion","19,3%") + kpi("Coût / commande","$0.35","cible $0.50 ✅");
+  kpi("Taux de conversion","19,3%") + kpi("Coût / commande","$0.35","cible $0.50 ✓");
 
 const det = [
-  {t:"hashtags",i:"🏷️",h:"Générateur de hashtags",p:"Hashtags optimisés à partir de tes plats et ton quartier."},
-  {t:"best-time",i:"⏰",h:"Meilleur horaire de publication",p:"Quand publier pour le plus de commandes, selon TES chiffres."},
-  {t:"performance-recos",i:"🎯",h:"Recommandations de performance",p:"Actions concrètes pour dépenser moins et vendre plus."},
-  {t:"audience-optimisation",i:"👥",h:"Optimisation d'audience",p:"Répartit ton budget vers les canaux les plus rentables."},
-  {t:"campaign-analytics",i:"📊",h:"Analyses de campagne",p:"Impressions, clics, commandes et coûts, par canal."},
+  {t:"hashtags",h:"Générateur de hashtags",p:"Hashtags optimisés à partir de tes plats et ton quartier."},
+  {t:"best-time",h:"Meilleur horaire de publication",p:"Quand publier pour le plus de commandes, selon TES chiffres."},
+  {t:"performance-recos",h:"Recommandations de performance",p:"Actions concrètes pour dépenser moins et vendre plus."},
+  {t:"audience-optimisation",h:"Optimisation d'audience",p:"Répartit ton budget vers les canaux les plus rentables."},
+  {t:"campaign-analytics",h:"Analyses de campagne",p:"Impressions, clics, commandes et coûts, par canal."},
 ];
 const ai = [
-  {t:"social-post",i:"📱",h:"Post réseaux sociaux",p:"Publications prêtes pour Facebook, Instagram, TikTok, Status."},
-  {t:"advert",i:"📣",h:"Créateur de publicité",p:"Annonces courtes et percutantes pour convertir la faim."},
-  {t:"email-campaign",i:"✉️",h:"Campagne e-mail",p:"E-mails de relance et d'offres, prêts à envoyer."},
-  {t:"landing-page",i:"🖼️",h:"Page d'atterrissage",p:"Une page qui pousse vers WhatsApp, générée en un clic."},
-  {t:"video-script",i:"🎬",h:"Script vidéo",p:"Scripts 15s plan par plan pour Reels et TikTok."},
+  {t:"social-post",h:"Post réseaux sociaux",p:"Publications prêtes pour Facebook, Instagram, TikTok, Status."},
+  {t:"advert",h:"Créateur de publicité",p:"Annonces courtes et percutantes pour convertir la faim."},
+  {t:"email-campaign",h:"Campagne e-mail",p:"E-mails de relance et d'offres, prêts à envoyer."},
+  {t:"landing-page",h:"Page d'atterrissage",p:"Une page qui pousse vers WhatsApp, générée en un clic."},
+  {t:"video-script",h:"Script vidéo",p:"Scripts 15s plan par plan pour Reels et TikTok."},
 ];
-const card = (x,cls,tag) => `<div class="tool" data-t="${x.t}" data-cls="${cls}"><span class="tag ${tag}">${tag==="free"?"GRATUIT":"IA"}</span><div class="ico">${x.i}</div><h3>${x.h}</h3><p>${x.p}</p></div>`;
+const card = (x,cls,tag) => `<div class="tool" data-t="${x.t}" data-cls="${cls}"><span class="tag ${tag}">${tag==="free"?"GRATUIT":"IA"}</span>${IC[x.t]||""}<h3>${x.h}</h3><p>${x.p}</p></div>`;
 document.getElementById("detTools").innerHTML = det.map(x=>card(x,"det","free")).join("");
 document.getElementById("aiTools").innerHTML = ai.map(x=>card(x,"ai","ai")).join("");
 
-// recommendations
-document.getElementById("recos").innerHTML = "<div class='section-h' style='margin:0 0 8px'>🎯 Recommandations IA</div>" +
+document.getElementById("recos").innerHTML =
+  "<div class='eyebrow' style='margin:0 0 10px'>Recommandations IA</div>" +
   recos.map(r=>`<div class="reco ${r.severity}"><span class="dot"></span><span>${r.message}</span></div>`).join("");
 
-// channel table
 const chBody = document.querySelector("#channelTbl tbody");
 const shareByCh = Object.fromEntries(audience.map(a=>[a.channel,a.share]));
 chBody.innerHTML = Object.entries(analytics.byChannel).sort((a,b)=>a[1].costPerOrderUsd-b[1].costPerOrderUsd)
   .map(([ch,c],i)=>`<tr><td class="${i===0?'best':''}">${ch}${i===0?' ★':''}</td><td>${c.orders}</td><td>${c.costPerOrderUsd===0?"gratuit":"$"+c.costPerOrderUsd.toFixed(2)}</td><td>${Math.round((shareByCh[ch]||0)*100)}%<div class="bar"><i style="width:${(shareByCh[ch]||0)*100}%"></i></div></td></tr>`).join("");
 
-// demo generator outputs (deterministic previews mirroring the fallback shapes)
 const outputs = {
-  "hashtags": {ph:"🏷️ Hashtags générés", chips:hashtags},
-  "best-time":{ph:"⏰ Meilleurs horaires", body:"1. Dimanche 19h — meilleure conversion\n2. Lundi 19h\n3. Dimanche 20h\n\n(calculé sur tes 4 dernières semaines)"},
-  "performance-recos":{ph:"🎯 Recommandations", body:recos.map(r=>"• "+r.message).join("\n\n")},
-  "audience-optimisation":{ph:"👥 Répartition conseillée", body:audience.map(a=>`${a.channel}: ${Math.round(a.share*100)}%`).join("\n")},
-  "campaign-analytics":{ph:"📊 Vue d'ensemble", body:`Impressions 2 700 · Clics 140 (CTR 5,2%)\nCommandes 27 · Conversion 19,3%\nDépense $9.50 · Coût/commande $0.35`},
-  "social-post":{ph:"📱 Post Instagram", body:"😋 Poulet mayo fumant chez Mama Kito (Bandal) — livré chaud sur WhatsApp, paie cash ou mobile money. Commande maintenant 👇", chips:["#bandal","#pouletmayo","#foodkin"], cost:"$0.008"},
-  "advert":{ph:"📣 Publicité", body:"Faim à Bandal? 🍗 Mama Kito te livre ton poulet mayo en 30 min. Sans app. Commande sur WhatsApp.", cost:"$0.007"},
-  "email-campaign":{ph:"✉️ E-mail", body:"Objet: Ton poulet mayo t'attend 🍗\n\nBonjour! Envie d'un bon repas ce soir? Mama Kito livre à Bandal, chaud et rapide. Commande sur WhatsApp — cash ou mobile money.", cost:"$0.009"},
-  "landing-page":{ph:"🖼️ Page (aperçu)", body:"# Mama Kito — Bandal\nPoulet mayo, Thomson braisé, livrés chauds.\n[ Commander sur WhatsApp ]", cost:"$0.01"},
-  "video-script":{ph:"🎬 Script 15s", body:"[0-3s] Gros plan poulet mayo fumant\n[3-7s] «Mama Kito, Bandal»\n[7-12s] Le wewa arrive au portail vert\n[12-15s] «Commande sur WhatsApp»", cost:"$0.008"},
+  "hashtags": {ph:"Hashtags générés", chips:hashtags},
+  "best-time":{ph:"Meilleurs horaires", body:"1. Dimanche 19h — meilleure conversion\n2. Lundi 19h\n3. Dimanche 20h\n\n(calculé sur tes 4 dernières semaines)"},
+  "performance-recos":{ph:"Recommandations", body:recos.map(r=>"• "+r.message).join("\n\n")},
+  "audience-optimisation":{ph:"Répartition conseillée", body:audience.map(a=>`${a.channel}: ${Math.round(a.share*100)}%`).join("\n")},
+  "campaign-analytics":{ph:"Vue d'ensemble", body:`Impressions 2 700 · Clics 140 (CTR 5,2%)\nCommandes 27 · Conversion 19,3%\nDépense $9.50 · Coût/commande $0.35`},
+  "social-post":{ph:"Post Instagram", body:"😋 Poulet mayo fumant chez Mama Kito (Bandal) — livré chaud sur WhatsApp, paie cash ou mobile money. Commande maintenant 👇", chips:["#bandal","#pouletmayo","#foodkin"], cost:"$0.008"},
+  "advert":{ph:"Publicité", body:"Faim à Bandal ? 🍗 Mama Kito te livre ton poulet mayo en 30 min. Sans app. Commande sur WhatsApp.", cost:"$0.007"},
+  "email-campaign":{ph:"E-mail", body:"Objet : Ton poulet mayo t'attend 🍗\n\nBonjour ! Envie d'un bon repas ce soir ? Mama Kito livre à Bandal, chaud et rapide. Commande sur WhatsApp — cash ou mobile money.", cost:"$0.009"},
+  "landing-page":{ph:"Page (aperçu)", body:"# Mama Kito — Bandal\nPoulet mayo, Thomson braisé, livrés chauds.\n[ Commander sur WhatsApp ]", cost:"$0.01"},
+  "video-script":{ph:"Script 15s", body:"[0-3s] Gros plan poulet mayo fumant\n[3-7s] «Mama Kito, Bandal»\n[7-12s] Le wewa arrive au portail vert\n[12-15s] «Commande sur WhatsApp»", cost:"$0.008"},
 };
 document.querySelectorAll(".tool").forEach(el=>el.onclick=()=>{
   const o = outputs[el.dataset.t]; if(!o) return;
-  const isAi = el.dataset.cls==="ai";
   document.getElementById("preview").innerHTML =
-    `<div class="ph">${o.ph}${o.cost?` · <span style="color:#a35403">IA ${o.cost}</span>`:` · <span style="color:#2c6647">0 token</span>`}</div>`+
+    `<div class="ph">${o.ph}${o.cost?` · <span style="color:var(--gold)">IA ${o.cost}</span>`:` · <span style="color:#7fd6a3">0 token</span>`}</div>`+
     (o.body?`<pre>${o.body}</pre>`:"")+
     (o.chips?`<div class="chips">${o.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>`:"");
 });
