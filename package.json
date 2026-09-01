@@ -10,6 +10,8 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "build:blog": "npx tsx frontend/blog/_generate.ts",
+    "build:site": "node frontend/build.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "pnpm typecheck && pnpm test"

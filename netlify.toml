@@ -1,0 +1,16 @@
+# Netlify / Cloudflare Pages — one static site for all Tunakula surfaces.
+# Routes after build:  /  ·  /blog  ·  /blog/<post>  ·  /pro
+# (Cloudflare Pages: set build command + output dir to the same values.)
+[build]
+  command = "node frontend/build.mjs"
+  publish = "frontend/dist"
+
+# Long-cache immutable assets; HTML stays fresh.
+[[headers]]
+  for = "/pwa/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/fonts.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

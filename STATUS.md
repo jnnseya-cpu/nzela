@@ -46,7 +46,8 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 | `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); **premium SaaS restyle (brand system, SVG icons)**; needs Next.js host + live data — PWA-enabled |
 | `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; **shared analytics kit (`analytics.config.js` + `analytics.js`: Meta Pixel + Google gtag, single config)** wired into landing, partner-dashboard, blog (all pages) + prototype; reuse for ops-console |
 | `frontend/ops-console` | ⬜ placeholder README only; Next.js app not scaffolded |
-| `docs/prototype` | ✅ interactive 4-screen prototype (UX contract) |
+| `docs/prototype` | ✅ interactive 4-screen prototype (UX contract), aligned to the brand system |
+| **unified deploy** | ✅ `frontend/build.mjs` (`pnpm build:site`) assembles one static site — `/` landing · `/blog` + posts · `/pro` dashboard · `/pwa` kit — with absolute asset paths + host configs (Netlify/Cloudflare `netlify.toml`+`_redirects`, `vercel.json`, Apache/cPanel `.htaccess`), unified sitemap/robots/404. All routes verified over HTTP (0 asset errors). See `frontend/DEPLOY.md`. `frontend/dist` is git-ignored (build artifact). |
 
 ## What is NOT built / NOT live (do not claim otherwise)
 

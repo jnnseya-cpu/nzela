@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node frontend/build.mjs",
+  "outputDirectory": "frontend/dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/pro", "destination": "/pro/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" }
+  ]
+}
