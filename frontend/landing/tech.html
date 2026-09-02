@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La technologie derrière Tunakula — NZELA-OS</title>
+<meta name="description" content="Sous le capot de Tunakula NZELA-OS : SMS Ledger Bridge, Landmark Graph et une IA gouvernée au token près. Pour les curieux, la presse et les partenaires.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/png" sizes="32x32" href="/pwa/favicon-32.png">
+<script src="../pwa/analytics.config.js" defer></script>
+<script src="../pwa/analytics.js" defer></script>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--nuit:#070C09;--card:#0F1712;--line:rgba(246,239,224,.10);--manioc:#F7F1E4;--smoke:#9DB3A6;--smoke2:#6E8377;--wax:#E0730F;--gold-lt:#E8C77A;--money:#3AAE6B;--disp:'Unbounded',Georgia,serif;--body:'Space Grotesk',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--nuit);color:var(--manioc);line-height:1.62;-webkit-font-smoothing:antialiased}
+svg{display:block}a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--disp);letter-spacing:-.01em}
+.nav{position:sticky;top:0;z-index:10;background:rgba(7,12,9,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .in{max-width:1080px;margin:0 auto;padding:0 24px;height:62px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand svg{width:30px;height:30px}.brand b{font-family:var(--disp);font-weight:800;font-size:.9rem}.brand b i{font-style:normal;color:var(--gold-lt)}
+.nav .back{margin-left:auto;font-size:.82rem;color:var(--smoke);text-decoration:none}.nav .back:hover{color:var(--gold-lt)}
+.hero{padding:96px 0 40px;background:radial-gradient(90vmax 44vmax at 50% 120%,rgba(224,115,15,.16),transparent 68%)}
+.eyebrow{font-family:var(--mono);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--wax);display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--wax)}
+.hero h1{font-weight:800;font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;max-width:760px}
+.hero p{margin-top:20px;max-width:620px;color:#C4D2C4;font-size:1.08rem}
+.note{margin-top:16px;font-family:var(--mono);font-size:.7rem;color:var(--smoke2)}
+.cards{padding:40px 0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 28px}
+.card .ic{width:40px;height:40px;color:var(--wax);margin-bottom:18px}
+.card h3{font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--gold-lt)}
+.card p{font-size:.92rem;color:#C4D2C4}.card p b{color:var(--manioc);font-weight:600}
+.card .tag{margin-top:18px;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--money);display:flex;align-items:center;gap:7px}
+.card .tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--money)}
+.econ{margin:44px 0 90px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px}
+.econ h2{font-size:1.4rem;font-weight:800;margin-bottom:12px}
+.econ p{color:#C4D2C4;font-size:.96rem;max-width:720px}
+.econ .row{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px}
+.econ .m{font-family:var(--mono);font-size:.78rem;color:#DCE6DC;background:rgba(246,239,224,.04);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.econ .m b{color:var(--gold-lt)}
+footer{border-top:1px solid var(--line);padding:26px 0;font-family:var(--mono);font-size:.64rem;color:var(--smoke2)}
+footer .in{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:var(--smoke);text-decoration:none}footer a:hover{color:var(--gold-lt)}
+</style>
+</head>
+<body>
+<header class="nav"><div class="in">
+  <a class="brand" href="/"><svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="11" fill="#0F1712" stroke="#20281f"/><path d="M8 30c4-14 20-14 24 0" stroke="#E0730F" stroke-width="2.4" stroke-linecap="round"/><circle cx="20" cy="12.5" r="3.1" fill="#E8C77A"/></svg><b>TUNAKULA <i>NZELA-OS</i></b></a>
+  <a class="back" href="/">← Retour au site</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <span class="eyebrow">Sous le capot · pour les curieux, la presse &amp; les partenaires</span>
+  <h1>La technologie derrière Tunakula.</h1>
+  <p>Trois inventions, nées des contraintes réelles de Kinshasa — pas d'un modèle importé. Un clone d'Uber Eats ne peut pas les copier parce qu'il ne part pas d'ici.</p>
+  <p class="note">Cette page s'adresse aux curieux et aux partenaires. Si tu as faim, <a href="/" style="color:var(--gold-lt)">retourne commander →</a></p>
+</div></section>
+
+<div class="wrap"><div class="cards">
+  <div class="card">
+    <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M9 6h6M9 18h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 10.5l1.6 1.6L17 8.7" stroke="#3AAE6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h3>SMS Ledger Bridge</h3>
+    <p>Pas d'API mobile money en RDC ? Pas besoin. Chaque paiement génère un <b>SMS de confirmation</b> — la Lipa Box le lit, le rapproche de la commande et la passe payée en moins de 30 secondes. Un code utilisé une fois est mort pour toujours.</p>
+    <div class="tag">0 contrat opérateur · anti-rejeu intégré</div></div>
+  <div class="card">
+    <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg>
+    <h3>Landmark Graph</h3>
+    <p>«Bandal, après l'église Sainte-Anne, portail vert.» Ici on navigue aux repères, pas au GPS. Un vocal suffit : l'<b>Adresse Vocale</b> est enregistrée à vie, et chaque livraison enrichit la carte vivante de Kin.</p>
+    <div class="tag">adresse en 1 vocal · réutilisable à vie</div></div>
+  <div class="card">
+    <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 015 5c0 2-1 3-1 5H8c0-2-1-3-1-5a5 5 0 015-5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 18h6M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <h3>IA gouvernée au token près</h3>
+    <p>90% du flux, c'est des boutons et des automates — <b>zéro token</b>. L'IA n'intervient que là où elle gagne sa vie : comprendre une commande, une adresse, un litige. Budget dur par agent, registre de chaque centime.</p>
+    <div class="tag">≤ $0.05 IA / commande · tout tracé</div></div>
+</div>
+
+<div class="econ">
+  <h2>Une économie qui tient — la règle ×2.</h2>
+  <p>Chaque commande doit dégager au moins deux fois son coût complet (IA + WhatsApp + frais de paiement + infrastructure amortie). Ce n'est pas un slogan : c'est une règle appliquée dans le code, à chaque commande.</p>
+  <div class="row">
+    <span class="m">Modèle : <b>client-paie</b> · resto 0% commission</span>
+    <span class="m">Coût IA plafonné : <b>≤ $0.05</b> / commande</span>
+    <span class="m">Paiement vérifié : <b>≤ 30 s</b></span>
+    <span class="m">Wewa : <b>70%</b> de la course, payé tout de suite</span>
+  </div>
+</div></div>
+
+<footer><div class="in">
+  <span>© 2026 Groupe JNN · Tunakula-Congo · Kinshasa, RDC</span>
+  <span><a href="/">Accueil</a> · <a href="/blog/">Blog</a> · <a href="https://cd.tunakula.com">cd.tunakula.com</a></span>
+</div></footer>
+</body>
+</html>

@@ -42,7 +42,7 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 | Surface | Status |
 |---|---|
 | `frontend/blog` | ✅ 12 SEO posts, engine-linked, **premium editorial redesign (brand nav, Unbounded display, article layout, card index — matches landing)**; on-page view counter (`views.js` → `@nzela/views`) + build-time `seo-report.json` (per-post SEO score 100/100 avg) |
-| `frontend/landing` | ✅ **premium rebuild** — pixel-accurate WhatsApp phone mockup, custom SVG iconography, editorial light/dark rhythm, real dishes + human testimonials + FAQ, embedded fonts, splash, self-contained |
+| `frontend/landing` | ✅ **premium rebuild + conversion pass** — WhatsApp phone mockup, custom SVG icons, editorial rhythm, real dishes, FAQ. Conversion fixes: trust-first "Zéro risque" section (cash-at-door / hot / 40s refund) replacing the technical-vanity block; **fake testimonials removed** → honest "100 premiers" founding offer + livraison-offerte; dedicated restaurant **0% commission** money-math; hero stats reframed to benefits; engineering story relocated to `/tech.html`. `+243` number is the one open item (flagged in-file). |
 | `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); **premium SaaS restyle (brand system, SVG icons)**; needs Next.js host + live data — PWA-enabled |
 | `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; **shared analytics kit (`analytics.config.js` + `analytics.js`: Meta Pixel + Google gtag, single config)** wired into landing, partner-dashboard, blog (all pages) + prototype; reuse for ops-console |
 | `frontend/ops-console` | ⬜ placeholder README only; Next.js app not scaffolded |

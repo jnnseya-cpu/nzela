@@ -55,6 +55,12 @@ rewrite(join(ROOT, "landing/landing.html"), join(DIST, "index.html"), [
   ['href="manifest.webmanifest"', 'href="/manifest.webmanifest"'],
 ]);
 
+// --- /tech.html (relocated engineering story for press/partners) ---
+rewrite(join(ROOT, "landing/tech.html"), join(DIST, "tech.html"), [
+  ['"../pwa/', '"/pwa/'],
+  ['href="fonts.css"', 'href="/fonts.css"'],
+]);
+
 // --- partner dashboard → /pro/index.html ---
 rewrite(join(ROOT, "partner-dashboard/dashboard.html"), join(DIST, "pro/index.html"), [
   ['"../pwa/', '"/pwa/'],

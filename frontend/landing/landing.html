@@ -266,6 +266,34 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
 .fcol a:hover{color:var(--gold-lt)}
 .fbot{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:.64rem;letter-spacing:.04em;color:var(--smoke2)}
 
+/* hero: cash-first trust line + founding offer badge */
+.hero .cashline{margin-top:16px;font-size:1rem;color:#D6E0D6;max-width:520px}
+.hero .cashline b{color:#8fe0b0;font-weight:600}
+.hero .promo{display:inline-flex;align-items:center;gap:9px;margin-top:16px;background:rgba(58,174,107,.12);border:1px solid rgba(58,174,107,.4);color:#9fe6bd;border-radius:12px;padding:10px 15px;font-size:.86rem;font-weight:600}
+.hero .promo svg{width:18px;height:18px;flex:none;color:#3AAE6B}
+/* founding offer band (honest, no fake reviews) */
+.offer{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;margin-top:8px}
+@media(max-width:860px){.offer{grid-template-columns:1fr;gap:24px}}
+.offer .big{font-family:var(--disp);font-weight:800;font-size:clamp(1.9rem,4.6vw,2.9rem);color:var(--ink);line-height:1.06}
+.offer .big em{font-style:normal;color:var(--wax2)}
+.offer .honest{margin-top:16px;color:var(--ink2);font-size:1.02rem;max-width:520px}
+.offer .card-cta{background:var(--ink);border-radius:22px;padding:30px;color:var(--manioc)}
+.offer .card-cta .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:10px}
+.offer .card-cta h4{font-family:var(--disp);font-weight:800;font-size:1.5rem;margin-bottom:8px}
+.offer .card-cta p{color:#C4D2C4;font-size:.92rem;margin-bottom:20px}
+/* restaurant commission compare */
+.compare{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:780px}
+@media(max-width:640px){.compare{grid-template-columns:1fr}}
+.compare .col{border-radius:18px;padding:28px}
+.compare .them{background:rgba(226,86,75,.06);border:1px solid rgba(226,86,75,.25)}
+.compare .us{background:rgba(58,174,107,.08);border:1px solid rgba(58,174,107,.4)}
+.compare .lbl{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.compare .them .lbl{color:#e2564b}.compare .us .lbl{color:#9fe6bd}
+.compare .amt{font-family:var(--disp);font-weight:800;font-size:1.9rem;color:var(--manioc);font-variant-numeric:tabular-nums}
+.compare .amt.strike{color:var(--smoke);text-decoration:line-through;text-decoration-color:rgba(226,86,75,.6)}
+.compare .sub{color:var(--smoke);font-size:.84rem;margin-top:8px}
+.resto-cta{margin-top:32px}
+
 /* Reveal is progressive: content is visible by default; JS "arms" only the
    below-the-fold blocks so a failed observer or no-JS never hides content. */
 .reveal.armed{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,.8,.3,1)}
@@ -274,6 +302,11 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
 </style>
 </head>
 <body>
+<!-- ⚠ CUSTOMER-FACING NUMBER: currently the +44 line 447493216101. For a
+     Kinshasa audience this reads as foreign/scam — swap ALL occurrences to a
+     local +243 WhatsApp Business number before launch (single find-replace of
+     447493216101). Same swap in frontend/blog/_corpus.ts (SITE.waLink) and
+     frontend/partner-dashboard. See frontend/DEPLOY.md. -->
 <div class="grain"></div>
 
 <nav id="nav"><div class="wrap">
@@ -289,8 +322,8 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
   <div class="links">
     <a href="#comment">Comment ça marche</a>
     <a href="#plats">Les plats</a>
-    <a href="#promesse">La promesse</a>
-    <a href="#avis">Avis</a>
+    <a href="#confiance">Confiance</a>
+    <a href="#resto">Restaurants</a>
   </div>
   <a class="navcta" href="https://wa.me/447493216101?text=Nakolia">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 2a8 8 0 11-4.2 14.8l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0112 4zm-3 4.3c-.2 0-.5 0-.7.4-.3.3-1 1-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 4.9 4.2 2.4 1 2.9.8 3.4.7.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3l-.6-.4c-.3-.1-1.6-.8-1.8-.9-.3 0-.4-.1-.6.2l-.8 1c-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2-.2-.5-.4-.4-.6-.4z"/></svg>
@@ -315,6 +348,11 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
         Commander sur WhatsApp</a>
       <a class="btn btn-dark" href="#comment">Voir comment ça marche</a>
     </div>
+    <p class="cashline">Tu paies <b>cash à la remise</b> — quand le sac est dans ta main. Pas un franc avant.</p>
+    <div class="promo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8V21M12 8S11 3 8 3a2.5 2.5 0 000 5zM12 8s1-5 4-5a2.5 2.5 0 010 5z"/></svg>
+      Livraison offerte sur ta 1ère commande à Bandal
+    </div>
     <div class="trust">
       <span>Paiements</span>
       <div class="pays">
@@ -323,10 +361,10 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><b>90 s</b><span>du message à la commande</span></div>
-      <div class="stat"><b>5 km</b><span>pour que ça arrive chaud</span></div>
-      <div class="stat"><b>30 s</b><span>paiement vérifié</span></div>
+      <div class="stat"><b>~30 min</b><span>chaud à ta porte</span></div>
+      <div class="stat"><b>Cash</b><span>tu paies à la remise</span></div>
       <div class="stat"><b>0</b><span>application à installer</span></div>
+      <div class="stat"><b>0%</b><span>commission aux restos</span></div>
     </div>
   </div>
 
@@ -438,28 +476,28 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
   </div>
 </div></section>
 
-<section id="inventions"><div class="wrap">
+<section id="confiance"><div class="wrap">
   <div class="sec-head reveal">
-    <span class="eyebrow">Construit pour Kinshasa — pas importé</span>
-    <h2>Trois inventions qu'un clone d'Uber Eats<br>ne peut pas copier.</h2>
-    <p>Chaque contrainte de Kin est devenue une brique du système.</p>
+    <span class="eyebrow">Pourquoi tu peux commander sans crainte</span>
+    <h2>Zéro risque. Tu paies quand<br>tu as ton plat.</h2>
+    <p>À Kin, la vraie question c'est « est-ce que c'est sérieux ? ». Voici notre réponse, en trois promesses.</p>
   </div>
   <div class="cards reveal">
     <div class="card">
-      <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M9 6h6M9 18h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 10.5l1.6 1.6L17 8.7" stroke="#3AAE6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <h3>SMS Ledger Bridge</h3>
-      <p>Pas d'API mobile money en RDC ? Pas besoin. Chaque paiement génère un <b>SMS de confirmation</b> — la Lipa Box le lit, le rapproche de ta commande et la passe payée en moins de 30 secondes. Un code utilisé une fois est mort pour toujours.</p>
-      <div class="tag">0 contrat opérateur · anti-rejeu intégré</div></div>
+      <svg class="ic" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/><path d="M6 9v.01M18 15v.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <h3>Tu paies cash à la remise</h3>
+      <p>Ton wewa arrive avec la monnaie. Tu vois ton plat, tu vérifies, <b>puis</b> tu paies. Pas un franc à l'avance. Tu préfères mobile money ? M-Pesa, Orange, Airtel, Africell — confirmé tout seul en 30 s.</p>
+      <div class="tag">aucun risque d'avance</div></div>
     <div class="card">
-      <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg>
-      <h3>Landmark Graph</h3>
-      <p>«Bandal, après l'église Sainte-Anne, portail vert.» Ici on navigue aux repères, pas au GPS. Un vocal suffit : ton <b>Adresse Vocale</b> est enregistrée à vie, et chaque livraison enrichit la carte vivante de Kin.</p>
-      <div class="tag">adresse en 1 vocal · réutilisable à vie</div></div>
+      <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-1 4-1 6a3 3 0 006 0c0-1 0-2-1-3 3 2 5 5 5 9a7 7 0 01-14 0c0-4 3-7 5-12z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <h3>Chaud, ou on te rapproche</h3>
+      <p>On ne te propose que des restos à moins de 5 km — pour que ça arrive <b>chaud</b>. Trop loin ? On te propose le même style de plat tout près, jamais un plat froid après 1 h de route.</p>
+      <div class="tag">livré chaud, garanti</div></div>
     <div class="card">
-      <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 015 5c0 2-1 3-1 5H8c0-2-1-3-1-5a5 5 0 015-5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 18h6M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      <h3>IA gouvernée au token près</h3>
-      <p>90% du flux, c'est des boutons et des automates — <b>zéro token</b>. L'IA n'intervient que là où elle gagne sa vie : comprendre ta commande, ton adresse, un litige. Budget dur par agent, registre de chaque centime.</p>
-      <div class="tag">≤ $0.05 IA / commande · tout tracé</div></div>
+      <svg class="ic" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#3AAE6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3>Remboursé en 40 secondes</h3>
+      <p>Un souci, un resto injoignable ? Tu choisis en un clic : un autre resto tout près, ou <b>ton argent rendu</b> en Crédit Tunakula, tout de suite. Ton argent ne se perd jamais chez nous.</p>
+      <div class="tag">argent protégé · zéro paperasse</div></div>
   </div>
 </div></section>
 
@@ -488,21 +526,23 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
   </div>
 </div></section>
 
-<section id="avis" class="light"><div class="wrap">
-  <div class="sec-head reveal">
-    <span class="eyebrow">Ils commandent déjà</span>
-    <h2>Bandal a goûté. Bandal en redemande.</h2>
-  </div>
-  <div class="quotes reveal">
-    <div class="quote"><div class="stars">★★★★★</div>
-      <p>«J'ai envoyé un vocal en lingala, sans taper une adresse. 25 minutes après, le poulet moambe était au portail, encore chaud. Franchement bluffée.»</p>
-      <div class="who"><span class="av" style="background:#8a3b12">G</span><div><b>Grâce M.</b><small>Bandalungwa</small></div></div></div>
-    <div class="quote"><div class="stars">★★★★★</div>
-      <p>«Le mobile money confirmé tout seul, pas besoin d'envoyer une capture. Pour mon resto, zéro commission sur mes plats — je garde tout mon prix.»</p>
-      <div class="who"><span class="av" style="background:#0b6b41">P</span><div><b>Papa Jonas</b><small>Résto Nsele · Bandal</small></div></div></div>
-    <div class="quote"><div class="stars">★★★★★</div>
-      <p>«Je suis wewa. Le code de retrait me protège, l'itinéraire est en repères comme je roule déjà, et je touche ma part tout de suite. Ça, c'est du sérieux.»</p>
-      <div class="who"><span class="av" style="background:#b5892a">P</span><div><b>Papy K.</b><small>Livreur · Kintambo</small></div></div></div>
+<section id="offre" class="light"><div class="wrap">
+  <div class="offer reveal">
+    <div>
+      <span class="eyebrow">Nouveau à Bandal</span>
+      <div class="big" style="margin-top:14px">On vient d'ouvrir.<br><em>Sois parmi les 100 premiers.</em></div>
+      <p class="honest">Pas de faux avis ici : on lance cette semaine à Bandal. Les seules
+      étoiles qu'on affichera viendront de <b>vrais Kinois</b>, après de vraies livraisons —
+      jamais inventées. En attendant, l'offre est simple : ta première livraison est offerte.</p>
+    </div>
+    <div class="card-cta">
+      <div class="k">Offre de lancement</div>
+      <h4>Livraison offerte</h4>
+      <p>Sur ta 1ère commande à Bandal. Cash à la remise, livré chaud, sans app.</p>
+      <a class="btn btn-wa" href="https://wa.me/447493216101?text=Nakolia">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm-3 6.3c.2 0 .4 0 .6.4.3.5.9 1.8.9 2 .1.1.1.3 0 .5 0 .2-.1.3-.3.5l-.5.5c-.1.2-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.3-.2.6-.2.3.1 1.5.8 1.8.9l.6.4s0 .7-.2 1.3c-.2.7-1.3 1.3-1.8 1.3-.5.1-1 .3-3.4-.7C11 15.4 9.1 12.5 9 12.3c-.2-.2-1.2-1.6-1.2-2.9s.7-2 1-2.3c.2-.4.5-.4.7-.4z"/></svg>
+        Commander ma 1ère</a>
+    </div>
   </div>
 </div></section>
 
@@ -517,6 +557,32 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
     <details><summary>Et si je n'ai pas d'adresse GPS ?</summary><p>Personne n'en a vraiment à Kin. Tu donnes ton adresse par repères — «après l'église Sainte-Anne, portail vert» — et elle est gardée pour tes prochaines commandes.</p></details>
     <details><summary>Vous livrez où ?</summary><p>On démarre à Bandalungwa (Bandal) et on ne livre que dans un rayon de 5 km, pour que ton plat arrive chaud. D'autres quartiers de Kinshasa suivent.</p></details>
     <details><summary>Et si le resto ne répond pas ?</summary><p>Après 60 secondes de silence, un appel vocal automatique relance le resto. En cas d'échec, tu choisis en un clic : un resto équivalent tout près, ou un remboursement instantané en Crédit Tunakula.</p></details>
+  </div>
+</div></section>
+
+<section id="resto" class="dark2"><div class="wrap">
+  <div class="sec-head reveal">
+    <span class="eyebrow">Vous avez un restaurant ?</span>
+    <h2>Gardez 100% du prix de vos plats.</h2>
+    <p>Les autres plateformes prennent 25 à 35% de commission sur chaque plat. Nous : <b style="color:var(--gold-lt)">zéro</b>. Le client paie les frais de service, vous encaissez votre prix entier.</p>
+  </div>
+  <div class="compare reveal">
+    <div class="col them">
+      <div class="lbl">Ailleurs · commission 25–35%</div>
+      <div class="amt strike">65 000 – 75 000 FC</div>
+      <div class="sub">ce qu'il vous reste sur 100 000 FC de ventes</div>
+    </div>
+    <div class="col us">
+      <div class="lbl">Tunakula · 0% commission</div>
+      <div class="amt">100 000 FC</div>
+      <div class="sub">vous gardez tout. Un seul Android + WhatsApp suffit.</div>
+    </div>
+  </div>
+  <div class="ctas resto-cta reveal">
+    <a class="btn btn-wa" href="https://wa.me/447493216101?text=Resto%20partenaire">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm-3 6.3c.2 0 .4 0 .6.4.3.5.9 1.8.9 2 .1.1.1.3 0 .5 0 .2-.1.3-.3.5l-.5.5c-.1.2-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.3-.2.6-.2.3.1 1.5.8 1.8.9l.6.4s0 .7-.2 1.3c-.2.7-1.3 1.3-1.8 1.3-.5.1-1 .3-3.4-.7C11 15.4 9.1 12.5 9 12.3c-.2-.2-1.2-1.6-1.2-2.9s.7-2 1-2.3c.2-.4.5-.4.7-.4z"/></svg>
+      Devenir resto partenaire</a>
+    <a class="btn btn-dark" href="https://wa.me/447493216101?text=Wewa">Devenir wewa</a>
   </div>
 </div></section>
 
@@ -543,11 +609,11 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
       <p>La livraison qui tient sur WhatsApp. Cash-first, gouvernée par l'IA au token près, faite à Kinshasa pour Kinshasa.</p>
     </div>
     <div class="fcol"><h5>Produit</h5>
-      <a href="#comment">Comment ça marche</a><a href="#plats">Les plats</a><a href="#promesse">La promesse</a><a href="/blog/">Le blog</a></div>
+      <a href="#comment">Comment ça marche</a><a href="#plats">Les plats</a><a href="#confiance">Confiance</a><a href="/blog/">Le blog</a></div>
     <div class="fcol"><h5>Rejoindre</h5>
-      <a href="https://wa.me/447493216101?text=Nakolia">Commander</a><a href="https://cd.tunakula.com">Resto partenaire</a><a href="https://wa.me/447493216101?text=Wewa">Devenir wewa</a></div>
+      <a href="https://wa.me/447493216101?text=Nakolia">Commander</a><a href="https://wa.me/447493216101?text=Resto%20partenaire">Resto partenaire</a><a href="https://wa.me/447493216101?text=Wewa">Devenir wewa</a></div>
     <div class="fcol"><h5>Tunakula</h5>
-      <a href="https://cd.tunakula.com">Plateforme &amp; admin</a><a href="https://wa.me/447493216101">Contact WhatsApp</a><a href="#faq">FAQ</a></div>
+      <a href="/tech.html">La technologie</a><a href="https://cd.tunakula.com">Plateforme &amp; admin</a><a href="#faq">FAQ</a></div>
   </div>
   <div class="fbot">
     <span>© 2026 Groupe JNN · Tunakula-Congo · Kinshasa, RDC</span>
