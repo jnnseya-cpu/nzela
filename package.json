@@ -14,12 +14,14 @@
     "build:site": "node frontend/build.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm typecheck && pnpm test"
+    "verify": "pnpm typecheck && pnpm test",
+    "start": "pnpm --filter @nzela/server start"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "marked": "^18.0.11",
     "playwright": "^1.61.1",
+    "tsx": "^4.19.0",
     "typescript": "^5.7.0",
     "vitest": "^2.1.0"
   }

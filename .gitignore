@@ -7,3 +7,6 @@ coverage/
 !.env.example
 .DS_Store
 e2e/out/
+# runtime file-backed stores (sessions, tokens, open orders, replay, seq)
+data/
+backend/server/data/

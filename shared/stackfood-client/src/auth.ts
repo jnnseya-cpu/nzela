@@ -1,3 +1,4 @@
+import { FileKV } from "@nzela/persistence";
 import type { StackFoodClient } from "./client.js";
 import { StackFoodHttpError } from "./client.js";
 
@@ -25,6 +26,31 @@ export class MemoryTokenCache implements TokenCache {
   }
   async delete(key: string): Promise<void> {
     this.store.delete(key);
+  }
+}
+
+/**
+ * Durable token cache — customer bearer tokens survive a restart, so a
+ * single gateway instance doesn't re-login every customer (and hammer
+ * StackFood's /auth/login) after every deploy or crash. File-backed via the
+ * same atomic FileKV used for the money-critical stores. Tokens are
+ * re-obtainable secrets (a lost/expired token just triggers a fresh login),
+ * so file persistence is acceptable for single-instance production; a
+ * multi-instance deploy puts Redis behind this same interface.
+ */
+export class FileTokenCache implements TokenCache {
+  private readonly kv: FileKV;
+  constructor(path: string) {
+    this.kv = new FileKV(path);
+  }
+  async get(key: string): Promise<string | undefined> {
+    return this.kv.get<string>(key);
+  }
+  async set(key: string, token: string): Promise<void> {
+    this.kv.set(key, token);
+  }
+  async delete(key: string): Promise<void> {
+    this.kv.delete(key);
   }
 }
 

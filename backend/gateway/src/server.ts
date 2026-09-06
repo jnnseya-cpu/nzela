@@ -3,7 +3,7 @@ import { MemoryLedger, type LedgerSink } from "@nzela/ledger";
 import type { StackFoodOrderStatus } from "@nzela/stackfood-client";
 import { Router, type SessionPhase } from "./router.js";
 import { renderMilestone } from "./status-mapping.js";
-import { verifyWebhookSignature } from "./webhook.js";
+import { verifyWebhookSignature, verifyMetaSignature } from "./webhook.js";
 import { dispatch, type DispatchDeps } from "./dispatch.js";
 import type { ConversationEngine } from "./conversation.js";
 
@@ -31,6 +31,13 @@ export interface GatewayConfig {
   waVerifyToken: string;
   /** Shared secret for the StackFood observer HMAC. */
   stackfoodWebhookSecret: string;
+  /**
+   * Meta App Secret — when set, every inbound WhatsApp POST is verified
+   * against its `X-Hub-Signature-256` header on the raw body before any
+   * message is processed. Leave unset ONLY in tests/local; a live deploy
+   * must set it, or forged inbound messages are accepted.
+   */
+  waAppSecret?: string;
   ledger?: LedgerSink;
   sender: WhatsAppSender;
   /** Session phase lookup — Redis in production, map in tests. */
@@ -90,7 +97,20 @@ export function createGateway(config: GatewayConfig): Server {
 
       // WhatsApp inbound → Router (deterministic spine first, FR-A2).
       if (req.method === "POST" && url.pathname === "/wa/webhook") {
-        const payload = JSON.parse(await readBody(req));
+        const raw = await readBody(req);
+        // Reject forged inbound messages: verify Meta's signature on the raw
+        // body before trusting anything in it.
+        if (
+          config.waAppSecret &&
+          !verifyMetaSignature(
+            raw,
+            req.headers["x-hub-signature-256"] as string | undefined,
+            config.waAppSecret,
+          )
+        ) {
+          return json(401, { error: "bad signature" });
+        }
+        const payload = JSON.parse(raw);
         const messages =
           payload?.entry?.[0]?.changes?.[0]?.value?.messages ?? [];
         for (const m of messages) {

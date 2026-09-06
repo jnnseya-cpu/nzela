@@ -35,6 +35,12 @@ export interface PlacedOrder {
   orderId: number;
   /** Full customer récap with authoritative total + pay instructions. */
   recap: string;
+  /**
+   * Authoritative order total (FC). Optional for back-compat with fakes;
+   * the real StackFood port always sets it so the payment side (lipa) can
+   * reconcile the SMS amount against what was actually charged.
+   */
+  totalFc?: number;
 }
 
 export interface OrderPort {

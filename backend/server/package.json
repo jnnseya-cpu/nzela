@@ -1,0 +1,19 @@
+{
+  "name": "@nzela/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@nzela/analytics": "workspace:*",
+    "@nzela/gateway": "workspace:*",
+    "@nzela/landmark-graph": "workspace:*",
+    "@nzela/ledger": "workspace:*",
+    "@nzela/lipa-ingest": "workspace:*",
+    "@nzela/persistence": "workspace:*",
+    "@nzela/stackfood-client": "workspace:*"
+  }
+}

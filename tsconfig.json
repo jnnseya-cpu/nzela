@@ -24,7 +24,10 @@
       "@nzela/newsletter": ["backend/newsletter/src/index.ts"],
       "@nzela/analytics": ["backend/analytics/src/index.ts"],
       "@nzela/views": ["backend/views/src/index.ts"],
-      "@nzela/persistence": ["shared/persistence/src/index.ts"]
+      "@nzela/persistence": ["shared/persistence/src/index.ts"],
+      "@nzela/gateway": ["backend/gateway/src/index.ts"],
+      "@nzela/lipa-ingest": ["backend/lipa-ingest/src/index.ts"],
+      "@nzela/server": ["backend/server/src/index.ts"]
     }
   },
   "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]

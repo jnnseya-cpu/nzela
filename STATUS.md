@@ -4,7 +4,7 @@
 what remains. Read this BEFORE building anything — do not rebuild what is
 listed as done. Update it when status changes. (Operating directive §3, §48.)
 
-**Last verified:** 2026-08-19 — **179 tests passing (26 files)**, typecheck
+**Last verified:** 2026-09-06 — **267 tests passing (41 files)**, typecheck
 clean, git tree clean. (Working branch is whatever the current session uses;
 do not treat a branch name here as canonical — it goes stale across sessions.)
 
@@ -21,15 +21,16 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 | `shared/stackfood-client` | StackFood REST client (retry/timeout), idempotency, TK refs, auth provisioning, idempotent Order Adapter, category registry, in-process integration test | ✅ | 6 files |
 | `shared/landmark-graph` | Landmark addressing→StackFood fields, geolocation distance, 5 km gates + rain mode, zone tariffs | ✅ | 2 files |
 | `shared/security` | Humanity gate, non-human-instruction firewall, WAF/threat detection, Sentinelle agent (ACU-gated, fail-safe) | ✅ | 1 file |
-| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, server-authoritative pricing (`pricing.ts`), **conversation dispatch (`dispatch.ts`): every decision now gets a reply — deterministic-first with injected providers + agent fallbacks + InitiateCheckout signal** | ✅ | 7 files |
+| `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook, **inbound X-Hub-Signature-256 verification on the raw body when `waAppSecret` set — forged inbound messages rejected**), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, server-authoritative pricing (`pricing.ts`), conversation dispatch (`dispatch.ts`), **real WhatsApp Cloud API sender (`wa-sender.ts`: `CloudApiSender` → graph.facebook.com, `ConsoleSender` fallback — the outbound front door)** | ✅ | 9 files |
 | `backend/lipa-ingest` | SMS Ledger Bridge: 4-operator parsers, matcher, replay protection, ingest HTTP endpoint. **Money-hardened: no-underpayment asymmetric tolerance; content-fingerprint replay burn (no double-credit even without a txn id)** | ✅ | 4 files |
 | `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), **per-post SEO score 0–100 (deterministic, weighted breakdown)** | ✅ | 2 files |
 | `backend/growth-engine` | Partner marketing suite — 5 deterministic analytics tools + 5 LLM generators (budget+ACU) | ✅ | 1 file |
-| `backend/acquisition` | Referral loop (abuse-proof), funnel analytics, viral k-factor, win-back targeting | ✅ | 1 file |
+| `backend/acquisition` | Referral loop (abuse-proof), funnel analytics, viral k-factor, win-back targeting, **real `StackFoodCreditIssuer` (`credit.ts`): pays referral rewards into the StackFood wallet via `admin/customer/wallet/add-fund` — refuses non-positive credit + unresolved customer, ledgered** | ✅ | 2 files |
 | `backend/newsletter` | Weekly email to consented users: feature catalog (links to blog), consent+unsubscribe, hyperlink-dense HTML/text composer, idempotent resilient weekly scheduler | ✅ (needs email provider + subscriber DB at deploy) | 1 file |
 | `backend/agents` | LLM agent contracts (Commande/Adresse/Litige/Upsell) — interfaces only | 🟡 contracts only; LangGraph impls Phase 2 | 0 |
 | `backend/analytics` | Server-side conversion spine: Meta Conversions API + GA4 Measurement Protocol, SHA-256 PII hashing, pixel dedup by shared event_id, fail-safe fan-out; wired into the lipa payment-verified path (Purchase) | ✅ (needs Meta/GA4 tokens at deploy) | 1 file |
 | `backend/views` | Blog post view counter: increment/read HTTP endpoint, per-slug store (in-memory port; Redis at deploy), slug validation, CORS, best-effort per-IP de-dup window | ✅ (needs hosting at deploy) | 1 file |
+| `backend/server` | **Production bootstrap — composes the whole OS into two runnable services.** `configFromEnv` (single env contract) + `buildServices` (pure factory: injectable fetch/ledger/sender) wire StackFoodClient + auth (FileTokenCache) + OrderAdapter + ConversationEngine into the gateway, the SMS Ledger Bridge into lipa, joined by a durable **OpenOrderBook** (placed→paid reconciliation). `onVerified` fans out to analytics (Purchase) + notifies the customer on WhatsApp. `main.ts` reads env, prints launch-readiness, binds ports. End-to-end tested (conversation → order → SMS payment → "paiement reçu"). | ✅ (needs credentials at deploy) | 1 file |
 
 **Agent registry (11):** router, commande, adresse, lipa, cuisine-sync,
 wewa-dispatch, litige, mama-upsell, seo, growth, sentinelle. Deterministic
@@ -51,7 +52,9 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 
 ## What is NOT built / NOT live (do not claim otherwise)
 
-- ⬜ **Nothing is deployed.** No running server, no hosting, no live URL.
+- ⬜ **Nothing is deployed/hosted.** The service now boots and runs locally
+  as one system (`backend/server`), but it is not hosted anywhere — no
+  public URL, no process running in prod.
 - ⬜ **No live WhatsApp Cloud API** (Meta verification + templates pending).
 - ⬜ **No live cd.tunakula.com wiring** (needs service tokens + Postman diff).
 - ⬜ **Lipa Box hardware** not commissioned (endpoint code ✅, phones/SIMs ⬜).
@@ -69,9 +72,13 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 defined as interfaces with in-memory implementations for tests, and now
 **durable file-backed implementations** for single-instance production:
 `@nzela/persistence` (`FileKV`, atomic writes) backs `FileAcuWallet` +
-`FileFundingLedger` (ledger), `FileReplayIndex` (lipa) and `FileViewStore`
-(views) — so verify-once / reward-once / balances / view counts **survive a
-restart with no external database** (tested across a simulated restart).
+`FileFundingLedger` (ledger), `FileReplayIndex` (lipa), `FileViewStore`
+(views), `FileSessionStore` (conversation), **`FileTokenCache` (StackFood
+auth — no re-login storm after a restart)** and **`OpenOrderBook`
+(placed→paid join) + a durable TK-ref sequence** in `backend/server` — so
+verify-once / reward-once / balances / view counts / open orders / sessions
+**survive a restart with no external database** (tested across a simulated
+restart).
 Wire them by passing a file path (e.g. `new FileReplayIndex(dataDir +
 "/replay.json")`). A multi-instance / high-concurrency deploy still wants
 Redis/Postgres behind the same interfaces (+ a real secrets manager for
@@ -111,11 +118,20 @@ The full stateful ordering loop is real, not a stub:
   correctly-priced order against an in-process StackFood server, and do not
   double-place. This same code hits the live API unchanged.
 
-**Still needed to go live (not code — credentials/network):** the WhatsApp
-Cloud API `sender` adapter + live number (D-1), and running where the code
-can reach `cd.tunakula.com` with real StackFood credentials. LLM voice
-agents remain Phase 2 (the deterministic numbered-list flow works without
-them).
+**The runnable service now exists:** `backend/server` (`buildServices` +
+`main.ts`) composes the conversation engine, the real WhatsApp Cloud API
+sender, the StackFood ports, analytics and the SMS Ledger Bridge into two
+HTTP services that boot from `.env` (see `.env.example`). `pnpm start` runs
+them; both bind and report healthy. The full loop — WhatsApp order →
+StackFood placement → SMS payment verify → "paiement reçu" — is
+integration-tested with mocked transport.
+
+**Still needed to go live (not code — credentials/network):** a live +243
+number + WhatsApp Cloud API token/phone-number-id/app-secret (D-1), the
+StackFood webhook secret + (for referral credits) an admin token, merchant
+mobile-money numbers, and running where the code can reach `cd.tunakula.com`.
+LLM voice agents remain Phase 2 (the deterministic numbered-list flow works
+without them).
 
 ## Key documents (`docs/`)
 

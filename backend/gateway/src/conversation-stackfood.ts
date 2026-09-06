@@ -105,7 +105,7 @@ export function buildStackFoodOrderPort(cfg: StackFoodPortsConfig): OrderPort {
         `\nLivraison: ${fmtFc(b.deliveryFc)}` +
         `\n*Total: ${fmtFc(quote.orderAmount)}*\n\n` +
         cfg.payInstructions(tkRef, quote.orderAmount);
-      return { tkRef, orderId: result.orderId, recap };
+      return { tkRef, orderId: result.orderId, recap, totalFc: quote.orderAmount };
     },
 
     async status(waId: string): Promise<string | undefined> {

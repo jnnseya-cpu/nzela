@@ -7,6 +7,7 @@ export * from "./session.js";
 export * from "./conversation.js";
 export * from "./conversation-stackfood.js";
 export * from "./webhook.js";
+export * from "./wa-sender.js";
 export * from "./cuisine-sync.js";
 export * from "./receipt.js";
 export * from "./server.js";
