@@ -56,9 +56,20 @@ export function renderHeadTags(
     `<meta property="og:description" content="${esc(post.description)}">`,
     `<meta property="og:url" content="${url}">`,
     `<meta property="og:site_name" content="${esc(site.siteName)}">`,
+    `<meta property="og:locale" content="${post.lang === "fr" ? "fr_CD" : post.lang}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
-    `<html lang="${post.lang}">`,
+    `<meta name="twitter:title" content="${esc(post.title)}">`,
+    `<meta name="twitter:description" content="${esc(post.description)}">`,
   ];
+  if (site.ogImage) {
+    tags.push(
+      `<meta property="og:image" content="${site.ogImage}">`,
+      `<meta property="og:image:width" content="1200">`,
+      `<meta property="og:image:height" content="630">`,
+      `<meta property="og:image:alt" content="${esc(site.siteName)}">`,
+      `<meta name="twitter:image" content="${site.ogImage}">`,
+    );
+  }
   for (const alt of alternates) {
     tags.push(
       `<link rel="alternate" hreflang="${alt.lang}" href="${canonicalUrl(alt, site)}">`,

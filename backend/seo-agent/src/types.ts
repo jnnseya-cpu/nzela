@@ -59,4 +59,6 @@ export interface SiteConfig {
   defaultAuthor: string;
   /** wa.me deep link used as the conversion CTA in every post. */
   waLink: string;
+  /** Absolute URL of the social share image (1200×630). Optional. */
+  ogImage?: string;
 }

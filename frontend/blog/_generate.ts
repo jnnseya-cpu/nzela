@@ -14,6 +14,7 @@ const SITE: SiteConfig = {
   siteName: "Tunakula-Congo",
   defaultAuthor: "Tunakula-Congo",
   waLink: "https://wa.me/447493216101?text=Nakolia",
+  ogImage: "https://tunakula.com/pwa/og-image.png",
 };
 const OUT = "/home/user/nzela/frontend/blog";
 mkdirSync(OUT, { recursive: true });
@@ -124,15 +125,20 @@ for (const { post, body } of rendered) {
   const related = graph.filter((l) => l.fromSlug === post.slug).slice(0, 5)
     .map((l) => `<a href="/blog/${l.toSlug}.html"><b>${bySlug.get(l.toSlug)!.title}</b><span>→</span></a>`).join("");
   const meta = `${fmtDate(post.publishedAt)} · ${readingMin(post.bodyMarkdown)} min de lecture · Tunakula`;
+  // Localize the engine's absolute internal links to local .html so the
+  // article body navigates in a static preview. Scoped to the ARTICLE BODY
+  // only — the head's canonical/og:url stay absolute (what search engines
+  // and social crawlers require).
+  const articleHtml = String(marked.parse(body))
+    .replace(/https:\/\/tunakula\.com\/blog\/([a-z0-9-]+)(?!\.html)/g, "/blog/$1.html");
   const html = shell(head,
     `<main class="wrap"><a class="back" href="/blog/">← Tous les articles</a>` +
     `<div class="eyebrow">Guide Tunakula</div>` +
     `<span class="tk-views" hidden></span>` +
     `<div class="artmeta">${meta}</div>` +
-    `<article>${marked.parse(body)}</article></main>` +
+    `<article>${articleHtml}</article></main>` +
     (related ? `<div class="related"><h3>À lire aussi</h3>${related}</div>` : ""));
-  // Rewrite absolute blog URLs to local .html for a static preview.
-  writeFileSync(`${OUT}/${post.slug}.html`, html.replace(/https:\/\/tunakula\.com\/blog\/([a-z0-9-]+)(?!\.html)/g, "/blog/$1.html"));
+  writeFileSync(`${OUT}/${post.slug}.html`, html);
 }
 
 // --- 6. Blog index ---
