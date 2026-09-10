@@ -22,6 +22,23 @@ export interface BlogPost {
   lang: "fr" | "en" | "ar" | "es" | "zh";
   /** Curated outbound authority links (context, not manipulation). */
   citations?: OutboundLink[];
+  /**
+   * Answer-first key takeaways (the "L'essentiel" / TL;DR block). 3–5 short,
+   * self-contained facts an AI answer engine can quote verbatim. This is the
+   * single biggest GEO/AEO signal: generative engines (ChatGPT, Perplexity,
+   * Google AI Overviews) lift concise, standalone statements, not prose.
+   */
+  keyTakeaways?: string[];
+  /**
+   * FAQ pairs → a visible FAQ section AND FAQPage structured data. Powers
+   * Google "People Also Ask", voice answers, and AI-engine citations.
+   */
+  faq?: FaqItem[];
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
 }
 
 export interface OutboundLink {

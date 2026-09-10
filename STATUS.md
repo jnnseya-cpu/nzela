@@ -4,7 +4,7 @@
 what remains. Read this BEFORE building anything — do not rebuild what is
 listed as done. Update it when status changes. (Operating directive §3, §48.)
 
-**Last verified:** 2026-09-06 — **267 tests passing (41 files)**, typecheck
+**Last verified:** 2026-09-10 — **279 tests passing (42 files)**, typecheck
 clean, git tree clean. (Working branch is whatever the current session uses;
 do not treat a branch name here as canonical — it goes stale across sessions.)
 
@@ -23,7 +23,7 @@ Legend: ✅ built + tested · 🟡 built, needs live wiring/keys · ⬜ not buil
 | `shared/security` | Humanity gate, non-human-instruction firewall, WAF/threat detection, Sentinelle agent (ACU-gated, fail-safe) | ✅ | 1 file |
 | `backend/gateway` | HTTP server (Meta webhook verify, inbound→Router, HMAC StackFood hook, **inbound X-Hub-Signature-256 verification on the raw body when `waAppSecret` set — forged inbound messages rejected**), Router+AI firewall, status→milestone map, fee récap, customer receipt+leak guard, Cuisine Sync exception ladder, server-authoritative pricing (`pricing.ts`), conversation dispatch (`dispatch.ts`), **real WhatsApp Cloud API sender (`wa-sender.ts`: `CloudApiSender` → graph.facebook.com, `ConsoleSender` fallback — the outbound front door)** | ✅ | 9 files |
 | `backend/lipa-ingest` | SMS Ledger Bridge: 4-operator parsers, matcher, replay protection, ingest HTTP endpoint. **Money-hardened: no-underpayment asymmetric tolerance; content-fingerprint replay burn (no double-credit even without a txn id)** | ✅ | 4 files |
-| `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), **per-post SEO score 0–100 (deterministic, weighted breakdown)** | ✅ | 2 files |
+| `backend/seo-agent` | Dynamic internal-linking engine, SEO metadata (canonical/OG/hreflang/JSON-LD/sitemap), backlink pipeline, autopilot (budget+ACU), per-post SEO score 0–100, **+ AEO/GEO layer (`aeo.ts`): answer-engine score 0–100 + FAQPage / BreadcrumbList / Speakable / Organization+WebSite / enriched Article schema + `llms.txt` (`metadata.ts`) — built to be lifted & cited by ChatGPT/Perplexity/Google AI Overviews, voice & social search** | ✅ | 3 files |
 | `backend/growth-engine` | Partner marketing suite — 5 deterministic analytics tools + 5 LLM generators (budget+ACU) | ✅ | 1 file |
 | `backend/acquisition` | Referral loop (abuse-proof), funnel analytics, viral k-factor, win-back targeting, **real `StackFoodCreditIssuer` (`credit.ts`): pays referral rewards into the StackFood wallet via `admin/customer/wallet/add-fund` — refuses non-positive credit + unresolved customer, ledgered** | ✅ | 2 files |
 | `backend/newsletter` | Weekly email to consented users: feature catalog (links to blog), consent+unsubscribe, hyperlink-dense HTML/text composer, idempotent resilient weekly scheduler | ✅ (needs email provider + subscriber DB at deploy) | 1 file |
@@ -42,7 +42,7 @@ but need **LLM API keys wired at deploy** to produce real prose. 🟡
 
 | Surface | Status |
 |---|---|
-| `frontend/blog` | ✅ 12 SEO posts, engine-linked, **premium editorial redesign (brand nav, Unbounded display, article layout, card index — matches landing)**; on-page view counter (`views.js` → `@nzela/views`) + build-time `seo-report.json` (per-post SEO score 100/100 avg) |
+| `frontend/blog` | ✅ 12 posts, premium editorial redesign, engine-linked (**72 dynamic internal links, 6/post, zero orphans**); **AEO/GEO-grade: answer-first "L'essentiel" block + visible FAQ + FAQPage/Breadcrumb/Speakable/Article JSON-LD + absolute canonical/OG + `llms.txt`**; build-time quality **gate: every post ≥90 on BOTH SEO and AEO — currently 100/100 avg on both** (`seo-report.json`); on-page view counter (`views.js` → `@nzela/views`) |
 | `frontend/landing` | ✅ **premium rebuild + conversion pass** — WhatsApp phone mockup, custom SVG icons, editorial rhythm, real dishes, FAQ. Conversion fixes: trust-first "Zéro risque" section (cash-at-door / hot / 40s refund) replacing the technical-vanity block; **fake testimonials removed** → honest "100 premiers" founding offer + livraison-offerte; dedicated restaurant **0% commission** money-math; hero stats reframed to benefits; engineering story relocated to `/tech.html`. `+243` number is the one open item (flagged in-file). |
 | `frontend/partner-dashboard` | 🟡 working demo UI (demo data mirrors real engine); **premium SaaS restyle (brand system, SVG icons)**; needs Next.js host + live data — PWA-enabled |
 | `frontend/pwa` | ✅ shared PWA kit — brand icons (192/512/maskable/apple-touch/favicon), self-contained splash overlay (`pwa-splash.js`), service worker; **shared analytics kit (`analytics.config.js` + `analytics.js`: Meta Pixel + Google gtag, single config)** wired into landing, partner-dashboard, blog (all pages) + prototype; reuse for ops-console |

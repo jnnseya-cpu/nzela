@@ -13,6 +13,17 @@ export const CORPUS: BlogPost[] = [
     title: "Commander de la nourriture sur WhatsApp à Kinshasa",
     description: "Commande ton repas sur WhatsApp à Kinshasa — sans application, sans carte, livré chaud. Écris «Nakolia» et Mama Tunakula s'occupe de tout.",
     keywords: ["whatsapp", "kinshasa", "commander", "livraison", "sans app"],
+    keyTakeaways: [
+      "Sur WhatsApp, tu commandes ton repas à Kinshasa sans installer aucune application.",
+      "Écris «Nakolia» ou «menu» à Mama Tunakula pour voir les restaurants ouverts près de toi.",
+      "Tu peux commander à la voix en lingala ou en français, sans rien taper.",
+      "Tu paies cash, mobile money ou carte, et tu donnes ton adresse par repères, sans GPS.",
+    ],
+    faq: [
+      { q: "Faut-il télécharger une application pour commander ?", a: "Non, tout se passe sur WhatsApp, l'appli que tu utilises déjà. Zéro téléchargement, zéro mémoire prise, zéro carte bancaire obligatoire." },
+      { q: "Comment je lance ma commande ?", a: "Écris simplement «Nakolia» ou «menu» à Mama Tunakula. Elle te propose les restaurants ouverts près de toi avec leurs plats et prix clairs." },
+      { q: "Comment payer et donner mon adresse ?", a: "Tu paies cash à la livraison, par mobile money (M-Pesa, Orange, Airtel, Africell) ou par carte. Tu donnes ton adresse par repères, du style «après l'église, portail vert», sans aucune coordonnée GPS." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Commander de la nourriture sur WhatsApp à Kinshasa
@@ -40,6 +51,17 @@ Prêt à commander ta nourriture sur WhatsApp à Kinshasa ? Écris à Mama Tunak
     title: "Livraison de repas à Bandal en 30 minutes",
     description: "Livraison de repas rapide à Bandal, Kinshasa : commande sur WhatsApp, paie comme tu veux, reçois ton plat chaud au portail en 30 minutes.",
     keywords: ["bandal", "livraison", "kinshasa", "commander", "wewa"],
+    keyTakeaways: [
+      "À Bandal, Tunakula livre ton plat chaud en une trentaine de minutes, commandé sur WhatsApp.",
+      "On ne propose que des restaurants à moins de 5 km pour que ton plat arrive chaud.",
+      "Tu paies cash à la livraison, par mobile money ou par carte, montant affiché avant de confirmer.",
+      "Ton wewa vérifie la commande avec un code de retrait pour que personne d'autre ne prenne ton sac.",
+    ],
+    faq: [
+      { q: "En combien de temps je suis livré à Bandal ?", a: "En une trentaine de minutes. Comme on ne propose que des restaurants à moins de 5 km, ton plat fait peu de route et arrive chaud malgré les embouteillages." },
+      { q: "Et quand il pleut à Bandal ?", a: "Quand il pleut, on resserre encore le rayon de livraison pour garder la qualité du plat et la sécurité du wewa. Ton repas reste chaud et ton livreur ne prend pas de risque inutile." },
+      { q: "Comment je sais que c'est bien mon sac qui m'est remis ?", a: "Ton wewa vérifie ta commande avec un code de retrait. Personne d'autre que toi ne peut récupérer ton sac." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Livraison de repas à Bandal en 30 minutes
@@ -69,6 +91,17 @@ Ta première **commande** enregistre ton adresse par repères. La prochaine fois
     title: "Commander à la voix, en lingala et en français",
     description: "Envoie un message vocal en lingala ou en français et ta commande est comprise instantanément. Le moyen le plus rapide de commander à Kinshasa.",
     keywords: ["lingala", "vocal", "commander", "whatsapp", "kinshasa"],
+    keyTakeaways: [
+      "Tu commandes en lingala, en français ou dans le mélange des deux, en envoyant un simple vocal.",
+      "Envoie un message vocal à Mama Tunakula et ta commande est montée toute seule.",
+      "Le vocal sert aussi à donner ton adresse par repères, sans GPS.",
+      "Après ton vocal, tu reçois un récapitulatif écrit à vérifier avant de payer.",
+    ],
+    faq: [
+      { q: "Je peux commander en parlant lingala ?", a: "Oui, tu peux envoyer un vocal en lingala, en français ou dans le mélange des deux qu'on utilise au quotidien. Pas besoin d'écrire ni de connaître le nom exact du plat." },
+      { q: "Comment je suis sûr que ma commande est bonne ?", a: "Après ton vocal, Mama Tunakula te montre un récapitulatif écrit : le plat, la quantité, le prix et l'adresse. Tu vérifies d'un coup d'œil et tu confirmes avant de payer." },
+      { q: "Le vocal marche-t-il aussi pour l'adresse ?", a: "Oui, tu peux donner ton adresse par repères en vocal, du style «Bandal, après l'église Sainte-Anne, portail vert». Elle est comprise, confirmée et gardée pour tes prochaines commandes." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Commander à la voix, en lingala et en français
@@ -98,6 +131,17 @@ Essaie maintenant : touche le micro dans ta conversation WhatsApp avec Mama Tuna
     title: "La règle des 5 km : ton plat arrive toujours chaud",
     description: "Pourquoi Tunakula ne livre que dans un rayon de 5 km à Kinshasa : pour que ton plat arrive chaud, et ton wewa en sécurité. La qualité d'abord.",
     keywords: ["plat chaud", "5 km", "livraison", "bandal", "kinshasa"],
+    keyTakeaways: [
+      "La règle des 5 km garantit un plat chaud : Tunakula ne propose que des restaurants à moins de 5 km.",
+      "Au-delà de 5 km, un plat perd sa chaleur dans les embouteillages de Kinshasa.",
+      "Quand il pleut, le rayon passe automatiquement à 3 km pour la sécurité du wewa.",
+      "La proximité rend la livraison plus rapide et permet au wewa de faire plus de courses.",
+    ],
+    faq: [
+      { q: "Pourquoi Tunakula livre seulement à 5 km ?", a: "Pour que ton plat arrive chaud. Au-delà de 5 km dans les embouteillages de Kinshasa, le plat refroidit, la sauce fige et le wewa reste coincé trop longtemps." },
+      { q: "Le rayon change-t-il quand il pleut ?", a: "Oui, quand il pleut on resserre automatiquement le rayon à 3 km. Ton plat reste chaud et ton wewa reste en sécurité sur des routes difficiles." },
+      { q: "Et si mon restaurant préféré est trop loin ?", a: "On te propose le même style de cuisine dans un restaurant plus proche de toi. Mieux vaut un bon plat proche qu'un plat lointain qui refroidit." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# La règle des 5 km : ton plat arrive toujours chaud
@@ -127,6 +171,17 @@ Commande sur WhatsApp — on te montre déjà les meilleurs restaurants près de
     title: "Adresse Vocale : se faire livrer sans adresse GPS",
     description: "À Kinshasa on navigue par repères, pas par GPS. L'Adresse Vocale de Tunakula transforme «après l'église, portail vert» en adresse réutilisable à vie.",
     keywords: ["adresse", "repères", "bandal", "livraison", "vocal"],
+    keyTakeaways: [
+      "L'Adresse Vocale transforme «après l'église, portail vert» en adresse réutilisable à vie, sans GPS.",
+      "Un simple vocal enregistre ton chemin sous un nom comme «Maison» ou «Bureau».",
+      "Ton wewa reçoit ton chemin en repères, pas en coordonnées, la vraie façon de rouler à Kin.",
+      "Tu peux enregistrer plusieurs adresses : maison, travail, chez maman, l'église.",
+    ],
+    faq: [
+      { q: "Comment donner mon adresse sans GPS à Kinshasa ?", a: "Tu envoies un vocal décrivant ton chemin par repères, comme tu le ferais à un ami. Tunakula le comprend, le confirme et l'enregistre comme adresse réutilisable." },
+      { q: "Dois-je réexpliquer mon adresse à chaque commande ?", a: "Non, une fois enregistrée sous un nom comme «Maison» ou «Bureau», un seul clic suffit à la prochaine commande. Tu ne réexpliques jamais deux fois." },
+      { q: "Puis-je enregistrer plusieurs adresses ?", a: "Oui, tu peux enregistrer la maison, le travail, chez maman ou l'église, chacune par repères clairs. Tu choisis l'adresse en un geste au moment de commander." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Adresse Vocale : se faire livrer sans adresse GPS
@@ -156,6 +211,17 @@ Enregistre ton Adresse Vocale dès ta première commande sur WhatsApp.`,
     title: "Payer par Mobile Money : M-Pesa, Orange, Airtel, Africell",
     description: "Paie ta commande Tunakula par mobile money — M-Pesa, Orange Money, Airtel Money, Africell — confirmé automatiquement en moins de 30 secondes.",
     keywords: ["mobile money", "mpesa", "paiement", "whatsapp", "kinshasa"],
+    keyTakeaways: [
+      "Le mobile money Tunakula marche avec M-Pesa, Orange, Airtel et Africell, sans compte spécial à créer.",
+      "Ton paiement est confirmé automatiquement en moins de 30 secondes.",
+      "Pas besoin d'envoyer une capture d'écran : le système reconnaît ton versement tout seul.",
+      "En cas de souci, tu es remboursé vite en Crédit Tunakula, utilisable dès ta prochaine commande.",
+    ],
+    faq: [
+      { q: "Quels opérateurs mobile money sont acceptés ?", a: "M-Pesa, Orange Money, Airtel Money et Africell. Pas de compte spécial à créer : tu paies avec l'opérateur que tu as déjà en poche." },
+      { q: "En combien de temps mon paiement est confirmé ?", a: "En moins de 30 secondes, automatiquement. Tu n'as jamais à demander «vous avez reçu mon argent ?» ni à envoyer une capture d'écran." },
+      { q: "Que se passe-t-il si ma commande est annulée ?", a: "Ton argent est protégé car tu paies chez Tunakula, pas directement chez le restaurant. Tu es remboursé vite en Crédit Tunakula, utilisable dès ta prochaine commande." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Payer par M-Pesa, Orange, Airtel ou Africell Money
@@ -185,6 +251,17 @@ Commande sur WhatsApp et paie comme ça t'arrange.`,
     title: "Payer cash à la livraison à Kinshasa",
     description: "Pas de mobile money ? Paie cash à la livraison. Ton wewa a la monnaie, ton paiement est simple et sûr. La livraison à Kinshasa comme tu la connais.",
     keywords: ["cash", "paiement", "livraison", "kinshasa", "wewa"],
+    keyTakeaways: [
+      "Tu paies cash ton wewa au moment de la remise, sans avancer un franc à l'avance.",
+      "Le montant total s'affiche avant de confirmer, sans surprise ni frais caché.",
+      "Ton wewa arrive avec la monnaie et vérifie la commande avec un code de retrait à trois chiffres.",
+      "Le paiement cash ne demande aucun compte mobile money, aucune carte, aucune application.",
+    ],
+    faq: [
+      { q: "Puis-je payer sans mobile money ni carte ?", a: "Oui, tu paies cash à la livraison au moment de la remise. Ça ne demande aucun compte mobile money, aucune carte et aucune application." },
+      { q: "Le wewa a-t-il la monnaie ?", a: "Oui, ton wewa arrive avec la monnaie et le montant total t'est montré avant de confirmer, sans frais caché." },
+      { q: "Comment être sûr que c'est bien ma commande ?", a: "Ton wewa vérifie la commande avec toi grâce à un code de retrait à trois chiffres. Personne d'autre que toi ne peut récupérer ton sac." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Payer cash à la livraison à Kinshasa
@@ -214,6 +291,17 @@ Payer **cash à la livraison** à **Kinshasa**, c'est rassurant : tu vois ton pl
     title: "Remboursement en 40 secondes : le Crédit Tunakula",
     description: "Un souci avec ta commande ? Remboursement immédiat en Crédit Tunakula, utilisable dès ta prochaine commande. Ton argent est toujours en sécurité.",
     keywords: ["remboursement", "crédit", "paiement", "kinshasa", "commander"],
+    keyTakeaways: [
+      "Le remboursement Tunakula est immédiat car tu paies chez Tunakula, pas directement chez le restaurant.",
+      "Si un resto ne répond pas, tu es remboursé en 40 secondes en Crédit Tunakula.",
+      "Le Crédit Tunakula s'applique tout seul à ta prochaine commande, sans code à saisir.",
+      "Zéro paperasse : pas de formulaire, pas de service client à supplier, pas d'attente de plusieurs jours.",
+    ],
+    faq: [
+      { q: "Que se passe-t-il si le restaurant ne répond pas ?", a: "Tu as deux choix immédiats : être rerouté vers un restaurant équivalent tout près, ou être remboursé en 40 secondes en Crédit Tunakula. Tu décides, en un clic." },
+      { q: "Combien de temps pour être remboursé ?", a: "40 secondes, en Crédit Tunakula. Comme le paiement transite par Tunakula, le remboursement est instantané et automatique, sans formulaire à remplir." },
+      { q: "Comment utiliser mon Crédit Tunakula ?", a: "Il s'applique tout seul à ta prochaine commande, sans code à saisir. Tu manges, il se déduit, c'est tout." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Remboursé en 40 secondes : le Crédit Tunakula
@@ -243,6 +331,17 @@ Commande l'esprit tranquille sur WhatsApp.`,
     title: "Restaurants : gardez 100% du prix de vos plats",
     description: "Rejoignez Tunakula à Kinshasa et gardez 100% du prix de vos plats. Zéro commission restaurant, un seul Android, et des outils marketing IA offerts.",
     keywords: ["restaurant", "partenaire", "kinshasa", "commander", "livraison"],
+    keyTakeaways: [
+      "En tant que restaurant partenaire, tu encaisses 100% du prix de tes plats : zéro commission.",
+      "Les frais de service sont côté client (modèle «client-paie»), ta marge reste entière.",
+      "Un seul Android suffit : les commandes arrivent sur WhatsApp avec deux boutons, Accepter et Prêt.",
+      "Des outils marketing IA offerts écrivent tes posts, créent tes pubs et trouvent ton meilleur horaire.",
+    ],
+    faq: [
+      { q: "Combien Tunakula prend-il de commission sur mes plats ?", a: "Rien. Tu encaisses 100% du prix de tes plats. Le modèle est «client-paie» : les frais de service sont côté client, ta marge reste entière." },
+      { q: "Faut-il acheter du matériel spécial ?", a: "Non, un seul Android suffit. Les commandes arrivent sur WhatsApp avec deux boutons simples, Accepter et Prêt, sans tablette ni logiciel à apprendre." },
+      { q: "Qu'est-ce que je reçois en plus des commandes ?", a: "Des outils marketing IA offerts qui écrivent tes posts, créent tes pubs et trouvent ton meilleur horaire de publication, pour attirer plus de clients sans budget d'agence." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Restaurants : gardez 100% du prix de vos plats
@@ -272,6 +371,17 @@ Devenez restaurant partenaire : contactez Tunakula sur WhatsApp.`,
     title: "Devenir wewa : 70% des frais de course, payé tout de suite",
     description: "Deviens wewa Tunakula à Kinshasa : n'importe quel téléphone avec WhatsApp, 70% des frais de course payés immédiatement, et un code anti-vol.",
     keywords: ["wewa", "livreur", "kinshasa", "livraison", "cash"],
+    keyTakeaways: [
+      "Le wewa Tunakula garde 70% des frais de course, et sur les commandes prépayées c'est payé tout de suite.",
+      "N'importe quel téléphone avec WhatsApp suffit, pas besoin du dernier smartphone.",
+      "Chaque commande a un code de retrait anti-vol : seul le bon client peut récupérer le sac.",
+      "Grâce à la règle des 5 km, tes courses restent proches : moins d'essence, plus de livraisons par jour.",
+    ],
+    faq: [
+      { q: "Combien gagne un wewa par course ?", a: "Tu gardes 70% des frais de course. Sur les commandes prépayées, c'est payé tout de suite, pas à la fin du mois." },
+      { q: "Quel téléphone faut-il pour devenir wewa ?", a: "N'importe quel téléphone avec WhatsApp suffit. Pas besoin du dernier smartphone, et ton itinéraire est donné en repères, pas en GPS compliqué." },
+      { q: "Comment le code de retrait me protège ?", a: "Chaque commande a un code de retrait anti-vol : seul le bon client peut récupérer le sac, ce qui te protège toi aussi lors de la remise." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Devenir wewa : 70% des frais de course, payé tout de suite
@@ -301,6 +411,17 @@ Rejoins les wewas Tunakula : écris-nous sur WhatsApp.`,
     title: "Diaspora : offrir un repas à ta famille à Kinshasa",
     description: "Diaspora congolaise : depuis Londres, Paris ou Bruxelles, offre un repas chaud à ta famille à Kinshasa. Paie par carte, ils sont livrés à Bandal.",
     keywords: ["diaspora", "kinshasa", "livraison", "paiement", "bandal"],
+    keyTakeaways: [
+      "La diaspora peut offrir un repas chaud à sa famille à Kinshasa depuis Londres, Paris ou Bruxelles.",
+      "Tu paies par carte de ton côté, sans mobile money congolais ni argent liquide à faire transiter.",
+      "La livraison est suivie de bout en bout : acceptée, en cuisine, wewa en route, arrivée.",
+      "L'adresse par repères est gardée une fois donnée, pour que tes prochaines surprises prennent une minute.",
+    ],
+    faq: [
+      { q: "Comment offrir un repas à ma famille depuis l'étranger ?", a: "Tu commandes sur WhatsApp et tu paies par carte de ton côté. Ta famille reçoit un repas chaud à son portail à Bandal ou ailleurs à Kinshasa." },
+      { q: "Ai-je besoin d'un mobile money congolais ?", a: "Non, tu paies par carte, sans mobile money congolais ni argent liquide à faire transiter. Tu vois le montant complet avant de valider." },
+      { q: "Puis-je savoir si le repas est bien arrivé ?", a: "Oui, la livraison est suivie étape par étape : acceptée, en cuisine, wewa en route, arrivée. Tu suis à distance et tu es rassuré." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Diaspora : offrir un repas à ta famille à Kinshasa
@@ -330,6 +451,17 @@ Offre un repas dès aujourd'hui : écris à Tunakula sur WhatsApp.`,
     title: "Parrainage : parraine un ami, gagnez du Crédit Tunakula",
     description: "Parrainage Tunakula : partage ton code, et quand ton ami commande à Kinshasa, vous gagnez tous les deux du Crédit Tunakula. Le bon plan qui se partage.",
     keywords: ["parrainage", "crédit", "kinshasa", "commander", "whatsapp"],
+    keyTakeaways: [
+      "Avec le parrainage Tunakula, ton ami et toi gagnez tous les deux du Crédit Tunakula.",
+      "Partage ton code personnel sur WhatsApp, par message ou dans un groupe de quartier.",
+      "La récompense arrive sur une vraie première commande payée et livrée, pas de faux comptes.",
+      "Le Crédit Tunakula gagné se déduit tout seul dès ta prochaine commande.",
+    ],
+    faq: [
+      { q: "Comment marche le parrainage Tunakula ?", a: "Partage ton code personnel sur WhatsApp. Quand ton ami passe sa première commande payée, il reçoit du Crédit Tunakula de bienvenue, et toi aussi en récompense." },
+      { q: "Quand est-ce que je reçois ma récompense ?", a: "Uniquement sur une vraie première commande payée et livrée. Pas de triche, pas de faux comptes, ce qui garde le parrainage sain pour tout le monde." },
+      { q: "Comment utiliser le crédit gagné ?", a: "Ton Crédit Tunakula s'utilise dès ta prochaine commande, sans code compliqué à saisir : il se déduit tout seul." },
+    ],
     publishedAt: D, author: AUTHOR, lang: "fr",
     bodyMarkdown:
 `# Parraine un ami, gagnez tous les deux du Crédit Tunakula

@@ -1,78 +1,115 @@
 {
   "generatedForCorpusSize": 12,
-  "averageScore": 100,
+  "averageSeoScore": 100,
+  "averageAeoScore": 100,
   "posts": [
     {
       "slug": "commander-nourriture-whatsapp-kinshasa",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "livraison-repas-bandal",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "commander-a-la-voix-lingala-francais",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "regle-5-km-plat-chaud",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "adresse-vocale-sans-gps",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "payer-mobile-money-mpesa-orange-airtel-africell",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "payer-cash-a-la-livraison",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "rembourse-40-secondes-credit-tunakula",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "restaurants-gardez-100-du-prix",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "devenir-wewa-70-pourcent",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "diaspora-offrir-repas-famille-kinshasa",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     },
     {
       "slug": "parraine-un-ami-gagne-du-credit",
-      "score": 100,
-      "grade": "A",
-      "issues": []
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
     }
   ]
 }

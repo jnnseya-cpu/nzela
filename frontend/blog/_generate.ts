@@ -2,11 +2,12 @@ import { mkdirSync, writeFileSync, copyFileSync } from "node:fs";
 import { marked } from "marked";
 import { buildLinkGraph, injectInternalLinks, findOrphans } from "/home/user/nzela/backend/seo-agent/src/linking.ts";
 import {
-  renderHeadTags, renderArticleSchema, renderSitemap, renderRobots,
-  validatePost, canonicalUrl,
+  renderHeadTags, renderAllSchema, renderSiteSchema, renderSitemap,
+  renderRobots, renderLlmsTxt, validatePost, canonicalUrl,
 } from "/home/user/nzela/backend/seo-agent/src/metadata.ts";
-import type { SiteConfig } from "/home/user/nzela/backend/seo-agent/src/types.ts";
+import type { BlogPost, OutboundLink, SiteConfig } from "/home/user/nzela/backend/seo-agent/src/types.ts";
 import { seoScore } from "/home/user/nzela/backend/seo-agent/src/scoring.ts";
+import { aeoScore } from "/home/user/nzela/backend/seo-agent/src/aeo.ts";
 import { CORPUS } from "./_corpus.ts";
 
 const SITE: SiteConfig = {
@@ -16,6 +17,34 @@ const SITE: SiteConfig = {
   waLink: "https://wa.me/447493216101?text=Nakolia",
   ogImage: "https://tunakula.com/pwa/og-image.png",
 };
+const SITE_TAGLINE =
+  "Commander à manger sur WhatsApp à Kinshasa — sans app, sans carte, payé cash ou mobile money, livré chaud à moins de 5 km. Écris «Nakolia».";
+// Rebuild date → Article dateModified, sitemap lastmod, AEO freshness signal.
+const BUILD_DATE = "2026-09-10";
+
+/**
+ * One genuinely-relevant, authoritative outbound citation per topic (E-E-A-T
+ * context, not manipulation — all rel=nofollow). Picked by keyword so every
+ * post cites a real source an AI engine recognises. Falls back to Kinshasa.
+ */
+const CITE: Record<string, OutboundLink> = {
+  whatsapp: { url: "https://business.whatsapp.com/", anchor: "WhatsApp Business", rel: "nofollow" },
+  "mobile money": { url: "https://www.gsma.com/solutions-and-impact/connectivity-for-good/mobile-for-development/mobile-money/", anchor: "GSMA — Mobile Money", rel: "nofollow" },
+  diaspora: { url: "https://fr.wikipedia.org/wiki/Diaspora_congolaise", anchor: "Diaspora congolaise", rel: "nofollow" },
+  kinshasa: { url: "https://fr.wikipedia.org/wiki/Kinshasa", anchor: "Kinshasa", rel: "nofollow" },
+};
+function pickCitations(post: BlogPost): OutboundLink[] {
+  const out: OutboundLink[] = [];
+  const seen = new Set<string>();
+  for (const k of post.keywords) {
+    const c = CITE[k.toLowerCase()];
+    if (c && !seen.has(c.url)) { out.push(c); seen.add(c.url); }
+    if (out.length >= 2) break;
+  }
+  if (!out.length) out.push(CITE.kinshasa!);
+  return out;
+}
+
 const OUT = "/home/user/nzela/frontend/blog";
 mkdirSync(OUT, { recursive: true });
 
@@ -24,12 +53,16 @@ const problems = CORPUS.flatMap((p) => validatePost(p).issues.map((i) => `${p.sl
 if (problems.length) { console.error("VALIDATION FAILED:\n" + problems.join("\n")); process.exit(1); }
 
 // --- 2. Build the dynamic internal-link graph over the whole corpus ---
-const graph = buildLinkGraph(CORPUS, { maxLinksPerPost: 5, minSharedKeywords: 1 });
+// Denser graph (up to 6 contextual links/post) so link equity flows harder
+// and every post is reachable in one hop from several others.
+const graph = buildLinkGraph(CORPUS, { maxLinksPerPost: 6, minSharedKeywords: 1 });
 const bySlug = new Map(CORPUS.map((p) => [p.slug, p]));
 const orphans = findOrphans(CORPUS, graph);
 
-// --- 3. Append the wa.me CTA + inject internal links into each body ---
+// --- 3. Stamp freshness + citations, append CTA, inject internal links ---
 for (const post of CORPUS) {
+  post.updatedAt = BUILD_DATE;              // dateModified + AEO freshness
+  post.citations = pickCitations(post);     // authoritative outbound (E-E-A-T)
   post.bodyMarkdown += `\n\n[Commander sur WhatsApp maintenant](${SITE.waLink})`;
 }
 let totalLinks = 0;
@@ -90,6 +123,29 @@ article a[href*="wa.me"]:hover{background:#2ee06f}
 .foot{background:#060907;margin-top:58px;border-top:1px solid rgba(246,239,224,.1)}
 .foot .in{max-width:960px;margin:0 auto;padding:32px 22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:#6E8377}
 .foot a{color:#B7C7B9;text-decoration:none}.foot a:hover{color:var(--gold)}
+/* breadcrumb */
+.crumbs{max-width:720px;margin:0 auto;padding:16px 22px 0;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--smoke)}
+.crumbs a{color:var(--smoke);text-decoration:none}.crumbs a:hover{color:var(--wax)}
+.crumbs span{color:var(--wax);margin:0 6px}
+/* L'essentiel (answer-first takeaways — the block AI engines lift) */
+.tk-essentiel{max-width:720px;margin:22px auto 6px;padding:22px 24px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--wax2);border-radius:14px;box-shadow:0 16px 36px -34px rgba(0,0,0,.5)}
+.tk-essentiel h2{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--wax);margin:0 0 12px}
+.tk-essentiel ul{margin:0;padding-left:20px}
+.tk-essentiel li{margin:7px 0;font-size:1rem;color:var(--ink);line-height:1.55}
+.tk-essentiel li::marker{color:var(--wax2)}
+/* FAQ (visible + FAQPage schema) */
+.tk-faq{max-width:720px;margin:40px auto 0;padding:26px 22px 0;border-top:1px solid var(--line)}
+.tk-faq h2{font-family:var(--disp);font-weight:800;color:var(--ink);font-size:1.4rem;margin-bottom:14px}
+.tk-faq details{border-bottom:1px solid var(--line);padding:2px 0}
+.tk-faq summary{list-style:none;cursor:pointer;padding:16px 34px 16px 2px;position:relative;font-family:var(--disp);font-weight:700;font-size:1.02rem;color:var(--ink)}
+.tk-faq summary::-webkit-details-marker{display:none}
+.tk-faq summary::after{content:'+';position:absolute;right:6px;top:50%;transform:translateY(-50%);font-family:var(--body);font-weight:400;font-size:1.4rem;color:var(--wax)}
+.tk-faq details[open] summary::after{content:'–'}
+.tk-faq details p{padding:0 6px 18px 2px;margin:0;color:#2b332c;font-size:1rem}
+/* sources */
+.sources{max-width:720px;margin:34px auto 0;padding:0 22px}
+.sources h3{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke);margin-bottom:8px}
+.sources a{color:var(--wa);font-size:.86rem;text-decoration:underline;text-underline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 `;
 
@@ -100,6 +156,50 @@ const fmtDate = (iso: string) =>
   new Date(iso + "T12:00:00Z").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 const readingMin = (md: string) =>
   Math.max(2, Math.round(md.replace(/[#>*_\`\[\]()-]/g, " ").split(/\s+/).filter(Boolean).length / 200));
+
+const esc = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/** Answer-first "L'essentiel" block — the part AI engines quote. */
+const renderTakeaways = (post: BlogPost): string => {
+  const items = post.keyTakeaways ?? [];
+  if (!items.length) return "";
+  return (
+    `<section class="tk-essentiel" aria-label="L'essentiel"><h2>L'essentiel</h2><ul>` +
+    items.map((t) => `<li>${esc(t)}</li>`).join("") +
+    `</ul></section>`
+  );
+};
+
+/** Visible FAQ (mirrors the FAQPage schema so users and crawlers agree). */
+const renderFaqSection = (post: BlogPost): string => {
+  const faq = post.faq ?? [];
+  if (!faq.length) return "";
+  return (
+    `<section class="tk-faq" aria-label="Questions fréquentes"><h2>Questions fréquentes</h2>` +
+    faq.map((f, i) =>
+      `<details${i === 0 ? " open" : ""}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`,
+    ).join("") +
+    `</section>`
+  );
+};
+
+/** Outbound authority citations (rel per policy; external → nofollow). */
+const renderSources = (post: BlogPost): string => {
+  const cites = post.citations ?? [];
+  if (!cites.length) return "";
+  return (
+    `<div class="sources"><h3>Sources</h3>` +
+    cites.map((c) =>
+      `<a href="${c.url}" rel="${c.rel || "nofollow"} noopener" target="_blank">${esc(c.anchor)}</a>`,
+    ).join(" · ") +
+    `</div>`
+  );
+};
+
+const renderCrumbs = (post: BlogPost): string =>
+  `<nav class="crumbs" aria-label="fil d'ariane"><a href="/">Accueil</a><span>›</span>` +
+  `<a href="/blog/">Blog</a><span>›</span>${esc(post.title)}</nav>`;
 
 const shell = (head: string, bodyHtml: string) =>
 `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -120,11 +220,11 @@ for (const { post, body } of rendered) {
   const alternates = CORPUS.filter((p) => p.slug === post.slug && p.lang !== post.lang);
   const head = [
     renderHeadTags(post, SITE, alternates),
-    renderArticleSchema(post, SITE),
+    renderAllSchema(post, SITE),
   ].join("\n");
-  const related = graph.filter((l) => l.fromSlug === post.slug).slice(0, 5)
+  const related = graph.filter((l) => l.fromSlug === post.slug).slice(0, 6)
     .map((l) => `<a href="/blog/${l.toSlug}.html"><b>${bySlug.get(l.toSlug)!.title}</b><span>→</span></a>`).join("");
-  const meta = `${fmtDate(post.publishedAt)} · ${readingMin(post.bodyMarkdown)} min de lecture · Tunakula`;
+  const meta = `${fmtDate(post.publishedAt)} · Mis à jour le ${fmtDate(post.updatedAt ?? post.publishedAt)} · ${readingMin(post.bodyMarkdown)} min · Tunakula`;
   // Localize the engine's absolute internal links to local .html so the
   // article body navigates in a static preview. Scoped to the ARTICLE BODY
   // only — the head's canonical/og:url stay absolute (what search engines
@@ -132,11 +232,15 @@ for (const { post, body } of rendered) {
   const articleHtml = String(marked.parse(body))
     .replace(/https:\/\/tunakula\.com\/blog\/([a-z0-9-]+)(?!\.html)/g, "/blog/$1.html");
   const html = shell(head,
+    renderCrumbs(post) +
     `<main class="wrap"><a class="back" href="/blog/">← Tous les articles</a>` +
     `<div class="eyebrow">Guide Tunakula</div>` +
     `<span class="tk-views" hidden></span>` +
     `<div class="artmeta">${meta}</div>` +
+    renderTakeaways(post) +
     `<article>${articleHtml}</article></main>` +
+    renderFaqSection(post) +
+    renderSources(post) +
     (related ? `<div class="related"><h3>À lire aussi</h3>${related}</div>` : ""));
   writeFileSync(`${OUT}/${post.slug}.html`, html);
 }
@@ -145,15 +249,19 @@ for (const { post, body } of rendered) {
 const cards = CORPUS.map((p) =>
   `<a class="card" href="/blog/${p.slug}.html"><h3>${p.title}</h3><p>${p.description}</p><span class="more">Lire l'article →</span></a>`).join("");
 writeFileSync(`${OUT}/index.html`, shell(
-  `<title>Blog Tunakula — Manger à Kinshasa, sur WhatsApp</title><meta name="description" content="Le blog Tunakula : comment commander, payer et se faire livrer à Kinshasa sur WhatsApp — mobile money, règle 5 km, wewa, diaspora et plus.">`,
+  `<title>Blog Tunakula — Manger à Kinshasa, sur WhatsApp</title><meta name="description" content="Le blog Tunakula : comment commander, payer et se faire livrer à Kinshasa sur WhatsApp — mobile money, règle 5 km, wewa, diaspora et plus.">\n` +
+  `<link rel="canonical" href="${SITE.baseUrl}/blog">\n` +
+  renderSiteSchema(SITE),
   `<section class="idx-hero"><div class="eyebrow">Le blog Tunakula</div>
    <h1>Manger à Kinshasa, sur WhatsApp.</h1>
    <p class="lead">Comment commander, payer et se faire livrer — sans app, sans carte, livré chaud.</p></section>
    <div class="grid">${cards}</div>`));
 
-// --- 7. Sitemap + robots (real engine output) ---
+// --- 7. Sitemap + robots + llms.txt (real engine output) ---
 writeFileSync(`${OUT}/sitemap.xml`, renderSitemap(CORPUS, SITE));
 writeFileSync(`${OUT}/robots.txt`, renderRobots(SITE));
+// llms.txt — tells AI crawlers what the site is + lists its quotable pages.
+writeFileSync(`${OUT}/llms.txt`, renderLlmsTxt(CORPUS, SITE, SITE_TAGLINE));
 
 // --- 7b. Ship the shared analytics kit alongside the blog (single source
 // lives in frontend/pwa; copied so the blog deploy is self-contained). ---
@@ -164,21 +272,35 @@ for (const f of ["analytics.config.js", "analytics.js", "views.config.js", "view
 // Same embedded font kit as the landing page — one look, offline-safe.
 copyFileSync("/home/user/nzela/frontend/landing/fonts.css", `${OUT}/fonts.css`);
 
-// --- 8. SEO score every post (deterministic engine) + write report ---
+// --- 8. Score every post on BOTH dimensions (deterministic) + report ---
+const linksBySlug = new Map(
+  CORPUS.map((p) => [p.slug, graph.filter((l) => l.fromSlug === p.slug).length]),
+);
 const scores = CORPUS.map((post) => {
-  const linksOut = graph.filter((l) => l.fromSlug === post.slug).length;
-  return seoScore(post, { internalLinksOut: linksOut });
-}).sort((a, b) => b.score - a.score);
-const avgScore = Math.round(scores.reduce((s, r) => s + r.score, 0) / scores.length);
+  const seo = seoScore(post, { internalLinksOut: linksBySlug.get(post.slug) ?? 0 });
+  const aeo = aeoScore(post);
+  return { slug: post.slug, seo, aeo };
+}).sort((a, b) => a.seo.score + a.aeo.score - (b.seo.score + b.aeo.score) || 0);
+
+const avg = (xs: number[]) => Math.round(xs.reduce((s, x) => s + x, 0) / xs.length);
+const avgSeo = avg(scores.map((s) => s.seo.score));
+const avgAeo = avg(scores.map((s) => s.aeo.score));
 const report = {
   generatedForCorpusSize: CORPUS.length,
-  averageScore: avgScore,
-  posts: scores.map((s) => ({
-    slug: s.slug,
-    score: s.score,
-    grade: s.grade,
-    issues: s.issues,
-  })),
+  averageSeoScore: avgSeo,
+  averageAeoScore: avgAeo,
+  posts: scores
+    .slice()
+    .sort((a, b) => b.seo.score - a.seo.score)
+    .map((s) => ({
+      slug: s.slug,
+      seoScore: s.seo.score,
+      seoGrade: s.seo.grade,
+      aeoScore: s.aeo.score,
+      aeoGrade: s.aeo.grade,
+      seoIssues: s.seo.issues,
+      aeoIssues: s.aeo.issues,
+    })),
 };
 writeFileSync(`${OUT}/seo-report.json`, JSON.stringify(report, null, 2));
 
@@ -186,9 +308,24 @@ console.log(`posts: ${CORPUS.length}`);
 console.log(`internal links injected by engine: ${totalLinks}`);
 console.log(`orphans (linked to by nobody): ${orphans.length ? orphans.join(", ") : "none"}`);
 console.log(`avg links per post: ${(totalLinks / CORPUS.length).toFixed(1)}`);
-console.log(`\nSEO scores (avg ${avgScore}/100):`);
-for (const s of scores) {
-  console.log(`  ${s.grade}  ${String(s.score).padStart(3)}  ${s.slug}`);
+console.log(`\nScores  SEO(avg ${avgSeo})  AEO(avg ${avgAeo}):`);
+for (const s of scores.slice().sort((a, b) => b.seo.score + b.aeo.score - (a.seo.score + a.aeo.score))) {
+  console.log(
+    `  SEO ${s.seo.grade} ${String(s.seo.score).padStart(3)}  ·  AEO ${s.aeo.grade} ${String(s.aeo.score).padStart(3)}  ${s.slug}`,
+  );
 }
 console.log("seo-report.json written");
 console.log("written to", OUT);
+
+// --- 9. Quality gate: every post must clear 90 on BOTH scales ---
+const MIN = 90;
+const failures = scores.filter((s) => s.seo.score < MIN || s.aeo.score < MIN);
+if (failures.length) {
+  console.error(`\n❌ GATE FAILED — ${failures.length} post(s) below ${MIN}/100:`);
+  for (const f of failures) {
+    if (f.seo.score < MIN) console.error(`  ${f.slug} SEO ${f.seo.score}: ${f.seo.issues.join("; ")}`);
+    if (f.aeo.score < MIN) console.error(`  ${f.slug} AEO ${f.aeo.score}: ${f.aeo.issues.join("; ")}`);
+  }
+  process.exit(1);
+}
+console.log(`\n✅ GATE PASSED — all ${CORPUS.length} posts ≥ ${MIN}/100 on SEO and AEO.`);

@@ -128,6 +128,9 @@ const posts = readdirSync(join(ROOT, "blog"))
   .filter((f) => f.endsWith(".html") && f !== "index.html" && f !== "404.html")
   .map((f) => f.replace(/\.html$/, ""));
 write(join(DIST, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${HOST}/sitemap.xml\n`);
+// llms.txt at the site root (llmstxt.org) — AI crawlers look here first.
+if (existsSync(join(ROOT, "blog/llms.txt")))
+  cpSync(join(ROOT, "blog/llms.txt"), join(DIST, "llms.txt"));
 const urls = [
   `${HOST}/`, `${HOST}/pro`, `${HOST}/blog`,
   ...posts.map((s) => `${HOST}/blog/${s}`),

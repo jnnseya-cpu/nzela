@@ -1,4 +1,4 @@
-import type { BlogPost, SiteConfig } from "./types.js";
+import type { BlogPost, FaqItem, SiteConfig } from "./types.js";
 
 /**
  * Deterministic SEO metadata generation (0 tokens): title tags, meta
@@ -78,9 +78,23 @@ export function renderHeadTags(
   return tags.join("\n");
 }
 
-/** JSON-LD Article schema — rich-result eligibility. */
+/** Word count of the body (markdown stripped) — an Article richness signal. */
+function bodyWordCount(md: string): number {
+  const text = md
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[#>*_`~-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text ? text.split(/\s+/).filter(Boolean).length : 0;
+}
+
+const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+/** JSON-LD Article schema — rich-result eligibility, enriched for AI engines. */
 export function renderArticleSchema(post: BlogPost, site: SiteConfig): string {
-  const schema = {
+  const url = canonicalUrl(post, site);
+  const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
@@ -88,16 +102,143 @@ export function renderArticleSchema(post: BlogPost, site: SiteConfig): string {
     inLanguage: post.lang,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
-    author: { "@type": "Organization", name: post.author },
+    author: { "@type": "Organization", name: post.author, url: site.baseUrl },
     publisher: {
       "@type": "Organization",
       name: site.siteName,
       url: site.baseUrl,
+      ...(site.ogImage ? { logo: { "@type": "ImageObject", url: site.ogImage } } : {}),
     },
-    mainEntityOfPage: canonicalUrl(post, site),
-    keywords: post.keywords.join(", "),
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    keywords: post.keywords,
+    articleSection: cap(post.keywords[0] ?? ""),
+    wordCount: bodyWordCount(post.bodyMarkdown),
+    isAccessibleForFree: true,
+  };
+  if (site.ogImage) {
+    schema.image = {
+      "@type": "ImageObject",
+      url: site.ogImage,
+      width: 1200,
+      height: 630,
+    };
+  }
+  return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+}
+
+/**
+ * FAQPage schema from a post's FAQ. This is the highest-leverage GEO/AEO
+ * signal after key-takeaways: it feeds Google "People Also Ask", voice
+ * answers, and AI-engine citations with pre-parsed question→answer pairs.
+ * Returns "" when the post carries no FAQ.
+ */
+export function renderFaqSchema(faq: readonly FaqItem[] | undefined): string {
+  if (!faq || !faq.length) return "";
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
   return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+}
+
+/** BreadcrumbList schema — Accueil › Blog › <post>. Crawl clarity + SERP UI. */
+export function renderBreadcrumbSchema(post: BlogPost, site: SiteConfig): string {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: site.baseUrl },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${site.baseUrl}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl(post, site) },
+    ],
+  };
+  return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+}
+
+/**
+ * Speakable schema — points voice assistants / AI readers at the parts of the
+ * page worth reading aloud (the takeaways block and the FAQ). Pure GEO signal.
+ */
+export function renderSpeakableSchema(post: BlogPost, site: SiteConfig): string {
+  const parts: string[] = [];
+  if (post.keyTakeaways?.length) parts.push(".tk-essentiel");
+  if (post.faq?.length) parts.push(".tk-faq");
+  if (!parts.length) return "";
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": canonicalUrl(post, site),
+    speakable: { "@type": "SpeakableSpecification", cssSelector: parts },
+  };
+  return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+}
+
+/** Organization + WebSite schema for the site (emit on the blog index). */
+export function renderSiteSchema(site: SiteConfig): string {
+  const org = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.siteName,
+    url: site.baseUrl,
+    ...(site.ogImage ? { logo: site.ogImage } : {}),
+    areaServed: { "@type": "City", name: "Kinshasa" },
+    sameAs: [] as string[],
+  };
+  const web = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.siteName,
+    url: site.baseUrl,
+    inLanguage: "fr",
+  };
+  return (
+    `<script type="application/ld+json">${JSON.stringify(org)}</script>\n` +
+    `<script type="application/ld+json">${JSON.stringify(web)}</script>`
+  );
+}
+
+/**
+ * Every structured-data block a post should carry, in one call: Article,
+ * Breadcrumb, FAQPage (if any), Speakable (if any). Order is irrelevant to
+ * parsers; kept stable for diff-friendliness.
+ */
+export function renderAllSchema(post: BlogPost, site: SiteConfig): string {
+  return [
+    renderArticleSchema(post, site),
+    renderBreadcrumbSchema(post, site),
+    renderFaqSchema(post.faq),
+    renderSpeakableSchema(post, site),
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/**
+ * llms.txt — the emerging convention (llmstxt.org) that tells AI crawlers
+ * what the site is and lists its canonical, quotable pages. A cheap, direct
+ * lever for AI-engine discovery and citation.
+ */
+export function renderLlmsTxt(
+  posts: readonly BlogPost[],
+  site: SiteConfig,
+  tagline: string,
+): string {
+  const lines = [
+    `# ${site.siteName}`,
+    "",
+    `> ${tagline}`,
+    "",
+    "## Blog",
+    "",
+    ...posts.map((p) => `- [${p.title}](${canonicalUrl(p, site)}): ${p.description}`),
+    "",
+  ];
+  return lines.join("\n");
 }
 
 /** XML sitemap across the corpus — submit to Search Console once. */
