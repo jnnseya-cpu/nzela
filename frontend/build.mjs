@@ -11,11 +11,16 @@
 // Run:  node frontend/build.mjs   → outputs frontend/dist/
 import {
   rmSync, mkdirSync, cpSync, readFileSync, writeFileSync, readdirSync, existsSync,
+  statSync,
 } from "node:fs";
 import { join } from "node:path";
+import { WA_NUMBER } from "./site.config.mjs";
 
 const ROOT = "/home/user/nzela/frontend";
 const DIST = join(ROOT, "dist");
+// The number baked into the static sources; build.mjs swaps it for the
+// configured WA_NUMBER across the whole site so one config edit is the job.
+const LEGACY_WA = "447493216101";
 
 const rmrf = (p) => rmSync(p, { recursive: true, force: true });
 const write = (p, s) => writeFileSync(p, s);
@@ -153,6 +158,32 @@ p{color:#9DB3A6;margin:0 0 26px}a{display:inline-block;background:#25D366;color:
 <h1>Cette nzela n'existe pas.</h1><p>La page que tu cherches a bougé. Reviens à l'accueil.</p>
 <a href="/">← Retour à l'accueil</a></div></body></html>`);
 
+// --- single-source WhatsApp number: swap the baked-in legacy number for the
+//     configured WA_NUMBER across every assembled HTML file (one config edit
+//     → whole site). No-op when they already match. ---
+let waSwaps = 0;
+if (WA_NUMBER !== LEGACY_WA) {
+  const walk = (dir) => {
+    for (const name of readdirSync(dir)) {
+      const p = join(dir, name);
+      if (statSync(p).isDirectory()) walk(p);
+      else if (name.endsWith(".html")) {
+        const src = read(p);
+        if (src.includes(LEGACY_WA)) {
+          write(p, src.split(LEGACY_WA).join(WA_NUMBER));
+          waSwaps++;
+        }
+      }
+    }
+  };
+  walk(DIST);
+}
+
 console.log("dist assembled →", DIST);
 console.log("routes: /  ·  /blog  ·  /blog/<post>  ·  /pro");
 console.log(`posts in sitemap: ${posts.length}`);
+console.log(
+  WA_NUMBER === LEGACY_WA
+    ? `WhatsApp number: ${WA_NUMBER} (default — set WA_NUMBER in site.config.mjs to go live)`
+    : `WhatsApp number: swapped → ${WA_NUMBER} in ${waSwaps} file(s)`,
+);

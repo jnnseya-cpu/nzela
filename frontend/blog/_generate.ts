@@ -9,12 +9,14 @@ import type { BlogPost, OutboundLink, SiteConfig } from "/home/user/nzela/backen
 import { seoScore } from "/home/user/nzela/backend/seo-agent/src/scoring.ts";
 import { aeoScore } from "/home/user/nzela/backend/seo-agent/src/aeo.ts";
 import { CORPUS } from "./_corpus.ts";
+// Single source of truth for the WhatsApp number (see frontend/site.config.mjs).
+import { waLink } from "../site.config.mjs";
 
 const SITE: SiteConfig = {
   baseUrl: "https://tunakula.com",
   siteName: "Tunakula-Congo",
   defaultAuthor: "Tunakula-Congo",
-  waLink: "https://wa.me/447493216101?text=Nakolia",
+  waLink: waLink("Nakolia"),
   ogImage: "https://tunakula.com/pwa/og-image.png",
 };
 const SITE_TAGLINE =

@@ -320,11 +320,12 @@ footer{background:#060907;border-top:1px solid var(--line);padding:56px 0 30px}
 </style>
 </head>
 <body>
-<!-- ⚠ CUSTOMER-FACING NUMBER: currently the +44 line 447493216101. For a
-     Kinshasa audience this reads as foreign/scam — swap ALL occurrences to a
-     local +243 WhatsApp Business number before launch (single find-replace of
-     447493216101). Same swap in frontend/blog/_corpus.ts (SITE.waLink) and
-     frontend/partner-dashboard. See frontend/DEPLOY.md. -->
+<!-- ⚠ CUSTOMER-FACING NUMBER: currently the +44 pilot line. For a Kinshasa
+     audience a +44 number reads as foreign/scam (launch decision D-1).
+     DO NOT edit the number here. It is now a SINGLE source of truth:
+       → set WA_NUMBER in frontend/site.config.mjs, then `pnpm build:blog &&
+         pnpm build:site`. The build swaps it across landing, blog and the
+         dashboard automatically. See frontend/DEPLOY.md. -->
 <div class="grain"></div>
 
 <nav id="nav"><div class="wrap">

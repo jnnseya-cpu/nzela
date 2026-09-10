@@ -38,9 +38,11 @@ docroot). The generated `dist/.htaccess` handles pretty blog URLs, `/pro`,
 
 ## Before going live — set the real IDs (no code change to the pages)
 
-- **WhatsApp number** is baked into the pages as `wa.me/447493216101`. To
-  switch to a local +243 line, change it in `frontend/blog/_corpus.ts`
-  (`SITE.waLink`) + the landing/dashboard HTML, then rebuild.
+- **WhatsApp number** — SINGLE source of truth: set `WA_NUMBER` in
+  `frontend/site.config.mjs` (digits only, no `+`), then
+  `pnpm build:blog && pnpm build:site`. The build swaps it across the
+  landing, every blog page, and the dashboard automatically — one edit does
+  the whole site. (Today it's the +44 pilot line; a local +243 is D-1.)
 - **Analytics** (Meta Pixel + Google tag): fill `frontend/pwa/analytics.config.js`.
 - **Blog view counter**: point `frontend/pwa/views.config.js` at the deployed
   `@nzela/views` service. Left empty, the counter stays inert (no errors).
