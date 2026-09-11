@@ -63,8 +63,9 @@ export class MemorySessionStore implements SessionStore {
 /** Durable session store — conversations survive a restart (single instance). */
 export class FileSessionStore implements SessionStore {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` encrypts sessions (address/phone PII) at rest. */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
   async get(waId: string): Promise<Session> {
     return this.kv.get<Session>(waId) ?? emptySession(waId);

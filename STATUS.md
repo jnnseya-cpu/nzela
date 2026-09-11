@@ -80,9 +80,14 @@ verify-once / reward-once / balances / view counts / open orders / sessions
 **survive a restart with no external database** (tested across a simulated
 restart).
 Wire them by passing a file path (e.g. `new FileReplayIndex(dataDir +
-"/replay.json")`). A multi-instance / high-concurrency deploy still wants
-Redis/Postgres behind the same interfaces (+ a real secrets manager for
-`PasswordVault`); no schema migrations written yet. ⬜
+"/replay.json")`). **At-rest encryption:** every FileKV-backed store takes an
+optional 32-byte key — the token, session (address/phone PII), open-order,
+replay, and ledger stores encrypt on disk with **AES-256-GCM** (authenticated:
+tamper is detected) when `DATA_ENCRYPTION_KEY` is set; a wrong key fails loudly
+(never wipes), and turning it on migrates legacy plaintext files on next write.
+A multi-instance / high-concurrency deploy still wants Redis/Postgres behind
+the same interfaces (+ a real secrets manager for `PasswordVault` and the
+encryption key); no schema migrations written yet. ⬜
 
 ## Open decisions (must be closed by the owner — single list)
 

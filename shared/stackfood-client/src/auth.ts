@@ -40,8 +40,9 @@ export class MemoryTokenCache implements TokenCache {
  */
 export class FileTokenCache implements TokenCache {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` (32-byte base64/hex) encrypts tokens at rest (AES-GCM). */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
   async get(key: string): Promise<string | undefined> {
     return this.kv.get<string>(key);

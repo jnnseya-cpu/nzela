@@ -25,6 +25,13 @@ export function main(): void {
     console.log("✅ Launch config present.");
   }
 
+  // At-rest encryption advisory (recommended in production, optional in dev).
+  console.log(
+    config.dataEncryptionKey
+      ? "🔒 At-rest encryption ON — token/PII/financial stores are AES-256-GCM encrypted."
+      : "🔓 At-rest encryption OFF — set DATA_ENCRYPTION_KEY (`openssl rand -base64 32`) to encrypt the token/PII stores on disk.",
+  );
+
   gateway.listen(config.gatewayPort, () => {
     console.log(`gateway  → http://0.0.0.0:${config.gatewayPort}  (GET/POST /wa/webhook, POST /hooks/stackfood)`);
   });

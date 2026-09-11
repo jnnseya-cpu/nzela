@@ -27,6 +27,14 @@ export interface AppConfig {
 
   lipaIngestToken: string;
 
+  /**
+   * 32-byte key (base64 or hex) that encrypts the token / PII / financial
+   * file stores at rest (AES-256-GCM). Optional — unset means plaintext on
+   * disk (fine for local dev; strongly recommended in production). Generate:
+   * `openssl rand -base64 32`.
+   */
+  dataEncryptionKey: string | undefined;
+
   deliveryZone: DeliveryZone;
   /** Merchant mobile-money numbers printed in the pay instructions. */
   merchantNumbers: {
@@ -77,6 +85,8 @@ export function configFromEnv(env: Record<string, string | undefined> = process.
     waGraphVersion: env.WA_GRAPH_VERSION || undefined,
 
     lipaIngestToken: env.LIPA_INGEST_TOKEN ?? "",
+
+    dataEncryptionKey: env.DATA_ENCRYPTION_KEY || undefined,
 
     deliveryZone: parseZone(env.DELIVERY_ZONE),
     merchantNumbers: {

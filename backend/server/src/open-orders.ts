@@ -24,8 +24,9 @@ export interface OpenOrderRecord {
 
 export class OpenOrderBook {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` encrypts the order book (customer wa_id PII) at rest. */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
 
   /** Record a freshly placed, unpaid order. */

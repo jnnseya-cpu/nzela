@@ -33,4 +33,18 @@ describe("FileTokenCache", () => {
     const reborn = new FileTokenCache(path);
     expect(await reborn.get(key)).toBe("bearer-restart");
   });
+
+  it("encrypts tokens at rest when a key is supplied", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { randomBytes } = await import("node:crypto");
+    const path = tmp();
+    const encKey = randomBytes(32).toString("base64");
+    const key = tokenCacheKey("+243810000003");
+    await new FileTokenCache(path, encKey).set(key, "SECRET-BEARER-XYZ");
+
+    // The bearer token must NOT appear in plaintext on disk.
+    expect(readFileSync(path, "utf8")).not.toContain("SECRET-BEARER-XYZ");
+    // A restart with the same key still reads it back.
+    expect(await new FileTokenCache(path, encKey).get(key)).toBe("SECRET-BEARER-XYZ");
+  });
 });

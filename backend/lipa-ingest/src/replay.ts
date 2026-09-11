@@ -41,8 +41,9 @@ export class MemoryReplayIndex implements ReplayIndex {
  */
 export class FileReplayIndex implements ReplayIndex {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` encrypts the payment replay index at rest. */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
   has(key: string): boolean {
     return this.kv.has(key);

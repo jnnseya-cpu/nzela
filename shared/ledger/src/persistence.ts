@@ -14,8 +14,9 @@ import type { FundingLedger } from "./funding.js";
 /** File-backed idempotency store for top-ups & subscription-period grants. */
 export class FileFundingLedger implements FundingLedger {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` encrypts the funding idempotency store at rest. */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
   has(key: string): boolean {
     return this.kv.has(`f:${key}`);
@@ -28,8 +29,9 @@ export class FileFundingLedger implements FundingLedger {
 /** File-backed ACU wallet — same validation/clamp guarantees as in-memory. */
 export class FileAcuWallet implements AcuWallet {
   private readonly kv: FileKV;
-  constructor(path: string) {
-    this.kv = new FileKV(path);
+  /** `encryptionKey` encrypts wallet balances (keyed by wa_id) at rest. */
+  constructor(path: string, encryptionKey?: string | Buffer) {
+    this.kv = new FileKV(path, { encryptionKey });
   }
   private bal(a: string): number {
     return this.kv.get<number>(`bal:${a}`) ?? 0;

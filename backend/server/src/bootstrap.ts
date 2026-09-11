@@ -65,6 +65,9 @@ export interface BuiltServices {
 export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltServices {
   const ledger = deps.ledger ?? new MemoryLedger();
   const d = (name: string) => join(config.dataDir, name);
+  // At-rest encryption key for the token / PII / financial stores (AES-256-GCM
+  // via FileKV). Undefined → plaintext (dev). A bad key throws here at boot.
+  const encKey = config.dataEncryptionKey;
 
   // --- StackFood transport + identity + placement ---
   const client = new StackFoodClient(
@@ -73,7 +76,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
   );
   const auth = new CustomerAuthProvisioner(
     client,
-    new FileTokenCache(d("tokens.json")),
+    new FileTokenCache(d("tokens.json"), encKey),
     new InMemoryPasswordVault(),
   );
   const adapter = new OrderAdapter(client);
@@ -103,7 +106,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
   };
 
   // --- the join: placed-but-unpaid orders shared by gateway + lipa ---
-  const openOrders = new OpenOrderBook(d("open-orders.json"));
+  const openOrders = new OpenOrderBook(d("open-orders.json"), encKey);
 
   // --- conversation engine on real StackFood ports ---
   const catalog = buildStackFoodCatalog(client);
@@ -130,7 +133,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
   };
 
   const conversation = new ConversationEngine({
-    sessions: new FileSessionStore(d("sessions.json")),
+    sessions: new FileSessionStore(d("sessions.json"), encKey),
     catalog,
     orders,
     ledger,
@@ -161,7 +164,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
       }
     },
     ledger,
-    replayIndex: new FileReplayIndex(d("replay.json")),
+    replayIndex: new FileReplayIndex(d("replay.json"), encKey),
     analytics,
   });
 

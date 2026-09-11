@@ -57,6 +57,11 @@ keys are missing (`missingLaunchConfig`). Nothing fails silently.
 - **Optional / degrade safely:** analytics (`META_*`, `GA4_*`) stay inert
   until set; no `WA_*` → replies log to console instead of sending;
   no `WA_APP_SECRET` → inbound signatures are **not** verified (dev only).
+- **At-rest encryption (recommended in prod):** set `DATA_ENCRYPTION_KEY`
+  (`openssl rand -base64 32`) and the token / session-PII / open-order /
+  replay / ledger stores are written AES-256-GCM encrypted. Keep the key
+  stable + backed up — a lost/changed key makes existing stores unreadable
+  (it fails loudly, never wipes). Boot logs 🔒 ON / 🔓 OFF.
 
 Full list + comments: [`.env.example`](../.env.example) and
 [`backend/server/src/config.ts`](../backend/server/src/config.ts).
