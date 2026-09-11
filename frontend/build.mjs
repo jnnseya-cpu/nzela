@@ -13,10 +13,13 @@ import {
   rmSync, mkdirSync, cpSync, readFileSync, writeFileSync, readdirSync, existsSync,
   statSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { WA_NUMBER } from "./site.config.mjs";
 
-const ROOT = "/home/user/nzela/frontend";
+// Portable: ROOT is this file's own directory (frontend/), so the build runs
+// identically on a laptop, in CI, or inside a container — no hardcoded paths.
+const ROOT = dirname(fileURLToPath(import.meta.url));
 const DIST = join(ROOT, "dist");
 // The number baked into the static sources; build.mjs swaps it for the
 // configured WA_NUMBER across the whole site so one config edit is the job.

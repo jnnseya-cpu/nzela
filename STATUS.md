@@ -122,7 +122,17 @@ The full stateful ordering loop is real, not a stub:
 `main.ts`) composes the conversation engine, the real WhatsApp Cloud API
 sender, the StackFood ports, analytics and the SMS Ledger Bridge into two
 HTTP services that boot from `.env` (see `.env.example`). `pnpm start` runs
-them; both bind and report healthy. The full loop — WhatsApp order →
+them; both bind and report healthy.
+
+**Turnkey deploy (2026-09-11):** `Dockerfile` (backend services, runs the
+tested `node --import tsx …/main.ts` CMD — validated), `Dockerfile.web` +
+`frontend/nginx.conf` (static site), `docker-compose.yml` (whole stack in one
+command with a durable data volume), portable build scripts (no hardcoded
+paths — builds anywhere), CI extended to build the site + both images, and
+`docs/DEPLOY_RUNBOOK.md`. Note: Docker **images could not be built in the
+sandbox** (registry egress blocked) — the container's exact runtime CMD and
+the site build were validated directly instead; the image builds run in
+GitHub CI. The full loop — WhatsApp order →
 StackFood placement → SMS payment verify → "paiement reçu" — is
 integration-tested with mocked transport.
 

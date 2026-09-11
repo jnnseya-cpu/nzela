@@ -1,0 +1,39 @@
+# NZELA-OS — full local/pilot stack in one command:
+#
+#   cp .env.example .env      # fill in what you have (see docs/DEPLOY_RUNBOOK.md)
+#   docker compose up --build
+#
+#   web  → http://localhost:8081   (landing / blog / pro)
+#   api  → http://localhost:8080   (WhatsApp webhook + StackFood hook)
+#   lipa → http://localhost:8090   (SMS Ledger Bridge ingest)
+#
+# The api persists its file-backed stores (sessions, tokens, open orders,
+# replay index, TK-ref sequence) in the named volume so state survives
+# restarts — genuine single-instance durability with no external database.
+services:
+  api:
+    build: .
+    image: nzela-server
+    env_file: [.env]
+    environment:
+      DATA_DIR: /data
+      GATEWAY_PORT: "8080"
+      LIPA_PORT: "8090"
+    ports:
+      - "8080:8080"   # gateway  (GET/POST /wa/webhook, POST /hooks/stackfood)
+      - "8090:8090"   # lipa     (POST /lipa/sms)
+    volumes:
+      - nzela-data:/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: nzela-web
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+
+volumes:
+  nzela-data:

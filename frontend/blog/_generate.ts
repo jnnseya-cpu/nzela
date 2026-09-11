@@ -1,13 +1,15 @@
 import { mkdirSync, writeFileSync, copyFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { marked } from "marked";
-import { buildLinkGraph, injectInternalLinks, findOrphans } from "/home/user/nzela/backend/seo-agent/src/linking.ts";
+import { buildLinkGraph, injectInternalLinks, findOrphans } from "../../backend/seo-agent/src/linking.ts";
 import {
   renderHeadTags, renderAllSchema, renderSiteSchema, renderSitemap,
   renderRobots, renderLlmsTxt, validatePost, canonicalUrl,
-} from "/home/user/nzela/backend/seo-agent/src/metadata.ts";
-import type { BlogPost, OutboundLink, SiteConfig } from "/home/user/nzela/backend/seo-agent/src/types.ts";
-import { seoScore } from "/home/user/nzela/backend/seo-agent/src/scoring.ts";
-import { aeoScore } from "/home/user/nzela/backend/seo-agent/src/aeo.ts";
+} from "../../backend/seo-agent/src/metadata.ts";
+import type { BlogPost, OutboundLink, SiteConfig } from "../../backend/seo-agent/src/types.ts";
+import { seoScore } from "../../backend/seo-agent/src/scoring.ts";
+import { aeoScore } from "../../backend/seo-agent/src/aeo.ts";
 import { CORPUS } from "./_corpus.ts";
 // Single source of truth for the WhatsApp number (see frontend/site.config.mjs).
 import { waLink } from "../site.config.mjs";
@@ -47,7 +49,10 @@ function pickCitations(post: BlogPost): OutboundLink[] {
   return out;
 }
 
-const OUT = "/home/user/nzela/frontend/blog";
+// Portable paths derived from this file's location (frontend/blog/).
+const HERE = dirname(fileURLToPath(import.meta.url));
+const FRONTEND = join(HERE, "..");
+const OUT = HERE;
 mkdirSync(OUT, { recursive: true });
 
 // --- 1. Validate every post (real engine gate) ---
@@ -267,12 +272,12 @@ writeFileSync(`${OUT}/llms.txt`, renderLlmsTxt(CORPUS, SITE, SITE_TAGLINE));
 
 // --- 7b. Ship the shared analytics kit alongside the blog (single source
 // lives in frontend/pwa; copied so the blog deploy is self-contained). ---
-const PWA = "/home/user/nzela/frontend/pwa";
+const PWA = join(FRONTEND, "pwa");
 for (const f of ["analytics.config.js", "analytics.js", "views.config.js", "views.js"]) {
   copyFileSync(`${PWA}/${f}`, `${OUT}/${f}`);
 }
 // Same embedded font kit as the landing page — one look, offline-safe.
-copyFileSync("/home/user/nzela/frontend/landing/fonts.css", `${OUT}/fonts.css`);
+copyFileSync(join(FRONTEND, "landing/fonts.css"), `${OUT}/fonts.css`);
 
 // --- 8. Score every post on BOTH dimensions (deterministic) + report ---
 const linksBySlug = new Map(
