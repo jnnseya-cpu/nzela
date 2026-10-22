@@ -486,4 +486,199 @@ Ton **Crédit Tunakula** s'utilise dès ta prochaine commande, sans code compliq
 
 Récupère ton code de parrainage : écris à Mama Tunakula sur WhatsApp.`,
   },
+  {
+    slug: "code-retrait-anti-vol-livraison",
+    title: "Code de retrait : seul toi récupères ton sac",
+    description: "Le code de retrait Tunakula : trois chiffres pour que personne d'autre que toi ne prenne ta commande à Kinshasa. Livraison sûre, zéro vol, zéro erreur.",
+    keywords: ["code de retrait", "sécurité", "livraison", "wewa", "kinshasa"],
+    keyTakeaways: [
+      "Le code de retrait est un code à 3 chiffres : seul toi peux récupérer ta commande, personne d'autre.",
+      "Il protège aussi le wewa : il remet le sac à la bonne personne, sans discussion.",
+      "Aucun code à toi donné au livreur = aucune remise. C'est ta sécurité et la sienne à Kinshasa.",
+    ],
+    faq: [
+      { q: "C'est quoi le code de retrait ?", a: "Un code à 3 chiffres qui t'est envoyé sur WhatsApp. Tu le donnes au wewa au moment de la remise : c'est la preuve que c'est bien toi qui reçois le sac." },
+      { q: "Et si quelqu'un d'autre est à la maison ?", a: "Donne-lui le code et il pourra recevoir à ta place. Sans le code, personne ne peut récupérer ta commande — même pas par erreur chez le voisin." },
+      { q: "Le wewa peut-il voir mon code à l'avance ?", a: "Non. Le code reste chez toi jusqu'à la remise ; le wewa ne valide la livraison qu'en le saisissant avec toi, en main propre." },
+    ],
+    publishedAt: "2026-10-22", author: AUTHOR, lang: "fr",
+    bodyMarkdown:
+`# Code de retrait : seul toi récupères ton sac
+
+À Kinshasa, la vraie peur d'une livraison, c'est : « et si quelqu'un d'autre prenait ma commande ? ». Le **code de retrait** Tunakula règle ça d'un coup : un code à trois chiffres t'est envoyé sur WhatsApp, et ta commande ne se remet qu'à la personne qui a ce code. La **sécurité** de ta **livraison** tient dans ces trois chiffres.
+
+## Trois chiffres, et c'est à toi
+
+Quand ton **wewa** arrive, tu vérifies ton sac, puis tu donnes ton **code de retrait**. Tant que le bon code n'est pas saisi, la course n'est pas clôturée. Résultat : pas de sac déposé au mauvais portail, pas de voisin qui récupère « pour toi », pas de confusion dans une parcelle à plusieurs ménages. C'est simple et net.
+
+## Ça protège aussi le wewa
+
+Le code ne te protège pas que toi. Il protège le **wewa** : il sait qu'il remet le sac à la bonne personne, sans devoir juger qui est qui. En cas de doute, le code tranche. Moins de disputes à la porte, moins de livraisons contestées — un métier plus serein pour celui qui roule.
+
+## Pensé pour la réalité de Kin
+
+Ici, les adresses sont des repères et les parcelles abritent plusieurs familles. Un simple « c'est pour moi » ne suffit pas. Le **code de retrait** apporte la preuve qui manquait, sans paperasse ni pièce d'identité : juste trois chiffres que toi seul as reçus. C'est la **sécurité** adaptée à la ville, pas copiée d'ailleurs.
+
+## Rien à installer, rien à retenir longtemps
+
+Le code arrive dans ta conversation au bon moment et ne sert qu'une fois, pour cette **livraison**. Tu n'as rien à mémoriser, rien à configurer. La prochaine commande aura le sien. C'est la tranquillité par défaut, sur le canal que tu utilises déjà.
+
+Commande sur WhatsApp : ton plat arrive chaud, et seul toi peux le recevoir.`,
+  },
+  {
+    slug: "suivi-commande-whatsapp-temps-reel",
+    title: "Suivi de commande en direct, sans quitter WhatsApp",
+    description: "Suivi de ta commande en direct sur WhatsApp à Kinshasa : acceptée, en cuisine, wewa en route, arrivée. Sans application et sans vider ton forfait data.",
+    keywords: ["suivi", "commande", "whatsapp", "livraison", "kinshasa"],
+    keyTakeaways: [
+      "Le suivi de commande arrive en messages WhatsApp clairs : acceptée, en cuisine, wewa en route, arrivé au portail.",
+      "Pas de carte GPS qui tourne : le suivi ne vide pas ton forfait data.",
+      "Tu sais toujours où en est ta commande à Kinshasa, sans rien installer ni rafraîchir.",
+    ],
+    faq: [
+      { q: "Comment je suis ma commande ?", a: "Tu reçois des messages WhatsApp à chaque étape : acceptée, en cuisine, wewa en route, arrivé. Rien à ouvrir ni à rafraîchir, ça vient tout seul dans la conversation." },
+      { q: "Le suivi consomme-t-il beaucoup de data ?", a: "Non. Ce sont de simples messages, pas une carte GPS en direct qui tourne en fond. Ton forfait est préservé." },
+      { q: "Puis-je suivre une commande que j'offre à quelqu'un ?", a: "Oui. Tu reçois les mêmes étapes de ton côté, donc tu sais que c'est bien arrivé, même si c'est livré à une autre adresse." },
+    ],
+    publishedAt: "2026-10-22", author: AUTHOR, lang: "fr",
+    bodyMarkdown:
+`# Suivi de commande en direct, sans quitter WhatsApp
+
+« Elle est où ma commande ? » — à Kinshasa, c'est la question qui stresse. Avec Tunakula, le **suivi** de ta **commande** se fait en direct, en messages clairs, dans ta conversation **WhatsApp** habituelle. Tu n'installes rien, tu ne rafraîchis rien : chaque étape arrive toute seule.
+
+## Chaque étape, en message simple
+
+Dès que tu valides, le **suivi** s'enclenche : commande acceptée, plat en cuisine, **wewa** en route, arrivé à ton portail. Quatre repères nets qui te disent exactement où en est ta **commande**, sans jargon et sans attente silencieuse. Tu manges l'esprit tranquille parce que tu sais.
+
+## Sans vider ton forfait
+
+Les applis classiques t'imposent une carte GPS qui tourne en fond et avale ta data. Pas ici. Le **suivi** Tunakula, ce sont des messages **WhatsApp** légers — la même chose que recevoir un texto. À **Kinshasa**, où le forfait compte, ça change tout : tu suis sans payer en data ce que tu gagnes en tranquillité.
+
+## Rien à installer, tout dans la conversation
+
+Pas d'application à télécharger, pas de compte à créer, pas d'écran à surveiller. Le **suivi** vit là où tu discutes déjà. Tu peux fermer WhatsApp et revenir : les étapes sont dans le fil, à leur place, dans l'ordre.
+
+## Pratique même quand tu offres
+
+Tu commandes pour un proche à l'autre bout de la ville ? Tu reçois quand même les étapes de ton côté. Tu sais que c'est accepté, parti, arrivé — la preuve discrète que ton geste est bien allé au bout, sans avoir à appeler pour vérifier. Et comme chaque étape reste écrite dans le fil, tu peux relire plus tard l'heure à laquelle ta commande est partie et arrivée, sans te fier à ta mémoire ni rappeler qui que ce soit.
+
+Commande sur WhatsApp et suis ta livraison, étape par étape, sans rien installer.`,
+  },
+  {
+    slug: "resto-injoignable-jamais-bloque",
+    title: "Resto injoignable ? Ta livraison n'est jamais bloquée",
+    description: "Un resto qui ne répond pas ne bloque jamais ta livraison à Kinshasa : après 60 s on relance, puis on propose un resto équivalent ou un remboursement.",
+    keywords: ["livraison", "resto", "commander", "kinshasa", "whatsapp", "paiement"],
+    keyTakeaways: [
+      "Si un resto ne répond pas en 60 secondes, un appel vocal automatique le relance aussitôt.",
+      "En cas d'échec, ta livraison n'est jamais bloquée : un resto équivalent tout près, ou remboursement immédiat.",
+      "Tu n'attends jamais dans le vide à Kinshasa : il y a toujours un plan B en un clic.",
+    ],
+    faq: [
+      { q: "Que se passe-t-il si le restaurant ne répond pas ?", a: "Après 60 secondes de silence, un appel vocal automatique le relance. Si ça échoue, on te propose en un clic un resto équivalent tout près ou un remboursement immédiat." },
+      { q: "Je risque d'attendre longtemps pour rien ?", a: "Non. Le délai de relance est court et le plan B est immédiat. Ta commande ne reste jamais coincée sans réponse." },
+      { q: "Et si j'ai déjà payé ?", a: "Ton argent est protégé : en cas d'échec, tu es remboursé tout de suite en Crédit Tunakula, utilisable dès ta prochaine commande." },
+    ],
+    publishedAt: "2026-10-22", author: AUTHOR, lang: "fr",
+    bodyMarkdown:
+`# Resto injoignable ? Ta livraison n'est jamais bloquée
+
+Le pire d'une commande, c'est le silence : tu as validé, et plus rien. Chez Tunakula, un **resto** qui ne répond pas ne bloque jamais ta **livraison** à **Kinshasa**. On a prévu exactement ce moment, pour que tu ne restes jamais à attendre dans le vide.
+
+## 60 secondes, puis on relance
+
+Dès qu'un **resto** tarde à accepter, le compteur tourne. Après 60 secondes de silence, un appel vocal automatique le relance — parce qu'en cuisine, on ne regarde pas toujours l'écran. Souvent, ça suffit : la **commande** repart, et tu n'as rien eu à faire.
+
+## Un plan B, toujours
+
+Si le restaurant reste injoignable, tu n'es pas puni pour ça. En un clic, tu choisis : un **resto** équivalent tout près, avec le même style de plat, ou un remboursement immédiat. Ta **livraison** avance par un autre chemin au lieu de mourir dans l'attente. C'est la différence entre subir et être pris en charge.
+
+## Ton argent ne reste jamais coincé
+
+Tu as déjà payé par mobile money ? Aucun risque. En cas d'échec, tu es remboursé tout de suite en Crédit Tunakula, prêt à l'emploi sur ta prochaine **commande**. À **Kinshasa**, où la confiance se gagne, c'est cette règle claire qui te permet de **commander** sans crainte.
+
+## Pensé pour la vraie vie de Kin
+
+Un resto débordé, un téléphone posé loin du feu, une heure de pointe : ça arrive. Plutôt que de faire semblant que non, Tunakula le prévoit et te garde en mouvement. Tu gardes la main, tu décides du plan B, et ton repas finit par arriver — chaud. Et à chaque étape tu es prévenu par un message clair : jamais une décision prise à ta place dans le silence, jamais une attente sans explication pendant que ta faim grandit.
+
+Commande sur WhatsApp : même si un resto flanche, toi, tu manges.`,
+  },
+  {
+    slug: "marketing-ia-offert-restaurants",
+    title: "Marketing IA offert : vos pubs écrites pour vous",
+    description: "Restaurants partenaires à Kinshasa : un marketing IA offert écrit vos posts, vos pubs et trouve votre meilleur horaire — plus de clients, sans budget d'agence.",
+    keywords: ["marketing", "restaurant", "partenaire", "kinshasa", "commander"],
+    keyTakeaways: [
+      "Le marketing IA offert écrit vos posts et pubs et repère votre meilleur horaire de publication, sans budget d'agence.",
+      "Inclus pour chaque restaurant partenaire à Kinshasa, en plus du 0% de commission sur vos plats.",
+      "Vos plats se vendent pendant que vous cuisinez : vous gardez la main, l'IA fait le marketing.",
+    ],
+    faq: [
+      { q: "Le marketing IA coûte-t-il un supplément ?", a: "Non. Il est offert aux restaurants partenaires, en plus du 0% de commission sur vos plats. Pas de budget d'agence, pas d'abonnement caché." },
+      { q: "Qu'est-ce que l'outil fait concrètement ?", a: "Il rédige vos posts et vos publicités, et vous indique le meilleur horaire pour publier afin d'attirer plus de clients à Kinshasa — vous validez, c'est tout." },
+      { q: "Faut-il savoir écrire ou être sur les réseaux ?", a: "Non. L'outil écrit pour vous ; vous relisez et publiez. Vous restez maître du ton et du message, sans y passer vos soirées." },
+    ],
+    publishedAt: "2026-10-22", author: AUTHOR, lang: "fr",
+    bodyMarkdown:
+`# Marketing IA offert : vos pubs écrites pour vous
+
+Un bon **restaurant** à **Kinshasa** n'a pas toujours le temps — ni le budget — de faire son **marketing**. Tunakula le fait pour vous : un marketing IA **offert** écrit vos posts, crée vos publicités et trouve votre meilleur horaire de publication. Vous cuisinez ; vos plats, eux, se vendent.
+
+## Vos posts et pubs, écrits pour vous
+
+L'outil rédige des publications prêtes à poster et des **publicités** qui donnent envie, dans un ton proche de vos clients. Vous n'avez pas à chercher les mots ni à payer une agence : vous relisez, vous ajustez si vous voulez, vous publiez. Le **marketing** cesse d'être une corvée que l'on repousse.
+
+## Le bon message, au bon moment
+
+Attirer des clients, ce n'est pas seulement quoi dire, c'est quand le dire. Le moteur repère votre meilleur horaire de publication à **Kinshasa** — quand vos clients ont faim et regardent leur téléphone. Vos **commandes** arrivent au moment où elles comptent, pas perdues dans le bruit.
+
+## Offert, en plus du 0% de commission
+
+Ce n'est pas un supplément. Le marketing IA est inclus pour chaque **restaurant** **partenaire**, par-dessus un modèle où vous gardez 100% du prix de vos plats. Plus de clients d'un côté, zéro commission de l'autre : votre marge travaille pour vous, pas pour une plateforme.
+
+## Vous gardez la main
+
+L'IA propose, vous décidez. Vous restez maître de votre carte, de vos horaires et de votre image. L'outil enlève juste l'effort — l'écriture, le calendrier, la régularité — pour que votre cuisine reste votre seul vrai travail. C'est un moteur de croissance, pas un patron. Et comme tout part de la même conversation WhatsApp, vous suivez vos publications et vos nouvelles commandes au même endroit, sans jongler entre dix applications ni payer un gestionnaire de réseaux sociaux.
+
+Devenez **restaurant** partenaire : contactez Tunakula sur WhatsApp et laissez le marketing travailler pour vous.`,
+  },
+  {
+    slug: "recommander-plat-prefere-un-message",
+    title: "Recommander ton plat préféré en un seul message",
+    description: "À Kinshasa, recommander ton plat préféré prend un seul message sur WhatsApp : Mama Tunakula se souvient de ton adresse et de tes habitudes. Zéro ressaisie.",
+    keywords: ["recommander", "commander", "whatsapp", "kinshasa", "livraison", "adresse", "repères"],
+    keyTakeaways: [
+      "Recommander ton plat préféré prend un seul message : Mama Tunakula garde ton adresse et tes habitudes.",
+      "Pas de ressaisie d'adresse par repères ni de menu à refaire : ta commande repart en quelques secondes.",
+      "Tout reste dans WhatsApp à Kinshasa : ton historique et tes plats favoris sont là, prêts à repartir.",
+    ],
+    faq: [
+      { q: "Comment recommander ce que j'ai déjà pris ?", a: "Un seul message à Mama Tunakula suffit : elle retrouve ton dernier plat et ton adresse enregistrée, et relance la commande. Tu confirmes, c'est parti." },
+      { q: "Dois-je redonner mon adresse à chaque fois ?", a: "Non. Ton adresse par repères est gardée dès la première commande, sous un nom simple comme Maison ou Bureau. Tu la choisis en un geste." },
+      { q: "Est-ce que je retrouve mes anciennes commandes ?", a: "Oui. Tout reste dans ta conversation WhatsApp : ton historique est là, donc recommander un plat déjà aimé ne prend que quelques secondes." },
+    ],
+    publishedAt: "2026-10-22", author: AUTHOR, lang: "fr",
+    bodyMarkdown:
+`# Recommander ton plat préféré en un seul message
+
+Quand un plat t'a plu, tu veux le reprendre sans tout refaire. À **Kinshasa**, avec Tunakula, **recommander** ton plat préféré prend un seul message sur **WhatsApp** : Mama Tunakula se souvient de ton adresse et de tes habitudes. Tu confirmes, et c'est reparti.
+
+## Mama se souvient pour toi
+
+Dès ta première **commande**, ton adresse par repères et tes choix sont gardés. La fois d'après, pas besoin de réexpliquer « après l'église Sainte-Anne, portail vert » ni de reparcourir le menu : tu demandes la même chose, et Mama Tunakula la remonte toute seule. **Recommander** devient aussi simple que dire « la même, s'il te plaît ».
+
+## Un seul message, quelques secondes
+
+Pas de formulaire, pas de panier à reconstruire. Un message, une confirmation, et ta **livraison** repart. C'est pensé pour les habitués : le déjeuner du bureau, le dîner du vendredi, le plat des enfants. Ce que tu aimes revient vite, sans friction.
+
+## Ton historique reste dans WhatsApp
+
+Tout vit dans ta conversation. Tes anciennes **commandes** sont là, dans le fil, donc tu retrouves d'un coup d'œil ce que tu avais pris la dernière fois. Rien à réinstaller, rien à recopier : à **Kinshasa**, l'outil le plus simple est celui que tu utilises déjà.
+
+## Plusieurs adresses, plusieurs habitudes
+
+Maison, bureau, chez maman : tu peux garder plusieurs adresses et **recommander** vers celle que tu veux, en un geste. Que tu commandes pour toi ou pour un proche, ta prochaine commande démarre déjà à moitié faite. Au fil du temps, Mama Tunakula connaît tes plats et tes adresses par cœur, et chaque nouvelle commande te prend encore moins de temps que la précédente — c'est l'habitude récompensée.
+
+Écris à Mama Tunakula sur WhatsApp et **recommander** ton plat préféré te prendra un seul message.`,
+  },
 ];

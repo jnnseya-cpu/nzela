@@ -1,5 +1,5 @@
 {
-  "generatedForCorpusSize": 12,
+  "generatedForCorpusSize": 17,
   "averageSeoScore": 100,
   "averageAeoScore": 100,
   "posts": [
@@ -104,6 +104,51 @@
     },
     {
       "slug": "parraine-un-ami-gagne-du-credit",
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
+    },
+    {
+      "slug": "code-retrait-anti-vol-livraison",
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
+    },
+    {
+      "slug": "suivi-commande-whatsapp-temps-reel",
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
+    },
+    {
+      "slug": "resto-injoignable-jamais-bloque",
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
+    },
+    {
+      "slug": "marketing-ia-offert-restaurants",
+      "seoScore": 100,
+      "seoGrade": "A",
+      "aeoScore": 100,
+      "aeoGrade": "A",
+      "seoIssues": [],
+      "aeoIssues": []
+    },
+    {
+      "slug": "recommander-plat-prefere-un-message",
       "seoScore": 100,
       "seoGrade": "A",
       "aeoScore": 100,
