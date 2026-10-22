@@ -35,9 +35,11 @@ jobs:
           context: .
           file: Dockerfile
           push: false
+          pull: true          # always fetch the latest patched node:22-slim base
       - name: Build static site image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: Dockerfile.web
           push: false
+          pull: true

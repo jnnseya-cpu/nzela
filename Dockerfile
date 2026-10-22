@@ -11,6 +11,11 @@
 # node_modules/.pnpm) does not copy cleanly across build stages, so we install
 # with the source present — correct linking, guaranteed. --prod keeps the
 # runtime tree lean (no vitest / playwright / typescript / marked).
+#
+# Base: the floating `node:22-slim` tag = the latest Node 22.x, so a build
+# with `--pull` always picks up security patches. Must be ≥ 22.23.4 (Oct 21
+# 2026 release, fixes CVE-2026-111497 Brotli OOB-write RCE + others). Rebuild
+# with `docker compose build --pull` after any Node security release.
 FROM node:22-slim
 WORKDIR /app
 ENV NODE_ENV=production \

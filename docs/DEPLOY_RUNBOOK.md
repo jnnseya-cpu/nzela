@@ -85,6 +85,26 @@ important pre-launch swap.
 Point the host at `frontend/dist` (build command `pnpm build:site`, publish
 dir `frontend/dist`). Clean routes, sitemap, robots, `llms.txt` are included.
 
+## Keeping Node.js patched
+
+The images run on the floating `node:22-slim` base = the latest Node 22.x, so
+a build **with `--pull`** always picks up the newest security patch. Floor:
+**≥ 22.23.4** (Oct 21 2026 release — fixes CVE-2026-111497, a Brotli
+out-of-bounds write allowing RCE, plus TLS/DNS issues). After any Node
+security release, redeploy:
+
+```bash
+docker compose pull          # refresh base + app images
+docker compose build --pull  # rebuild against the latest patched base
+docker compose up -d         # restart (running containers keep the old Node until restarted)
+```
+
+On Hostinger specifically: hPanel → **Docker Manager → Update** on the project
+does the same. Check the version inside the container with
+`docker compose exec api node -v` (must be ≥ 22.23.4). Nothing is deployed
+yet, so there is no live vulnerable server today — this matters at the first
+real build.
+
 ## Health & monitoring
 - `GET /healthz` on **8080** (gateway) and **8090** (lipa) → `{ok:true}`.
   Both Docker images declare `HEALTHCHECK`s against these.

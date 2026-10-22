@@ -6,6 +6,8 @@
 #   docker run -p 8081:80 nzela-web
 #
 # ── build the static site ─────────────────────────────────────────────────
+# node:22-slim floating tag → latest patched 22.x with `--pull` (≥ 22.23.4,
+# Oct 2026 security release). The site build is Node-only; nginx serves it.
 FROM node:22-slim AS build
 WORKDIR /app
 COPY frontend ./frontend
