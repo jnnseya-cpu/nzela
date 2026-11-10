@@ -16,6 +16,6 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["shared/*/src/**/*.test.ts", "backend/*/src/**/*.test.ts"],
+    include: ["shared/*/src/**/*.test.ts", "backend/*/src/**/*.test.ts", "trend-intel/*/src/**/*.test.ts"],
   },
 });

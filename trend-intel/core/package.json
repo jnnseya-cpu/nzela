@@ -1,0 +1,8 @@
+{
+  "name": "@trendintel/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "description": "Trend/Growth Intelligence — deterministic core (brand-neutral): Growth Brief v1 contract, trend scoring, brief SDK, state machines, typed action validation."
+}

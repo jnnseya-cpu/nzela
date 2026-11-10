@@ -27,8 +27,9 @@
       "@nzela/persistence": ["shared/persistence/src/index.ts"],
       "@nzela/gateway": ["backend/gateway/src/index.ts"],
       "@nzela/lipa-ingest": ["backend/lipa-ingest/src/index.ts"],
-      "@nzela/server": ["backend/server/src/index.ts"]
+      "@nzela/server": ["backend/server/src/index.ts"],
+      "@trendintel/core": ["trend-intel/core/src/index.ts"]
     }
   },
-  "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]
+  "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts", "trend-intel/*/src/**/*.ts"]
 }
