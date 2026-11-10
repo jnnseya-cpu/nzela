@@ -2,4 +2,3 @@ packages:
   - "backend/*"
   - "shared/*"
   - "frontend/*"
-  - "trend-intel/*"

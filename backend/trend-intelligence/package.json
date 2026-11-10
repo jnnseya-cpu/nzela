@@ -1,0 +1,11 @@
+{
+  "name": "@nzela/trend-intelligence",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "description": "Trend/Growth Intelligence embedded in NZELA-OS: Growth Brief contract, trend scoring, brief SDK, state machines, typed action firewall, and the NZELA host profile + signal adapters that wire it into the existing SEO/growth/acquisition agents.",
+  "dependencies": {
+    "@nzela/ledger": "workspace:*"
+  }
+}

@@ -28,8 +28,8 @@
       "@nzela/gateway": ["backend/gateway/src/index.ts"],
       "@nzela/lipa-ingest": ["backend/lipa-ingest/src/index.ts"],
       "@nzela/server": ["backend/server/src/index.ts"],
-      "@trendintel/core": ["trend-intel/core/src/index.ts"]
+      "@nzela/trend-intelligence": ["backend/trend-intelligence/src/index.ts"]
     }
   },
-  "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts", "trend-intel/*/src/**/*.ts"]
+  "include": ["shared/*/src/**/*.ts", "backend/*/src/**/*.ts"]
 }

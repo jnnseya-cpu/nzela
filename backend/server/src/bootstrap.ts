@@ -22,6 +22,7 @@ import {
   type OrderPort,
 } from "@nzela/gateway";
 import { createLipaIngest, FileReplayIndex } from "@nzela/lipa-ingest";
+import { TrendCoordinator, NZELA_PROFILE } from "@nzela/trend-intelligence";
 import { OpenOrderBook } from "./open-orders.js";
 import type { AppConfig } from "./config.js";
 
@@ -60,6 +61,8 @@ export interface BuiltServices {
   sender: WhatsAppSender;
   openOrders: OpenOrderBook;
   ledger: LedgerSink;
+  /** Embedded trend-intelligence control layer, fed by live orders/payments. */
+  trends: TrendCoordinator;
 }
 
 export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltServices {
@@ -108,6 +111,13 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
   // --- the join: placed-but-unpaid orders shared by gateway + lipa ---
   const openOrders = new OpenOrderBook(d("open-orders.json"), encKey);
 
+  // --- Trend Intelligence control layer, embedded in the live platform:
+  //     every real order (demand) and verified payment (conversion) feeds the
+  //     coordinator, which scores topics and issues Growth Briefs that steer
+  //     the SEO + growth agents. Headline demand topic for the pilot. ---
+  const trends = new TrendCoordinator(NZELA_PROFILE, ledger);
+  const DEMAND_TOPIC = "livraison-whatsapp-kinshasa";
+
   // --- conversation engine on real StackFood ports ---
   const catalog = buildStackFoodCatalog(client);
   const basePort = buildStackFoodOrderPort({
@@ -126,6 +136,14 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
         tkRef: placed.tkRef,
         totalFc: placed.totalFc ?? 0,
         waId: session.waId,
+      });
+      // Feed the trend coordinator: a reached checkout is first-party demand.
+      trends.record({
+        kind: "order_placed",
+        topic: DEMAND_TOPIC,
+        atMs: Date.now(),
+        dedupKey: placed.tkRef,
+        market: "CD",
       });
       return placed;
     },
@@ -154,6 +172,14 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
     openOrders: async () => openOrders.open(),
     onVerified: async (tkRef, operator) => {
       openOrders.markPaid(tkRef, operator);
+      // Strongest first-party signal: a real, paid, reconciled order.
+      trends.record({
+        kind: "payment_verified",
+        topic: DEMAND_TOPIC,
+        atMs: Date.now(),
+        dedupKey: tkRef,
+        market: "CD",
+      });
       const waId = openOrders.waIdFor(tkRef);
       if (waId) {
         await sender.sendText(
@@ -168,7 +194,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
     analytics,
   });
 
-  return { gateway, lipa, sender, openOrders, ledger };
+  return { gateway, lipa, sender, openOrders, ledger, trends };
 }
 
 /**

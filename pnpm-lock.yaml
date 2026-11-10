@@ -125,6 +125,15 @@ importers:
       '@nzela/stackfood-client':
         specifier: workspace:*
         version: link:../../shared/stackfood-client
+      '@nzela/trend-intelligence':
+        specifier: workspace:*
+        version: link:../trend-intelligence
+
+  backend/trend-intelligence:
+    dependencies:
+      '@nzela/ledger':
+        specifier: workspace:*
+        version: link:../../shared/ledger
 
   backend/views:
     dependencies:
@@ -153,8 +162,6 @@ importers:
       '@nzela/persistence':
         specifier: workspace:*
         version: link:../persistence
-
-  trend-intel/core: {}
 
 packages:
 

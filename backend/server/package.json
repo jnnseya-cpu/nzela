@@ -14,6 +14,7 @@
     "@nzela/ledger": "workspace:*",
     "@nzela/lipa-ingest": "workspace:*",
     "@nzela/persistence": "workspace:*",
-    "@nzela/stackfood-client": "workspace:*"
+    "@nzela/stackfood-client": "workspace:*",
+    "@nzela/trend-intelligence": "workspace:*"
   }
 }
