@@ -10,3 +10,9 @@ export * from "./nzela-profile.js";
 export * from "./signals.js";
 export * from "./coordinator.js";
 export * from "./apply.js";
+// --- activation layer (file-backed substitutes for Postgres/inference/CMS) ---
+export * from "./store.js";
+export * from "./owned-surface.js";
+export * from "./inference.js";
+export * from "./execution.js";
+export * from "./measurement.js";

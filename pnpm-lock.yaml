@@ -134,6 +134,9 @@ importers:
       '@nzela/ledger':
         specifier: workspace:*
         version: link:../../shared/ledger
+      '@nzela/persistence':
+        specifier: workspace:*
+        version: link:../../shared/persistence
 
   backend/views:
     dependencies:

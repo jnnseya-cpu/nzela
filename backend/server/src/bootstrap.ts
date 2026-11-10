@@ -22,7 +22,7 @@ import {
   type OrderPort,
 } from "@nzela/gateway";
 import { createLipaIngest, FileReplayIndex } from "@nzela/lipa-ingest";
-import { TrendCoordinator, NZELA_PROFILE } from "@nzela/trend-intelligence";
+import { TrendCoordinator, NZELA_PROFILE, OwnedSurface, ExecutionService, NativeMeasurement } from "@nzela/trend-intelligence";
 import { OpenOrderBook } from "./open-orders.js";
 import type { AppConfig } from "./config.js";
 
@@ -63,6 +63,10 @@ export interface BuiltServices {
   ledger: LedgerSink;
   /** Embedded trend-intelligence control layer, fed by live orders/payments. */
   trends: TrendCoordinator;
+  /** Approval-gated owned-surface activation + native measurement (invisible). */
+  ownedSurface: OwnedSurface;
+  execution: ExecutionService;
+  measurement: NativeMeasurement;
 }
 
 export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltServices {
@@ -117,6 +121,13 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
   //     the SEO + growth agents. Headline demand topic for the pilot. ---
   const trends = new TrendCoordinator(NZELA_PROFILE, ledger);
   const DEMAND_TOPIC = "livraison-whatsapp-kinshasa";
+  // Activation layer (file-backed, encrypted, invisible): owned-surface
+  // revisions + approval-gated execution + native measurement. Constructed and
+  // available to operator/approval flows; never auto-acts, never user-facing.
+  const tiKv = new FileKV(d("trend-intel.json"), { encryptionKey: encKey });
+  const ownedSurface = new OwnedSurface(tiKv, NZELA_PROFILE.platform_id);
+  const execution = new ExecutionService(ownedSurface, ledger);
+  const measurement = new NativeMeasurement(tiKv, NZELA_PROFILE.platform_id);
 
   // --- conversation engine on real StackFood ports ---
   const catalog = buildStackFoodCatalog(client);
@@ -194,7 +205,7 @@ export function buildServices(config: AppConfig, deps: BuildDeps = {}): BuiltSer
     analytics,
   });
 
-  return { gateway, lipa, sender, openOrders, ledger, trends };
+  return { gateway, lipa, sender, openOrders, ledger, trends, ownedSurface, execution, measurement };
 }
 
 /**

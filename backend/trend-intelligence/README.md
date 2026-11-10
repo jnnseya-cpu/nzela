@@ -39,17 +39,28 @@ benefit from better-prioritised, on-brief SEO/marketing.
 | **`signals.ts`** | §3 | NZELA first-party event → trend observation adapters |
 | **`coordinator.ts`** | §5, §6 | ingest signals → score → emit validated Growth Brief (ledger-audited) |
 | **`apply.ts`** | §1, §4 | Growth Brief → SEO & growth-engine directives (scoped claim-text resolution) |
+| **`store.ts`** | §15 | installation-scoped persistence (FileKV, not Postgres): tenant isolation, idempotent ingest (replay/conflict) |
+| **`owned-surface.ts`** | §18 | native owned-surface activation: immutable revisions, compare-and-set patch/rollback, durable receipts |
+| **`inference.ts`** | §2, §14 | host-AI adapter contract + deterministic/template path (no GPU, no provider key; model output validated then falls back to templates) |
+| **`execution.ts`** | §6, §18 | durable idempotency key, approval binding (no self-approval), re-authorised execution, rollback |
+| **`measurement.ts`** | §18 | native first-party outcome capture (eligible visits + CTA outcomes per revision, small-cohort suppression) |
 
-**Tests (49):** core math + contract + conformance (TI-03/04/05/06/14/17) and
-the NZELA embedding (signals → brief → agent directives; single-family cap;
-forbidden-topic veto).
+**Tests (65):** core math + contract + conformance (TI-01/02/03/04/05/06/07/08/
+10/14/17/19), the NZELA embedding (signals → brief → agent directives), and an
+end-to-end **§20 keyless gate** — signals → brief → template draft → approve →
+apply to the native surface → measure → rollback, with **no model, no provider
+key and no external egress**.
 
-## What is NOT built here (honest, env-gated)
-The spec's full product also needs a services/infra layer that **cannot be run
-or verified in this sandbox** (no Postgres, no GPU, Docker registry egress
-blocked), so it is deliberately out of scope rather than shipped unverified:
-FastAPI API + OpenAPI, PostgreSQL + row-level security, the inference gateway
-(host-AI / local Qwen3-8B + BGE-M3), external CMS adapters, the React console,
-Helm/entitlements, and therefore the §20 keyless release gate and the
-DB/CMS-bound TI scenarios. The deterministic control loop that steers NZELA's
-own SEO/growth agents and native surfaces is what runs today.
+## What still needs a real environment (honest)
+Built here are NZELA's **file-backed** equivalents of persistence/activation/
+inference-fallback/measurement — runnable + tested on a single instance. What a
+real deploy environment (not this sandbox) still needs:
+- **Postgres + row-level security** if/when multi-instance/high-concurrency is
+  required (the FileKV substitute is correct for single-instance; the same
+  scoping maps onto RLS). No schema migrations written.
+- A **GPU-hosted local LLM** (Qwen3-8B/BGE-M3) for model-generated — not just
+  template — drafts. The host-AI adapter + deterministic fallback are built;
+  only the actual weights/serving need the GPU.
+- The optional **FastAPI/OpenAPI surface, React console, Helm/OCI packaging and
+  entitlements** — operability/packaging, not core logic.
+The deterministic control + activation loop that steers NZELA runs today.
