@@ -30,9 +30,6 @@ export function main(): void {
       ? "🔒 At-rest encryption ON — token/PII/financial stores are AES-256-GCM encrypted."
       : "🔓 At-rest encryption OFF — set DATA_ENCRYPTION_KEY (`openssl rand -base64 32`) to encrypt the token/PII stores on disk.",
   );
-  console.log(
-    "📈 Trend Intelligence embedded — live orders + verified payments feed the coordinator (topic: livraison-whatsapp-kinshasa).",
-  );
 
   gateway.listen(config.gatewayPort, () => {
     console.log(`gateway  → http://0.0.0.0:${config.gatewayPort}  (GET/POST /wa/webhook, POST /hooks/stackfood)`);

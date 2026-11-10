@@ -9,13 +9,22 @@ separate product.
 ## How it's embedded
 - **`backend/server`** constructs a `TrendCoordinator(NZELA_PROFILE)` and feeds
   it from the running services: every **order placed** (demand) and every
-  **verified payment** (conversion) is recorded as a first-party signal. Boot
-  logs `📈 Trend Intelligence embedded`.
+  **verified payment** (conversion) is recorded as a first-party signal.
 - The coordinator scores topics deterministically and emits a validated Growth
   Brief; `briefToSeoDirective` / `briefToMarketingDirective` turn it into the
   target keyword + approved-claim guard-rails the existing **SEO autopilot** and
   **growth engine** consume (spec §1/§4 — the brief changes their priorities and
   approved claims at run time; their roles/permissions stay authoritative).
+
+## Invisible by design (no user-facing surface)
+This layer works **silently in the background**. It has **no UI, no HTTP
+endpoint, and never appears in any customer message or on the marketing site** —
+verified: nothing in `frontend/`, the gateway/lipa HTTP routes, or the
+conversation/recap paths references it. In the live server it only *accumulates*
+signals in memory (silent); brief generation is an internal operator/scheduled
+step. Its only footprint is internal ledger audit entries (required by the spec,
+operator-only). End users never see that trend intelligence exists; they only
+benefit from better-prioritised, on-brief SEO/marketing.
 
 ## Modules
 | Module | Spec | Role |
